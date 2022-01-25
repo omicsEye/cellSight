@@ -14,13 +14,10 @@ install.packages(pkgs = 'devtools')
 devtools::install_github('ZJUFanLab/scCATCH')
 library(scCATCH)
 
-setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
+#setwd("~/Box/snRNA_CellRanger_Wound_nonWound/")
+setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 
-data_dir <- 'C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data'
-list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
-
-data <- Read10X(data.dir = data_dir)
-
+list.files("data/Wound1/filtered_feature_bc_matrix") # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
 pbmc.data <- Read10X(data.dir = "data/Wound1/filtered_feature_bc_matrix")
 pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc3k", min.cells = 3, min.features = 200)
 pbmc
