@@ -17,15 +17,13 @@ pbmc.data_Wound1 <- Read10X(data.dir = "data/Wound1/filtered_feature_bc_matrix")
 pbmc_Wound1 <- CreateSeuratObject(counts = pbmc.data_Wound1, project = "pbmc3k", min.cells = 3, min.features = 200)
 pbmc_Wound1
 
-
+pbmc.data_Wound2 <- Read10X(data.dir = "data/Wound2/filtered_feature_bc_matrix")
+pbmc_Wound2 <- CreateSeuratObject(counts = pbmc.data_Wound2, project = "pbmc3k", min.cells = 3, min.features = 200)
+pbmc_Wound2
 
 pbmc.data_Nonwound1 <- Read10X(data.dir = "data/Nonwound1/filtered_feature_bc_matrix")
 pbmc_Nonwound1 <- CreateSeuratObject(counts = pbmc.data_Nonwound1, project = "pbmc3k", min.cells = 3, min.features = 200)
 pbmc_Nonwound1
-
-pbmc.data_Wound2 <- Read10X(data.dir = "data/Wound2/filtered_feature_bc_matrix")
-pbmc_Wound2 <- CreateSeuratObject(counts = pbmc.data_Wound2, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc_Wound2
 
 pbmc.data_Nonwound2 <- Read10X(data.dir = "data/Nonwound2/filtered_feature_bc_matrix")
 pbmc_Nonwound2 <- CreateSeuratObject(counts = pbmc.data_Nonwound2, project = "pbmc3k", min.cells = 3, min.features = 200)
