@@ -6,34 +6,36 @@ library(SingleR)
 library(janitor)
 
 
-#setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
-setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
+setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 
-#data_dir <- 'C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data'
-data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
+data_dir <- 'C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data'
 list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
 
-pbmc.data_Wound1 <- Read10X(data.dir = "data/Wound1/filtered_feature_bc_matrix")
-pbmc_Wound1 <- CreateSeuratObject(counts = pbmc.data_Wound1, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc_Wound1
+data <- Read10X(data.dir = data_dir)
 
-pbmc.data_Wound2 <- Read10X(data.dir = "data/Wound2/filtered_feature_bc_matrix")
-pbmc_Wound2 <- CreateSeuratObject(counts = pbmc.data_Wound2, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc_Wound2
+pbmc.data <- Read10X(data.dir = "data/Wound1/filtered_feature_bc_matrix")
+pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc3k", min.cells = 3, min.features = 200)
+pbmc
 
-pbmc.data_Nonwound1 <- Read10X(data.dir = "data/Nonwound1/filtered_feature_bc_matrix")
-pbmc_Nonwound1 <- CreateSeuratObject(counts = pbmc.data_Nonwound1, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc_Nonwound1
 
-pbmc.data_Nonwound2 <- Read10X(data.dir = "data/Nonwound2/filtered_feature_bc_matrix")
-pbmc_Nonwound2 <- CreateSeuratObject(counts = pbmc.data_Nonwound2, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc_Nonwound2
+
+pbmc_un.data <- Read10X(data.dir = "data/Nonwound1/filtered_feature_bc_matrix")
+pbmc_un <- CreateSeuratObject(counts = pbmc_un.data, project = "pbmc3k", min.cells = 3, min.features = 200)
+pbmc_un
+
+pbmc_wo.data <- Read10X(data.dir = "data/Wound2/filtered_feature_bc_matrix")
+pbmc_wo <- CreateSeuratObject(counts = pbmc_wo.data, project = "pbmc3k", min.cells = 3, min.features = 200)
+pbmc_wo
+
+pbmc_wou.data <- Read10X(data.dir = "data/Nonwound2/filtered_feature_bc_matrix")
+pbmc_wou <- CreateSeuratObject(counts = pbmc_wou.data, project = "pbmc3k", min.cells = 3, min.features = 200)
+pbmc_wou
 
 initial <- rownames(pbmc.markers)
-wound1 <- as.data.frame(pbmc.data_Wound1)
-wound2 <- as.data.frame(pbmc.data_Wound2)
-unwound1 <- as.data.frame(pbmc.data_Nonwound1)
-unwound2 <- as.data.frame(pbmc.data_Nonwound2)
+wound1 <- as.data.frame(pbmc.data)
+wound2 <- as.data.frame(pbmc_un.data)
+unwound1 <- as.data.frame(pbmc_wo.data)
+unwound2 <- as.data.frame(pbmc_wou.data)
 
 #compare_df_rows_same(test, test_un)
 #final <- rbind(test,test_un)
