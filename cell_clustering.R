@@ -87,21 +87,21 @@ for (sample in sample_list){
                                  thresh.use = 0.25)
   library(future)
   library(scCATCH)
-  clu_markers <- findmarkergene(object  = pbmc,
-                                  species = 'Mouse',
-                                  cluster = 'All',
-                                  marker = 'cellmatch',
-                                  cancer = NULL,
-                                  tissue = NULL,
-                                  cell_min_pct = 0.25,
-                                  logfc = 0.25,
-                                  pvalue = 0.05)
+  # clu_markers <- findmarkergene(object  = pbmc,
+  #                                 species = 'Mouse',
+  #                                 cluster = 'All',
+  #                                 marker = 'cellmatch',
+  #                                 cancer = NULL,
+  #                                 tissue = NULL,
+  #                                 cell_min_pct = 0.25,
+  #                                 logfc = 0.25,
+  #                                 pvalue = 0.05)
   #obj <- findmarkergene(object = pbmc, species = "Mouse", marker = cellmatch, tissue = "Blood")
-  clu_markers <- findmarkergenes(dif.PAC, species = "Human", cluster = 'All', match_CellMatch = TRUE, cancer = "Pancreatic Ductal Adenocarcinomas", tissue = "Pancreas", cell_min_pct = 0.25, logfc = 0.25, pvalue = 0.05)
-  clu_ann <- scCATCH(object = clu_markers$clu_markers,
-                     species = 'Mouse',
-                     cancer = NULL,
-                     tissue = 'Adipose tissue')
+  # clu_markers <- findmarkergenes(dif.PAC, species = "Human", cluster = 'All', match_CellMatch = TRUE, cancer = "Pancreatic Ductal Adenocarcinomas", tissue = "Pancreas", cell_min_pct = 0.25, logfc = 0.25, pvalue = 0.05)
+  # clu_ann <- scCATCH(object = clu_markers$clu_markers,
+  #                    species = 'Mouse',
+  #                    cancer = NULL,
+  #                    tissue = 'Adipose tissue')
   new.cluster.ids <- c("N/A","Macrophage", "B-cell", "Neurons", "N/A","Adipocytes" )
   new.cluster.ids <- c("Beta","Fibroblast","B-cell","Neurons","Trigeminal neurons","Endothelial cells",
                        "Smooth Muscle cells","Keratinocytes","Keratinocytes","Macrophages","Smooth Muscle cells")
