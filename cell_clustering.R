@@ -1,8 +1,8 @@
-#install.packages('Seurat')
-#install.packages('dplyr')
-#install.packages('Matrix')
-#install.packages('ggpubr')
-#install.packages('ggplots')
+install.packages('Seurat')
+install.packages('dplyr')
+install.packages('Matrix')
+install.packages('ggpubr')
+install.packages('ggplots')
 library(Seurat)
 library(dplyr)
 library(ggplot2)
@@ -13,19 +13,20 @@ library(SingleR)
 library(scCATCH)
 
 setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
-setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
+#setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 
 data_dir <- 'C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data'
-data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
+#data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
 
 list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
 
 
 # loop over samples and save figures and results 
 sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
-sample <- "Wound1"
+#sample <- "Wound1"
 for (sample in sample_list){
   
+  print(sample)
   # read data  
   pbmc.data <- Read10X(data.dir = paste0("data/", sample, "/filtered_feature_bc_matrix", sep= "")) 
   
@@ -85,29 +86,42 @@ for (sample in sample_list){
   head(cluster2.markers, n = 5)
   pbmc.markers <- FindAllMarkers(object = pbmc, only.pos = TRUE, min.pct = 0.25,
                                  thresh.use = 0.25)
-  library(future)
-  library(scCATCH)
-  # clu_markers <- findmarkergene(object  = pbmc,
-  #                                 species = 'Mouse',
-  #                                 cluster = 'All',
-  #                                 marker = 'cellmatch',
-  #                                 cancer = NULL,
-  #                                 tissue = NULL,
-  #                                 cell_min_pct = 0.25,
-  #                                 logfc = 0.25,
-  #                                 pvalue = 0.05)
-  #obj <- findmarkergene(object = pbmc, species = "Mouse", marker = cellmatch, tissue = "Blood")
-  # clu_markers <- findmarkergenes(dif.PAC, species = "Human", cluster = 'All', match_CellMatch = TRUE, cancer = "Pancreatic Ductal Adenocarcinomas", tissue = "Pancreas", cell_min_pct = 0.25, logfc = 0.25, pvalue = 0.05)
-  # clu_ann <- scCATCH(object = clu_markers$clu_markers,
-  #                    species = 'Mouse',
-  #                    cancer = NULL,
-  #                    tissue = 'Adipose tissue')
+  print(sample)
+  test <- pbmc.markers
+  write.table(test, file=paste0("analysis/data/marker_gene_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
+  
+  # library(future)
+  # library(scCATCH)
+  # # clu_markers <- findmarkergene(object  = pbmc,
+  # #                                 species = 'Mouse',
+  # #                                 cluster = 'All',
+  # #                                 marker = 'cellmatch',
+  # #                                 cancer = NULL,
+  # #                                 tissue = NULL,
+  # #                                 cell_min_pct = 0.25,
+  # #                                 logfc = 0.25,
+  # #                                 pvalue = 0.05)
+  # #obj <- findmarkergene(object = pbmc, species = "Mouse", marker = cellmatch, tissue = "Blood")
+  # # clu_markers <- findmarkergenes(dif.PAC, species = "Human", cluster = 'All', match_CellMatch = TRUE, cancer = "Pancreatic Ductal Adenocarcinomas", tissue = "Pancreas", cell_min_pct = 0.25, logfc = 0.25, pvalue = 0.05)
+  # # clu_ann <- scCATCH(object = clu_markers$clu_markers,
+  # #                    species = 'Mouse',
+  # #                    cancer = NULL,
+  # #                    tissue = 'Adipose tissue')
+  if (sample == "Wound1" | sample == "Wound2"){
   new.cluster.ids <- c("N/A","Macrophage", "B-cell", "Neurons", "N/A","Adipocytes" )
+  }
+  if (sample == "Nonwound1"){
   new.cluster.ids <- c("Beta","Fibroblast","B-cell","Neurons","Trigeminal neurons","Endothelial cells",
-                       "Smooth Muscle cells","Keratinocytes","Keratinocytes","Macrophages","Smooth Muscle cells")
+                        "Smooth Muscle cells","Keratinocytes","Keratinocytes","Macrophages","Smooth Muscle cells")
+  }
+  if (sample == "Nonwound2"){
+    new.cluster.ids <- c("Beta","Fibroblast","B-cell","Neurons","Trigeminal neurons","Endothelial cells",
+                         "Smooth Muscle cells","Keratinocytes","Keratinocytes","Macrophages","Smooth Muscle cells","N/A","N/A")
+  }
   names(new.cluster.ids) <- levels(pbmc)
   pbmc <- RenameIdents(pbmc, new.cluster.ids)
-  DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+  ggsave(paste0("analysis/figures/QC_Plots/Cluster", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
   if (sample == "Wound1" | sample == "Wound2"){
   pbmc@meta.data <- pbmc@meta.data %>%
     mutate(Cell_type = case_when(
@@ -117,10 +131,26 @@ for (sample in sample_list){
       seurat_clusters == 3 ~ "Neurons",
       seurat_clusters == 4 ~ "N/A",
       seurat_clusters == 5 ~ "Adipocytes"
-      
+
     ))
   }
-  else if (sample == "Nonwound1" | sample == "Nonwound2") {
+  else if (sample == "Nonwound1") {
+    pbmc@meta.data <- pbmc@meta.data %>%
+      mutate(Cell_type = case_when(
+        seurat_clusters == 0 ~ "Beta",
+        seurat_clusters == 1 ~ "Fibroblast",
+        seurat_clusters == 2 ~ "B-cell",
+        seurat_clusters == 3 ~ "Neurons",
+        seurat_clusters == 4 ~ "Trigeminal neurons",
+        seurat_clusters == 5 ~ "Endothelial cells",
+        seurat_clusters == 6 ~ "Smooth Muscle cells",
+        seurat_clusters == 7 ~ "Keratinocytes",
+        seurat_clusters == 8 ~ "Keratinocytes",
+        seurat_clusters == 9 ~ "Macrophages",
+        seurat_clusters == 10 ~ "Smooth Muscle cells"
+      ))
+  }
+  else if (sample == "Nonwound2") {
     pbmc@meta.data <- pbmc@meta.data %>%
       mutate(Cell_type = case_when(
         seurat_clusters == 0 ~ "Beta",
@@ -134,11 +164,13 @@ for (sample in sample_list){
         seurat_clusters == 8 ~ "Keratinocytes",
         seurat_clusters == 9 ~ "Macrophages",
         seurat_clusters == 10 ~ "Smooth Muscle cells",
+        seurat_clusters == 11 ~ "N/A",
+        seurat_clusters == 12 ~ "N/A"
       ))
   }
   test<-t(pbmc.data)
-  
-  write.table(pbmc@meta.data,paste0("data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
-  write.table(test,paste0("data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+  # 
+  write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+  write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
 }
 
