@@ -6,54 +6,75 @@ library(SingleR)
 library(janitor)
 
 
-setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
+setwd("/Users/Rano/Desktop/Single_Cell_Wound/")
 
-data_dir <- 'C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data'
+data_dir <- '/Users/Rano/Desktop/Single_Cell_Wound/'
 list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
 
-data <- Read10X(data.dir = data_dir)
 
-pbmc.data <- Read10X(data.dir = "data/Wound1/filtered_feature_bc_matrix")
-pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc
+#Import the data from the BOX folder, reconfigure the first column as the row name
+# and also add the desired suffix to differentiaite between the samples to rowname
+
+#initial <- rownames(pbmc.markers)
+wound1 <- read.table(file = 'analysis/data/data_Wound1.tsv', sep = '\t', header = TRUE)
+rownames(wound1) <- wound1[,1]
+wound1[,1] <- NULL
+rownames(wound1) <- paste(row.names(wound1), c("_s1"))
+
+wound2 <- read.table(file = 'analysis/data/data_Wound2.tsv', sep = '\t', header = TRUE)
+rownames(wound2) <- wound2[,1]
+wound2[,1] <- NULL
+rownames(wound2) <- paste(row.names(wound2), c("_s2"))
+
+nonwound1 <- read.table(file = 'analysis/data/data_Nonwound1.tsv', sep = '\t', header = TRUE)
+rownames(nonwound1) <- nonwound1[,1]
+nonwound1[,1] <- NULL
+rownames(nonwound1) <- paste(row.names(nonwound1), c("_s3"))
 
 
-
-pbmc_un.data <- Read10X(data.dir = "data/Nonwound1/filtered_feature_bc_matrix")
-pbmc_un <- CreateSeuratObject(counts = pbmc_un.data, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc_un
-
-pbmc_wo.data <- Read10X(data.dir = "data/Wound2/filtered_feature_bc_matrix")
-pbmc_wo <- CreateSeuratObject(counts = pbmc_wo.data, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc_wo
-
-pbmc_wou.data <- Read10X(data.dir = "data/Nonwound2/filtered_feature_bc_matrix")
-pbmc_wou <- CreateSeuratObject(counts = pbmc_wou.data, project = "pbmc3k", min.cells = 3, min.features = 200)
-pbmc_wou
-
-initial <- rownames(pbmc.markers)
-wound1 <- as.data.frame(pbmc.data)
-wound2 <- as.data.frame(pbmc_un.data)
-unwound1 <- as.data.frame(pbmc_wo.data)
-unwound2 <- as.data.frame(pbmc_wou.data)
+nonwound2 <- read.table(file = 'analysis/data/data_Nonwound2.tsv', sep = '\t', header = TRUE)
+rownames(nonwound2) <- nonwound2[,1]
+nonwound2[,1] <- NULL
+rownames(nonwound2) <- paste(row.names(nonwound2), c("_s4"))
 
 #compare_df_rows_same(test, test_un)
 #final <- rbind(test,test_un)
-initial <- row.names(pbmc.markers)
-wound1 <- subset(wound1, rownames(wound1) %in% initial)
-wound2 <- subset(wound2, rownames(wound2) %in% initial)
-unwound1 <- subset(unwound1, rownames(unwound1) %in% initial)
-unwound2 <- subset(unwound2, rownames(unwound2) %in% initial)
-final <- rownames(wound1)
-rownames(wound1) <- paste(row.names(wound1), c("_s1"))
-rownames(wound2) <- paste(row.names(wound2), c("_s2")) 
-rownames(unwound1) <- paste(row.names(unwound1), c("_s3")) 
-rownames(unwound2) <- paste(row.names(unwound2), c("_s4")) 
+##Merging the 4 seperate samples as a master dataset
 test <- dplyr::bind_rows(wound1, wound2)
-test <- dplyr::bind_rows(test, unwound1)
-col_name <- subset(pbmc.markers, rownames(pbmc.markers)%in% final)
-pbmc.markers <- subset(pbmc.markers, rownames(pbmc.markers) %in% final)
-name <- c(row_names)
-df <- data.frame(name)
-write.table(df,"meta_data.tsv",  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
-write.table(test,"data.tsv",  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+test <- dplyr::bind_rows(test, nonwound1)
+test <- dplyr::bind_rows(test, nonwound2)
+
+##Import the metadata from the BOX folder
+
+meta_wound1 <- read.table(file = 'analysis/data/meta_data_Wound1.tsv', sep = '\t', header = TRUE)
+rownames(meta_wound1) <- meta_wound1[,1]
+meta_wound1[,1] <- NULL
+rownames(meta_wound1) <- paste(row.names(meta_wound1), c("_s1"))
+
+meta_wound2 <- read.table(file = 'analysis/data/meta_data_Wound2.tsv', sep = '\t', header = TRUE)
+rownames(meta_wound2) <- meta_wound2[,1]
+meta_wound2[,1] <- NULL
+rownames(meta_wound2) <- paste(row.names(meta_wound2), c("_s2"))
+
+meta_nonwound1 <- read.table(file = 'analysis/data/meta_data_Nonwound1.tsv', sep = '\t', header = TRUE)
+rownames(meta_nonwound1) <- meta_nonwound1[,1]
+meta_nonwound1[,1] <- NULL
+rownames(meta_nonwound1) <- paste(row.names(meta_nonwound1), c("_s3"))
+
+
+meta_nonwound2 <- read.table(file = 'analysis/data/meta_data_Nonwound2.tsv', sep = '\t', header = TRUE)
+rownames(meta_nonwound2) <- meta_nonwound2[,1]
+meta_nonwound2[,1] <- NULL
+rownames(meta_nonwound2) <- paste(row.names(meta_nonwound2), c("_s4"))
+
+##Merging the 4 seperate samples as a master meta dataset
+meta_test <- dplyr::bind_rows(meta_wound1, meta_wound2)
+meta_test <- dplyr::bind_rows(meta_test, meta_nonwound1)
+meta_test <- dplyr::bind_rows(meta_test, meta_nonwound2)
+
+##Removing the cell barcodes from the datas  that are not present in the metadata set
+final <- rownames(meta_test)
+try <- subset(test, rownames(test)%in% final)
+
+write.table(try,"master_metadata.tsv",  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+write.table(meta_test,"master_data.tsv",  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
