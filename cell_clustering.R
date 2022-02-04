@@ -3,6 +3,7 @@ install.packages('dplyr')
 install.packages('Matrix')
 install.packages('ggpubr')
 install.packages('ggplots')
+install.packages('SingleR')
 library(Seurat)
 library(dplyr)
 library(ggplot2)
@@ -11,11 +12,12 @@ library(SingleR)
 #install.packages(pkgs = 'devtools')
 #devtools::install_github('ZJUFanLab/scCATCH')
 library(scCATCH)
-
-setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
+##This part is for the Rano
+setwd("/Users/Rano/Desktop/Single_Cell_Wound/")
+#This part is for Dr.Rahnavard
 #setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 
-data_dir <- 'C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data'
+data_dir <- '/Users/Rano/Desktop/Single_Cell_Wound/'
 #data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
 
 list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
@@ -28,7 +30,7 @@ for (sample in sample_list){
   
   print(sample)
   # read data  
-  pbmc.data <- Read10X(data.dir = paste0("data/", sample, "/filtered_feature_bc_matrix", sep= "")) 
+  pbmc.data <- Read10X(paste0("data/", sample, "/filtered_feature_bc_matrix", sep= "")) 
   
   # Create a Seurat object
   pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc3k", min.cells = 3, min.features = 200)
@@ -43,12 +45,12 @@ for (sample in sample_list){
   plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
   ggsave(paste0("analysis/figures/QC_Plots/QC_Scatter_", sample,".pdf", sep=""), plot=plot1 + plot2, width = 7.2, height = 4, units = "in", dpi = 350)
   
-  # 
+  # Normalization of the data
   pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
   pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
   pbmc <- NormalizeData(pbmc)
   
-  # 
+  # Feature Selection
   pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
   
   # Identify the 10 most highly variable genes
@@ -70,23 +72,33 @@ for (sample in sample_list){
   PCA_score <- VizDimLoadings(pbmc, dims = 1:2, reduction = "pca")
   ggsave(paste0("analysis/figures/QC_Plots/PCA_Scores_", sample,".pdf", sep=""), plot=PCA_score, width = 7.2, height = 4, units = "in", dpi = 350)
   
+  #PCA plots
   QC_DimPlot <- DimPlot(pbmc, reduction = "pca")
   QC_DimHeatmap <- DimHeatmap(pbmc, dims = 1, cells = 500, balanced = TRUE)
   QC_DimHeatmap15 <- DimHeatmap(pbmc, dims = 1:15, cells = 500, balanced = TRUE)
+  #Plot the Jackstraw score
   pbmc <- JackStraw(pbmc, num.replicate = 100)
   pbmc <- ScoreJackStraw(pbmc, dims = 1:20)
   QC_JackStrawPlot <- JackStrawPlot(pbmc, dims = 1:15)
+  ggsave(paste0("analysis/figures/QC_Plots/Elbow_plot", sample,".pdf", sep=""), plot=QC_JackStrawPlot, width = 7.2, height = 4, units = "in", dpi = 350)
+  #Elbow plot
   QC_ElbowPlot <- ElbowPlot(pbmc)
+  ggsave(paste0("analysis/figures/QC_Plots/Elbow_plot", sample,".pdf", sep=""), plot=QC_ElbowPlot, width = 7.2, height = 4, units = "in", dpi = 350)
   pbmc <- FindNeighbors(pbmc, dims = 1:10)
   pbmc <- FindClusters(pbmc, resolution = 0.5)
   head(Idents(pbmc), 5)
+  #UMAP plot with clusters
   pbmc <- RunUMAP(pbmc, dims = 1:10)
   DimPlot(pbmc, reduction = "umap")
   cluster2.markers <- FindMarkers(pbmc, ident.1 = 2, min.pct = 0.25)
   head(cluster2.markers, n = 5)
+  #Finding the marker genes
   pbmc.markers <- FindAllMarkers(object = pbmc, only.pos = TRUE, min.pct = 0.25,
                                  thresh.use = 0.25)
+  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+  ggsave(paste0("analysis/figures/QC_Plots/Cluster_without_label", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
   print(sample)
+  #Saving the marker gene files for Brett
   test <- pbmc.markers
   write.table(test, file=paste0("analysis/data/marker_gene_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
   
@@ -121,7 +133,7 @@ for (sample in sample_list){
   names(new.cluster.ids) <- levels(pbmc)
   pbmc <- RenameIdents(pbmc, new.cluster.ids)
   cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
-  ggsave(paste0("analysis/figures/QC_Plots/Cluster", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
+  ggsave(paste0("analysis/figures/QC_Plots/Cluster_with_label", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
   if (sample == "Wound1" | sample == "Wound2"){
   pbmc@meta.data <- pbmc@meta.data %>%
     mutate(Cell_type = case_when(
@@ -168,9 +180,12 @@ for (sample in sample_list){
         seurat_clusters == 12 ~ "N/A"
       ))
   }
-  test<-t(pbmc.data)
-  # 
+  #Saving the data in the format for Dr.Rahnavard
+  test <- as.matrix(pbmc.data)
+  test<-t(test)
+  # Saving the data and metadata for tweedeverse analysis
   write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
   write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
 }
+
 
