@@ -44,7 +44,7 @@ for (cell in unique(metadata$Cell_type)){
   cell_metadata <- metadata[metadata$Cell_type == cell,]
   Tweedieverse::Tweedieverse(data,
                              cell_metadata,
-                             paste('analysis/Tweedieverse_output_', cell),
+                             paste('analysis/Tweedieverse_output_', cell, sep = ""),
                              max_significance = 0.05,
                              base_model = "CPLM",
                              plot_heatmap = T,
