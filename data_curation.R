@@ -21,6 +21,7 @@ rownames(wound1) <- wound1[,1]
 wound1[,1] <- NULL
 rownames(wound1) <- paste(row.names(wound1), c("_s1"))
 
+
 wound2 <- read.table(file = 'analysis/data/data_Wound2.tsv', sep = '\t', header = TRUE)
 rownames(wound2) <- wound2[,1]
 wound2[,1] <- NULL
@@ -50,22 +51,30 @@ meta_wound1 <- read.table(file = 'analysis/data/meta_data_Wound1.tsv', sep = '\t
 rownames(meta_wound1) <- meta_wound1[,1]
 meta_wound1[,1] <- NULL
 rownames(meta_wound1) <- paste(row.names(meta_wound1), c("_s1"))
+meta_wound1$Sample_type <- "Wound"
+meta_wound1$Sample_number <- "Sample_1"
 
 meta_wound2 <- read.table(file = 'analysis/data/meta_data_Wound2.tsv', sep = '\t', header = TRUE)
 rownames(meta_wound2) <- meta_wound2[,1]
 meta_wound2[,1] <- NULL
 rownames(meta_wound2) <- paste(row.names(meta_wound2), c("_s2"))
+meta_wound2$Sample_type <- "Wound"
+meta_wound2$Sample_number <- "Sample_2"
 
 meta_nonwound1 <- read.table(file = 'analysis/data/meta_data_Nonwound1.tsv', sep = '\t', header = TRUE)
 rownames(meta_nonwound1) <- meta_nonwound1[,1]
 meta_nonwound1[,1] <- NULL
 rownames(meta_nonwound1) <- paste(row.names(meta_nonwound1), c("_s3"))
+meta_nonwound1$Sample_type <- "Nonwound"
+meta_nonwound1$Sample_number <- "Sample_3"
 
 
 meta_nonwound2 <- read.table(file = 'analysis/data/meta_data_Nonwound2.tsv', sep = '\t', header = TRUE)
 rownames(meta_nonwound2) <- meta_nonwound2[,1]
 meta_nonwound2[,1] <- NULL
 rownames(meta_nonwound2) <- paste(row.names(meta_nonwound2), c("_s4"))
+meta_nonwound2$Sample_type <- "Nonwound"
+meta_nonwound2$Sample_number <- "Sample_4"
 
 ##Merging the 4 seperate samples as a master meta dataset
 meta_test <- dplyr::bind_rows(meta_wound1, meta_wound2)
@@ -74,7 +83,7 @@ meta_test <- dplyr::bind_rows(meta_test, meta_nonwound2)
 
 ##Removing the cell barcodes from the datas  that are not present in the metadata set
 final <- rownames(meta_test)
-try <- subset(test, rownames(test)%in% final)
+final_data <- subset(test, rownames(test)%in% final)
 
-write.table(try,"master_metadata.tsv",  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
-write.table(meta_test,"master_data.tsv",  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+write.table(meta_test,"master_metadata.tsv",  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+write.table(final_data,"master_data.tsv",  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
