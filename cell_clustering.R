@@ -92,6 +92,10 @@ for (sample in sample_list){
   DimPlot(pbmc, reduction = "umap")
   cluster2.markers <- FindMarkers(pbmc, ident.1 = 2, min.pct = 0.25)
   head(cluster2.markers, n = 5)
+  Feature_dist <- VlnPlot(object = pbmc, features =c("CD68","Adgre1","Ptprc","Pdgfra","Pdgfrb","Col1a1",
+                                                     "Krt14","Krt10","Krt5","Plin1","Adipoq","Pparg",
+                                                     "Fabp4","Ptprc","Pecam1","CD34"))
+  ggsave(paste0("analysis/figures/QC_Plots/feature_dist_", sample,".pdf", sep=""), plot=Feature_dist,  dpi = 350)
   #Finding the marker genes
   pbmc.markers <- FindAllMarkers(object = pbmc, only.pos = TRUE, min.pct = 0.25,
                                  thresh.use = 0.25)
