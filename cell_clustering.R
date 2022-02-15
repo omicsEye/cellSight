@@ -106,8 +106,8 @@ for (sample in sample_list){
   ggsave(paste0("analysis/figures/QC_Plots/Cluster_without_label", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
   print(sample)
   #Saving the marker gene files for better understanding the process
-  ##test <- pbmc.markers
-  ##write.table(test, file=paste0("analysis/data/marker_gene_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
+  test <- pbmc.markers
+  write.table(test, file=paste0("analysis/data/marker_gene_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
   
   # library(future)
   # library(scCATCH)
@@ -188,12 +188,12 @@ for (sample in sample_list){
       ))
   }
   #Saving the data in the desired format
-  #Uncomment the ##
-  ##test <- as.matrix(pbmc.data)
-  ##test<-t(test)
+
+  test <- as.matrix(pbmc.data)
+  test<-t(test)
   # Saving the data and metadata for tweedeverse analysis
-  ##write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
-  ##write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+  write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+  write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
 }
 
 
