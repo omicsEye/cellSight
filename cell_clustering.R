@@ -69,8 +69,9 @@ for (sample in sample_list){
   
   # make matrix and do a heatmap use phetamap for loading and scores in PCA for 5 PCs and 20 Features
   print(pbmc[["pca"]], dims = 1:5, nfeatures = 5)
-  PCA_score <- VizDimLoadings(pbmc, dims = 1:2, reduction = "pca")
-  ggsave(paste0("analysis/figures/QC_Plots/PCA_Scores_", sample,".pdf", sep=""), plot=PCA_score, width = 7.2, height = 4, units = "in", dpi = 350)
+  PCA_score_1 <- VizDimLoadings(pbmc, dims = 1, reduction = "pca") +  theme(axis.text = element_text(size = 6))
+  PCA_score_2 <- VizDimLoadings(pbmc, dims = 2, reduction = "pca")+  theme(axis.text = element_text(size = 6))
+  ggsave(paste0("analysis/figures/QC_Plots/PCA_Scores_", sample,".pdf", sep=""), plot=PCA_score_1|PCA_score_2, width = 7.2, height = 4, units = "in", dpi = 350)
   
   #PCA plots
   QC_DimPlot <- DimPlot(pbmc, reduction = "pca")
@@ -94,17 +95,19 @@ for (sample in sample_list){
   head(cluster2.markers, n = 5)
   Feature_dist <- VlnPlot(object = pbmc, features =c("CD68","Adgre1","Ptprc","Pdgfra","Pdgfrb","Col1a1",
                                                      "Krt14","Krt10","Krt5","Plin1","Adipoq","Pparg",
-                                                     "Fabp4","Ptprc","Pecam1","CD34"))
-  ggsave(paste0("analysis/figures/QC_Plots/feature_dist_", sample,".pdf", sep=""), plot=Feature_dist,  dpi = 350)
+                                                     "Fabp4","Ptprc","Pecam1","CD34"),combine =FALSE)
+  plots <- lapply(X = Feature_dist, FUN = function(x) x + theme(axis.text = element_text(size = 4)))
+  feature_distri <- CombinePlots(plots = Feature_dist,ncol =3) + theme(aspect.ratio = 1)
+  ggsave(paste0("analysis/figures/QC_Plots/feature_dist_", sample,".pdf", sep=""), plot=feature_distri,width = 15, height = 11)
   #Finding the marker genes
   pbmc.markers <- FindAllMarkers(object = pbmc, only.pos = TRUE, min.pct = 0.25,
                                  thresh.use = 0.25)
-  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend() +ylim(-8,15) +xlim(-10,10)
   ggsave(paste0("analysis/figures/QC_Plots/Cluster_without_label", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
   print(sample)
-  #Saving the marker gene files for Brett
-  test <- pbmc.markers
-  write.table(test, file=paste0("analysis/data/marker_gene_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
+  #Saving the marker gene files for better understanding the process
+  ##test <- pbmc.markers
+  ##write.table(test, file=paste0("analysis/data/marker_gene_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
   
   # library(future)
   # library(scCATCH)
@@ -136,7 +139,7 @@ for (sample in sample_list){
   }
   names(new.cluster.ids) <- levels(pbmc)
   pbmc <- RenameIdents(pbmc, new.cluster.ids)
-  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()+ylim(-8,15) +xlim(-10,10)
   ggsave(paste0("analysis/figures/QC_Plots/Cluster_with_label", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
   if (sample == "Wound1" | sample == "Wound2"){
   pbmc@meta.data <- pbmc@meta.data %>%
@@ -184,12 +187,13 @@ for (sample in sample_list){
         seurat_clusters == 12 ~ "N/A"
       ))
   }
-  #Saving the data in the format for Dr.Rahnavard
-  test <- as.matrix(pbmc.data)
-  test<-t(test)
+  #Saving the data in the desired format
+  #Uncomment the ##
+  ##test <- as.matrix(pbmc.data)
+  ##test<-t(test)
   # Saving the data and metadata for tweedeverse analysis
-  write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
-  write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+  ##write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+  ##write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
 }
 
 
