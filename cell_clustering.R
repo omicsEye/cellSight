@@ -102,7 +102,7 @@ for (sample in sample_list){
   #Finding the marker genes
   pbmc.markers <- FindAllMarkers(object = pbmc, only.pos = TRUE, min.pct = 0.25,
                                  thresh.use = 0.25)
-  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend() +ylim(-8,15) +xlim(-10,10)
+  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend() +ylim(-10,15) +xlim(-10,15)
   ggsave(paste0("analysis/figures/QC_Plots/Cluster_without_label", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
   print(sample)
   #Saving the marker gene files for better understanding the process
