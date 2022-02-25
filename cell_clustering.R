@@ -3,7 +3,21 @@ install.packages('dplyr')
 install.packages('Matrix')
 install.packages('ggpubr')
 install.packages('ggplots')
-install.packages('SingleR')
+#install.packages('SingleR')
+BiocManager::install("celldex",force = T)
+if (!require("BiocManager")) {
+  install.packages("BiocManager")
+}
+BiocManager::install('CHETAH')
+
+BiocManager::install("SingleR",force = T)
+library(Seurat)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(SingleR)
+library(CHETAH)
+library(celldex)
 library(Seurat)
 library(dplyr)
 library(ggplot2)
@@ -24,9 +38,9 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
 
 
 # loop over samples and save figures and results 
-sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
-#sample <- "Wound1"
-for (sample in sample_list){
+#sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
+sample <- "Wound1"
+# for (sample in sample_list){
   
   print(sample)
   # read data  
@@ -87,10 +101,44 @@ for (sample in sample_list){
   ggsave(paste0("analysis/figures/QC_Plots/Elbow_plot", sample,".pdf", sep=""), plot=QC_ElbowPlot, width = 7.2, height = 4, units = "in", dpi = 350)
   pbmc <- FindNeighbors(pbmc, dims = 1:10)
   pbmc <- FindClusters(pbmc, resolution = 0.5)
+  pbmc <- RunUMAP(pbmc, dims = 1:30, verbose = F)
+  pbmc <- FindNeighbors(pbmc, dims = 1:30)
+  pbmc <- FindClusters(pbmc, resolution = 0.5)
+  DimPlot(pbmc, label = T)
   head(Idents(pbmc), 5)
   #UMAP plot with clusters
-  pbmc <- RunUMAP(pbmc, dims = 1:10)
+  BiocManager::install("TENxPBMCData")
+  library(TENxPBMCData)
+  new.data <- TENxPBMCData("pbmc4k")
+  library(celldex)
+  ref.data <- celldex::HumanPrimaryCellAtlasData
+  BiocManager::install("scran")
+  library('scran')
+  # Performing predictions.
+  library(SingleR)
+  predictions <- SingleR(test=pbmc, assay.type.test=1,ref=ref.data, labels=ref.data$label.main)
+  
+  pbmc <- RunUMAP(pbmc, dims = 1:30)
   DimPlot(pbmc, reduction = "umap")
+  ref.data <-celldex::ImmGenData()
+  sce <- as.SingleCellExperiment(DietSeurat(pbmc))
+  sce
+  ref.data.main <- SingleR(test = sce,assay.type.test = 1,ref = ref.data,labels = ref.data$label.main,de.method = "wilcox")
+  ref.data.fine <- SingleR(test = sce,assay.type.test = 1,ref = ref.data,labels = ref.data$label.fine)
+  table(ref.data.main$pruned.labels)
+  table(ref.data.fine$pruned.labels)
+  pbmc@meta.data$ref.data.main <- ref.data.main$pruned.labels
+  pbmc@meta.data$ref.data.fine <- ref.data.fine$pruned.labels
+  pbmc <- SetIdent(pbmc, value = "ref.data.main")
+  DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
+  pbmc <- SetIdent(pbmc, value = "ref.data.fine")
+  DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
+  
+  
+  # hpca.main <- SingleR(test = sce,assay.type.test = 1,ref = hpca.ref,labels = hpca.ref$label.main)
+  # hpca.fine <- SingleR(test = sce,assay.type.test = 1,ref = hpca.ref,labels = hpca.ref$label.fine)
+  # dice.main <- SingleR(test = sce,assay.type.test = 1,ref = dice.ref,labels = dice.ref$label.main)
+  # dice.fine <- SingleR(test = sce,assay.type.test = 1,ref = dice.ref,labels = dice.ref$label.fine)
   cluster2.markers <- FindMarkers(pbmc, ident.1 = 2, min.pct = 0.25)
   head(cluster2.markers, n = 5)
   Feature_dist <- VlnPlot(object = pbmc, features =c("CD68","Adgre1","Ptprc","Pdgfra","Pdgfrb","Col1a1",
@@ -126,74 +174,74 @@ for (sample in sample_list){
   # #                    species = 'Mouse',
   # #                    cancer = NULL,
   # #                    tissue = 'Adipose tissue')
-  if (sample == "Wound1" | sample == "Wound2"){
-  new.cluster.ids <- c("N/A","Macrophage", "B-cell", "Neurons", "N/A","Adipocytes" )
-  }
-  if (sample == "Nonwound1"){
-  new.cluster.ids <- c("Beta","Fibroblast","B-cell","Neurons","Trigeminal neurons","Endothelial cells",
-                        "Smooth Muscle cells","Keratinocytes","Keratinocytes","Macrophages","Smooth Muscle cells")
-  }
-  if (sample == "Nonwound2"){
-    new.cluster.ids <- c("Beta","Fibroblast","B-cell","Neurons","Trigeminal neurons","Endothelial cells",
-                         "Smooth Muscle cells","Keratinocytes","Keratinocytes","Macrophages","Smooth Muscle cells","N/A","N/A")
-  }
-  names(new.cluster.ids) <- levels(pbmc)
-  pbmc <- RenameIdents(pbmc, new.cluster.ids)
-  cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()+ylim(-8,15) +xlim(-10,10)
-  ggsave(paste0("analysis/figures/QC_Plots/Cluster_with_label", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
-  if (sample == "Wound1" | sample == "Wound2"){
-  pbmc@meta.data <- pbmc@meta.data %>%
-    mutate(Cell_type = case_when(
-      seurat_clusters == 0 ~ "N/A",
-      seurat_clusters == 1 ~ "Macrophages",
-      seurat_clusters == 2 ~ "B-cell",
-      seurat_clusters == 3 ~ "Neurons",
-      seurat_clusters == 4 ~ "N/A",
-      seurat_clusters == 5 ~ "Adipocytes"
-
-    ))
-  }
-  else if (sample == "Nonwound1") {
-    pbmc@meta.data <- pbmc@meta.data %>%
-      mutate(Cell_type = case_when(
-        seurat_clusters == 0 ~ "Beta",
-        seurat_clusters == 1 ~ "Fibroblast",
-        seurat_clusters == 2 ~ "B-cell",
-        seurat_clusters == 3 ~ "Neurons",
-        seurat_clusters == 4 ~ "Trigeminal neurons",
-        seurat_clusters == 5 ~ "Endothelial cells",
-        seurat_clusters == 6 ~ "Smooth Muscle cells",
-        seurat_clusters == 7 ~ "Keratinocytes",
-        seurat_clusters == 8 ~ "Keratinocytes",
-        seurat_clusters == 9 ~ "Macrophages",
-        seurat_clusters == 10 ~ "Smooth Muscle cells"
-      ))
-  }
-  else if (sample == "Nonwound2") {
-    pbmc@meta.data <- pbmc@meta.data %>%
-      mutate(Cell_type = case_when(
-        seurat_clusters == 0 ~ "Beta",
-        seurat_clusters == 1 ~ "Fibroblast",
-        seurat_clusters == 2 ~ "B-cell",
-        seurat_clusters == 3 ~ "Neurons",
-        seurat_clusters == 4 ~ "Trigeminal neurons",
-        seurat_clusters == 5 ~ "Endothelial cells",
-        seurat_clusters == 6 ~ "Smooth Muscle cells",
-        seurat_clusters == 7 ~ "Keratinocytes",
-        seurat_clusters == 8 ~ "Keratinocytes",
-        seurat_clusters == 9 ~ "Macrophages",
-        seurat_clusters == 10 ~ "Smooth Muscle cells",
-        seurat_clusters == 11 ~ "N/A",
-        seurat_clusters == 12 ~ "N/A"
-      ))
-  }
-  #Saving the data in the desired format
-
-  test <- as.matrix(pbmc.data)
-  test<-t(test)
-  # Saving the data and metadata for tweedeverse analysis
-  write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
-  write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
-}
+  # if (sample == "Wound1" | sample == "Wound2"){
+  # new.cluster.ids <- c("N/A","Macrophage", "B-cell", "Neurons", "N/A","Adipocytes" )
+  # }
+  # if (sample == "Nonwound1"){
+  # new.cluster.ids <- c("Beta","Fibroblast","B-cell","Neurons","Trigeminal neurons","Endothelial cells",
+  #                       "Smooth Muscle cells","Keratinocytes","Keratinocytes","Macrophages","Smooth Muscle cells")
+  # }
+  # if (sample == "Nonwound2"){
+  #   new.cluster.ids <- c("Beta","Fibroblast","B-cell","Neurons","Trigeminal neurons","Endothelial cells",
+  #                        "Smooth Muscle cells","Keratinocytes","Keratinocytes","Macrophages","Smooth Muscle cells","N/A","N/A")
+  # }
+  # names(new.cluster.ids) <- levels(pbmc)
+  # pbmc <- RenameIdents(pbmc, new.cluster.ids)
+  # cluster_plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()+ylim(-8,15) +xlim(-10,10)
+  # ggsave(paste0("analysis/figures/QC_Plots/Cluster_with_label", sample,".pdf", sep=""), plot=cluster_plot, width = 7.2, height = 4, units = "in", dpi = 350)
+  # if (sample == "Wound1" | sample == "Wound2"){
+  # pbmc@meta.data <- pbmc@meta.data %>%
+  #   mutate(Cell_type = case_when(
+  #     seurat_clusters == 0 ~ "N/A",
+  #     seurat_clusters == 1 ~ "Macrophages",
+  #     seurat_clusters == 2 ~ "B-cell",
+  #     seurat_clusters == 3 ~ "Neurons",
+  #     seurat_clusters == 4 ~ "N/A",
+  #     seurat_clusters == 5 ~ "Adipocytes"
+  # 
+  #   ))
+  # }
+  # else if (sample == "Nonwound1") {
+  #   pbmc@meta.data <- pbmc@meta.data %>%
+  #     mutate(Cell_type = case_when(
+  #       seurat_clusters == 0 ~ "Beta",
+  #       seurat_clusters == 1 ~ "Fibroblast",
+  #       seurat_clusters == 2 ~ "B-cell",
+  #       seurat_clusters == 3 ~ "Neurons",
+  #       seurat_clusters == 4 ~ "Trigeminal neurons",
+  #       seurat_clusters == 5 ~ "Endothelial cells",
+  #       seurat_clusters == 6 ~ "Smooth Muscle cells",
+  #       seurat_clusters == 7 ~ "Keratinocytes",
+  #       seurat_clusters == 8 ~ "Keratinocytes",
+  #       seurat_clusters == 9 ~ "Macrophages",
+  #       seurat_clusters == 10 ~ "Smooth Muscle cells"
+  #     ))
+  # }
+#   else if (sample == "Nonwound2") {
+#     pbmc@meta.data <- pbmc@meta.data %>%
+#       mutate(Cell_type = case_when(
+#         seurat_clusters == 0 ~ "Beta",
+#         seurat_clusters == 1 ~ "Fibroblast",
+#         seurat_clusters == 2 ~ "B-cell",
+#         seurat_clusters == 3 ~ "Neurons",
+#         seurat_clusters == 4 ~ "Trigeminal neurons",
+#         seurat_clusters == 5 ~ "Endothelial cells",
+#         seurat_clusters == 6 ~ "Smooth Muscle cells",
+#         seurat_clusters == 7 ~ "Keratinocytes",
+#         seurat_clusters == 8 ~ "Keratinocytes",
+#         seurat_clusters == 9 ~ "Macrophages",
+#         seurat_clusters == 10 ~ "Smooth Muscle cells",
+#         seurat_clusters == 11 ~ "N/A",
+#         seurat_clusters == 12 ~ "N/A"
+#       ))
+#   }
+#   #Saving the data in the desired format
+# 
+#   test <- as.matrix(pbmc.data)
+#   test<-t(test)
+#   # Saving the data and metadata for tweedeverse analysis
+#   write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+#   write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
+# }
 
 
