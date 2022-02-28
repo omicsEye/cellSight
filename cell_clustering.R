@@ -38,9 +38,9 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
 
 
 # loop over samples and save figures and results 
-#sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
-sample <- "Wound1"
-# for (sample in sample_list){
+sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
+#sample <- "Wound1"
+for (sample in sample_list){
   
   print(sample)
   # read data  
@@ -52,7 +52,8 @@ sample <- "Wound1"
   # Shows the mitrochrondial percentage in the data
   pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
   
-  #
+  #output to a different path
+  setwd("/Users/Rano/Desktop/Single_Cell_output/")
   QC_VlnPlot <- VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
   ggsave(paste0("analysis/figures/QC_Plots/QC_VlnPlot_", sample,".pdf", sep=""), plot=QC_VlnPlot, width = 7.2, height = 4, units = "in", dpi = 350)
   plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
@@ -101,46 +102,52 @@ sample <- "Wound1"
   ggsave(paste0("analysis/figures/QC_Plots/Elbow_plot", sample,".pdf", sep=""), plot=QC_ElbowPlot, width = 7.2, height = 4, units = "in", dpi = 350)
   pbmc <- FindNeighbors(pbmc, dims = 1:10)
   pbmc <- FindClusters(pbmc, resolution = 0.5)
-  pbmc <- RunUMAP(pbmc, dims = 1:30, verbose = F)
-  pbmc <- FindNeighbors(pbmc, dims = 1:30)
+  pbmc <- RunUMAP(pbmc, dims = 1:10, verbose = F)
+  pbmc <- FindNeighbors(pbmc, dims = 1:10)
   pbmc <- FindClusters(pbmc, resolution = 0.5)
   DimPlot(pbmc, label = T)
   head(Idents(pbmc), 5)
   #UMAP plot with clusters
-  BiocManager::install("TENxPBMCData")
-  library(TENxPBMCData)
-  new.data <- TENxPBMCData("pbmc4k")
-  library(celldex)
-  ref.data <- celldex::HumanPrimaryCellAtlasData
-  BiocManager::install("scran")
-  library('scran')
-  # Performing predictions.
-  library(SingleR)
-  predictions <- SingleR(test=pbmc, assay.type.test=1,ref=ref.data, labels=ref.data$label.main)
   
-  pbmc <- RunUMAP(pbmc, dims = 1:30)
-  DimPlot(pbmc, reduction = "umap")
+  ## Load the Immogen dataset using celldex
+
   ref.data <-celldex::ImmGenData()
+  
+  ##convert the seyurat object to singlecell object 
   sce <- as.SingleCellExperiment(DietSeurat(pbmc))
   sce
+  #Immogen data set has 2 ref database one being main, which has all the main celltypes 
   ref.data.main <- SingleR(test = sce,assay.type.test = 1,ref = ref.data,labels = ref.data$label.main,de.method = "wilcox")
+  #The second reference is called fine, which has finer references to the celltypes
   ref.data.fine <- SingleR(test = sce,assay.type.test = 1,ref = ref.data,labels = ref.data$label.fine)
   table(ref.data.main$pruned.labels)
   table(ref.data.fine$pruned.labels)
   pbmc@meta.data$ref.data.main <- ref.data.main$pruned.labels
   pbmc@meta.data$ref.data.fine <- ref.data.fine$pruned.labels
-  pbmc <- SetIdent(pbmc, value = "ref.data.main")
-  DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
-  pbmc <- SetIdent(pbmc, value = "ref.data.fine")
-  DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
+  labels <- pbmc@meta.data
+  View(labels)
+  write.table(labels, file=paste0("analysis/data/Label_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
+  # pbmc <- SetIdent(pbmc, value = "ref.data.main")
+  # DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
+  # pbmc <- SetIdent(pbmc, value = "ref.data.fine")
+  # pbmc <- SetIdent(pbmc, value = "ref.data.main")
+  #cluster <-DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
   
   
   # hpca.main <- SingleR(test = sce,assay.type.test = 1,ref = hpca.ref,labels = hpca.ref$label.main)
   # hpca.fine <- SingleR(test = sce,assay.type.test = 1,ref = hpca.ref,labels = hpca.ref$label.fine)
   # dice.main <- SingleR(test = sce,assay.type.test = 1,ref = dice.ref,labels = dice.ref$label.main)
   # dice.fine <- SingleR(test = sce,assay.type.test = 1,ref = dice.ref,labels = dice.ref$label.fine)
+  ##Shows the marker for cluster 2 only
   cluster2.markers <- FindMarkers(pbmc, ident.1 = 2, min.pct = 0.25)
+  pbmc@meta.data$markers <- FindMarkers(pbmc, ident.1 = 2, min.pct = 0.25)
   head(cluster2.markers, n = 5)
+  # displays the marker for every clusters compaared to all remaining cell
+  pbmc.markers <- FindAllMarkers(pbmc, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+  pbmc.markers %>%
+    group_by(cluster) %>%
+    slice_max(n = 2, order_by = avg_log2FC)
+  write.table(pbmc.markers, file=paste0("analysis/data/marker_gene_unique_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
   Feature_dist <- VlnPlot(object = pbmc, features =c("CD68","Adgre1","Ptprc","Pdgfra","Pdgfrb","Col1a1",
                                                      "Krt14","Krt10","Krt5","Plin1","Adipoq","Pparg",
                                                      "Fabp4","Ptprc","Pecam1","CD34"),combine =FALSE)
@@ -242,6 +249,6 @@ sample <- "Wound1"
 #   # Saving the data and metadata for tweedeverse analysis
 #   write.table(pbmc@meta.data,paste0("analysis/data/meta_data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
 #   write.table(test,paste0("analysis/data/data_", sample, ".tsv", sep=""),  sep = "\t", eol = "\n", quote = F, col.names = NA, row.names = T)
-# }
+}
 
 
