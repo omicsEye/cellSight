@@ -39,7 +39,7 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
 
 # loop over samples and save figures and results 
 sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
-#sample <- "Wound1"
+#sample <- "Nonwound2"
 for (sample in sample_list){
   
   print(sample)
@@ -140,7 +140,7 @@ for (sample in sample_list){
   # dice.fine <- SingleR(test = sce,assay.type.test = 1,ref = dice.ref,labels = dice.ref$label.fine)
   ##Shows the marker for cluster 2 only
   cluster2.markers <- FindMarkers(pbmc, ident.1 = 2, min.pct = 0.25)
-  pbmc@meta.data$markers <- FindMarkers(pbmc, ident.1 = 2, min.pct = 0.25)
+  #pbmc@meta.data$markers <- FindMarkers(pbmc, ident.1 = 2, min.pct = 0.25)
   head(cluster2.markers, n = 5)
   # displays the marker for every clusters compaared to all remaining cell
   pbmc.markers <- FindAllMarkers(pbmc, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
