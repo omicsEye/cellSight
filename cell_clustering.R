@@ -38,8 +38,8 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
 
 
 # loop over samples and save figures and results 
-sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
-#sample <- "Nonwound2"
+#sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
+sample <- "Wound2"
 for (sample in sample_list){
   
   print(sample)
@@ -125,7 +125,6 @@ for (sample in sample_list){
   pbmc@meta.data$ref.data.main <- ref.data.main$pruned.labels
   pbmc@meta.data$ref.data.fine <- ref.data.fine$pruned.labels
   labels <- pbmc@meta.data
-  View(labels)
   write.table(labels, file=paste0("analysis/data/Label_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
   # pbmc <- SetIdent(pbmc, value = "ref.data.main")
   # DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
@@ -163,7 +162,11 @@ for (sample in sample_list){
   #Saving the marker gene files for better understanding the process
   test <- pbmc.markers
   write.table(test, file=paste0("analysis/data/marker_gene_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
-  
+  test<-as.matrix(pbmc.data)
+  test <- t(test)
+  final <- rownames(labels)
+  final_data <- subset(test, rownames(test)%in% final)
+  write.table(final_data, file=paste0("analysis/data/data_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
   # library(future)
   # library(scCATCH)
   # # clu_markers <- findmarkergene(object  = pbmc,

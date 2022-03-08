@@ -1,7 +1,7 @@
 install.packages("devtools")
 library(devtools)
 install_github('bioBakery/Maaslin2', force = TRUE)
-install_github("himelmallick/Tweedieverse")
+install_github("himelmallick/Tweedieverse", force = TRUE)
 install_github('omicsEye/omicsArt', force = TRUE)
 library(gdata)
 library(pheatmap)
@@ -18,10 +18,11 @@ library(omicsArt)
 library(stringr)
 library(readxl)
 library(dplyr)
+library(readr)
 
 #setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound")
 #import the data from box
-setwd("/Users/Rano/Desktop/Single_Cell_Wound/")
+setwd("/Users/Rano/Desktop/Single_cell_output/")
 
 ####Read omics data table ##########################
 data <- read.delim(
@@ -33,7 +34,7 @@ data <- read.delim(
   check.names = FALSE,
   row.names = 1
 )
-data <- final_data
+data <- test
 #Adding the sample type
 
 #read metadata
@@ -46,9 +47,9 @@ metadata <- read.delim(
   check.names = FALSE,
   row.names = 1
 )
-cell <- "B-cell"
+cell <- "Fibroblasts"
 for (cell in unique(metadata$Cell_type)){
-  cell_metadata <- metadata[metadata$Cell_type == cell,]
+  cell_metadata <- metadata[which (metadata[,"Cell_type"] == cell),]
   cell_metadata <- cell_metadata[,c('Cell_type', 'Sample_type')]
   cell_metadata$Cell_type<-as.factor(cell_metadata$Cell_type)
   cell_metadata$Cell_type<-factor(cell_metadata$Cell_type, levels = c(cell))
@@ -63,13 +64,13 @@ for (cell in unique(metadata$Cell_type)){
     print(cell_metadata)
     Tweedieverse::Tweedieverse(cell_data,
                                cell_metadata,
-                               paste('analysis/Tweedieverse_output_', cell, sep = ""),
+                               paste0('analysis/Tweedieverse_output_', cell, sep = ""),
                                max_significance = 0.05,
                                base_model = "CPLM",
                                plot_heatmap = T,
                                plot_scatter = T,
                                standardize = F,
-                              reference = NULL
+                               reference = NULL
           )
   }
 }
