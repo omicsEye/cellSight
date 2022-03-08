@@ -34,7 +34,7 @@ data <- read.delim(
   check.names = FALSE,
   row.names = 1
 )
-data <- test
+#data <- test
 #Adding the sample type
 
 #read metadata
@@ -47,10 +47,11 @@ metadata <- read.delim(
   check.names = FALSE,
   row.names = 1
 )
-cell <- "Fibroblasts"
+
+cell <- "ILC"
 for (cell in unique(metadata$Cell_type)){
   cell_metadata <- metadata[which (metadata[,"Cell_type"] == cell),]
-  cell_metadata <- cell_metadata[,c('Cell_type', 'Sample_type')]
+  cell_metadata <- cell_metadata[,c('Cell_type','Sample_type')]
   cell_metadata$Cell_type<-as.factor(cell_metadata$Cell_type)
   cell_metadata$Cell_type<-factor(cell_metadata$Cell_type, levels = c(cell))
   interim <- rownames(cell_metadata)
@@ -79,4 +80,17 @@ ordplots(data = data, metadata = metadata, output = "/analysis/PCoA.pdf")
 fakepcl <- list(meta=metadata, x=as.matrix(data),
                 ns=dim(data)[2], nf=dim(data)[1])
 heat_plot <- omicsArt:::pcl.heatmap(fakepcl, sqrtspace = T, gamma = 4, meta= T, show_colnames = F, show_rownames = T)
+
+Maaslin2::Maaslin2(
+  input_data  = cell_data,
+  input_metadata =  cell_metadata,
+  output =  paste0('analysis/Maaslin_output_', cell, sep = ""),
+  max_significance= 0.1,
+  analysis_method = 'LM',
+  standardize = FALSE,
+  transform = 'LOG',
+  normalization = 'NONE',
+  heatmap_first_n = 20,
+  reference = FALSE
+)
 
