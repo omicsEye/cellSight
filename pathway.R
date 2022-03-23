@@ -8,6 +8,9 @@ library(clusterProfiler)
 library(enrichplot)
 # we use ggplot2 to add x axis labels (ex: ridgeplot)
 library(ggplot2)
+library(KEGGREST)
+library(tidyverse)
+
 
 
 setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
@@ -23,6 +26,11 @@ library(organism, character.only = TRUE)
 
 original_gene_list <- df$coef
 names(original_gene_list) <- toupper((df$feature))
+
+gene_list<-na.omit(original_gene_list)
+
+# sort the list in decreasing order (required for clusterProfiler)
+gene_list = sort(gene_list, decreasing = TRUE)
 
 ids<-bitr(names(original_gene_list), fromType = "SYMBOL", toType = "ENTREZID", OrgDb=organism)
 
@@ -57,4 +65,41 @@ kk2 <- gseKEGG(geneList     = kegg_gene_list,
                pvalueCutoff = 0.05,
                pAdjustMethod = "none",
                keyType       = "ncbi-geneid")
+dotplot(kk2, showCategory = 10, title = "Enriched Pathways" , split=".sign") + facet_grid(.~.sign)
 
+#emapplot(kk2)
+cnetplot(kk2, categorySize="pvalue", foldChange=gene_list)
+#ridgeplot(gse) + labs(x = "enrichment distribution")
+
+library(limma)
+tab <- getGeneKEGGLinks(species="hsa")
+tab$Symbol <- mapIds(org.Hs.eg.db, tab$GeneID,
+                       column="SYMBOL", keytype="ENTREZID")
+paths <- merge(df2,tab,by.x = "Y", by.y ="GeneID")
+
+pathways <- getKEGGPathwayNames(species="hsa")
+pathways = pathways[pathways$PathwayID %in% paths$PathwayID,]
+
+input_data <- paths[,c("Y","PathwayID","coef","pval","qval")]
+mapper_file <- pathways[,c("PathwayID","Description")]
+colnames(mapper_file)[2] <- "Description"
+input_data <- input_data %>% distinct(Y, .keep_all = TRUE)
+rownames(input_data)<- input_data$Y
+table1.df <- dplyr::inner_join(mapper_file,input_data, by="PathwayID")
+setwd("C:/Users/ranoj/Box/Update_single_cell/")
+deepath_results <- deepath(input_data,
+                           "output_deepath",
+                           table1.df, 
+                           pathway_col = "Description",
+                           feature_col = "Y",
+                           input_metadata = NA,
+                           meta = NA,
+                           case_label = NA,
+                           control_label = NA,
+                           score_col = 'coef',
+                           pval_threshold = 0.05,
+                           fdr_threshold = NA,
+                           Pathway.Subject = "Metabolic",
+                           method = 'wilcox',
+                           min_member = 2,
+                           do_plot = TRUE)
