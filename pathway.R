@@ -10,14 +10,47 @@ library(enrichplot)
 library(ggplot2)
 library(KEGGREST)
 library(tidyverse)
+install.packages("msigdbr")
+library(msigdbr)
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 
+BiocManager::install("fgsea")
+library(fgsea)
 
 
 setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 data_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/analysis/Tweedieverse_output_Fibroblasts/"
 list.files(data_dir)
 df <- read.table(file = 'analysis/Tweedieverse_output_Fibroblasts/significant_results.tsv', sep = '\t', header = TRUE)
-df$feature <- toupper(df$feature)
+df$feature <- (df$feature)
+#####Using Mgsidb######
+all_gene_sets = msigdbr(species = "Mus musculus")
+head(all_gene_sets)
+
+original_gene_list <- df$coef
+names(original_gene_list) <- (df$feature)
+
+gene_list<-na.omit(original_gene_list)
+
+# sort the list in decreasing order (required for clusterProfiler)
+gene_list = sort(gene_list, decreasing = TRUE)
+
+x <- enrichPathway(gene=dedup_ids$ENTREZID, pvalueCutoff = 0.05, readable=TRUE)
+head(x)
+dedup_ids = sort(dedup_ids$ENTREZID, decreasing = TRUE)
+data(geneList, package="DOSE"
+)
+
+y <- gsePathway(kegg_gene_list, 
+                pvalueCutoff = 0.2,
+                pAdjustMethod = "BH", 
+                verbose = FALSE)
+
+viewPathway("E2F mediated regulation of DNA replication", 
+            readable = TRUE, 
+            foldChange = dedup_ids$ENTREZID)
+
 organism = "org.Hs.eg.db"
 #This is the databse for mouse but it is only mapping to 5 genes
 #organism = "org.Mm.eg.db"
