@@ -39,7 +39,7 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
 
 # loop over samples and save figures and results 
 #sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
-sample <- "Wound2"
+sample <- "Nonwound1"
 for (sample in sample_list){
   
   print(sample)
@@ -113,6 +113,9 @@ for (sample in sample_list){
 
   ref.data <-celldex::ImmGenData()
   
+  BiocManager::install("SingleCellExperiment")
+  BiocManager::install('scran')
+  
   ##convert the seyurat object to singlecell object 
   sce <- as.SingleCellExperiment(DietSeurat(pbmc))
   sce
@@ -124,7 +127,25 @@ for (sample in sample_list){
   table(ref.data.fine$pruned.labels)
   pbmc@meta.data$ref.data.main <- ref.data.main$pruned.labels
   pbmc@meta.data$ref.data.fine <- ref.data.fine$pruned.labels
+  
+  meta_nonwound1 <- pbmc@meta.data
+  colmn <- paste("col", 1:3)
+  meta_nonwound1<- meta_nonwound1 %>% separate(ref.data.fine, sep = " ", into = colmn, remove = FALSE)
+  meta_nonwound1 <- meta_nonwound1[ , -which(names(meta_nonwound1) %in% c("col 2","col 3"))]
+  names(meta_nonwound1)[names(meta_nonwound1) == 'col 1'] <- "Cell_types"
+  result <- meta_nonwound1 %>% 
+    add_count(seurat_clusters, Cell_types,sort = T) %>%
+    group_by(seurat_clusters) %>%
+    mutate(Majority = Cell_types[n == max(n)][1]) %>%
+    # do not keep temp var
+    select(-n)
   labels <- pbmc@meta.data
+  
+  new.cluster.ids <- c("Fibroblasts", "Fibroblasts", "Fibroblasts", "Macrophages", "Fibroblasts", "Epithelial",
+                       "Endothelial", "Stromal", "Fibroblast","Fibroblast","Fibroblast")
+  names(new.cluster.ids) <- levels(pbmc)
+  pbmc <- RenameIdents(pbmc, new.cluster.ids)
+  DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
   write.table(labels, file=paste0("analysis/data/Label_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
   # pbmc <- SetIdent(pbmc, value = "ref.data.main")
   # DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
