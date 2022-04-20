@@ -42,8 +42,8 @@ setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 #This part is for Dr.Rahnavard
 #setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 
-data_dir <- '/Users/Rano/Desktop/Single_Cell_Wound/'
-#data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
+#data_dir <- '/Users/Rano/Desktop/Single_Cell_Wound/'
+data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
 
 list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
 
@@ -96,7 +96,7 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
   pbmc.nonwound2 <- FindVariableFeatures(pbmc.nonwound2, selection.method = "vst", nfeatures = 2000)  
   
   
-  object.list <- FindIntegrationAnchors(object.list = list(pbmc.nonwound1, pbmc.nonwound2,pbmc.wound1,pbmc.wound2), dims = 1:20)
+  object.list <- FindIntegrationAnchors(object.list = list(Nonwound1_uninjuredskin, Nonwound2_uninjuredskin,Wound1_injuredskin,Wound2_injuredskin), dims = 1:20)
   object.list <- IntegrateData(anchorset = object.list, dims = 1:20)
   DefaultAssay(object.list) <- "integrated"
   
@@ -119,23 +119,28 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
   ggsave("all_samples.pdf", plot=dimension, width = 7.2, height = 4, units = "in", dpi = 350)
   
   
-  ###transfer cell_types label
+  ###transfer cell_types label using 1 dataset as reference and 1 as query
   skin.query <- pbmc.wound1
   skin.integrated <- pbmc
-  skin.anchors <- FindTransferAnchors(reference = skin.integrated, query = skin.query,
+  
+  
+  skin.anchors <- FindTransferAnchors(reference = object.list, query = skin.query,
                                           dims = 1:30, reference.reduction = "pca")
-  predictions <- TransferData(anchorset = skin.anchors, refdata = skin.integrated@active.ident,
+  predictions <- TransferData(anchorset = skin.anchors, refdata = object.list$Celltype,
                               dims = 1:30)
   skin.query <- AddMetaData(skin.query, metadata = predictions)
-  skin.integrated <- RunUMAP(skin.integrated, dims = 1:30, reduction = "pca", return.model = TRUE)
+  skin.integrated <- RunUMAP(object.list, dims = 1:30, reduction = "pca", return.model = TRUE)
   skin.query <- MapQuery(anchorset = skin.anchors, reference = skin.integrated, query = skin.query,
-                             refdata =skin.integrated@active.ident, reference.reduction = "pca", reduction.model = "umap")
-  p1 <- DimPlot(skin.integrated, reduction = "umap", label = TRUE, label.size = 3,
+                             refdata =list(celltype = "Celltype"), reference.reduction = "pca", reduction.model = "umap")
+  skin.query.tsne <- MapQuery(anchorset = skin.anchors, reference = skin.integrated, query = skin.query,
+                         refdata =list(celltype = "Celltype"), reference.reduction = "tsne", reduction.model = "tsne")
+  p1 <- DimPlot(skin.integrated, reduction = "umap",group.by = "Celltype", label = TRUE, label.size = 3,
                 repel = TRUE) + NoLegend() + ggtitle("Reference annotations")
-  p2 <- DimPlot(skin.query, reduction = "ref.umap", label = TRUE,
+  p2 <- DimPlot(skin.query, reduction = "ref.umap", group.by = "predicted.celltype",label = TRUE,
                 label.size = 3, repel = TRUE) + NoLegend() + ggtitle("Query transferred labels")
   p1 + p2
-  
+  p3 <- DimPlot(skin.integrated, reduction = "ref.tsne",group.by = "Celltype", label = TRUE, label.size = 3,
+                repel = TRUE) + NoLegend() + ggtitle("Reference annotations")
   
   
   DefaultAssay(object.list) <- "RNA"
@@ -192,16 +197,19 @@ object.list <- list("pbmc.wound1","pbmc.wound2")
   ###Running for 1 injured and 1 uninjured.
   
   
-  object.list <- FindIntegrationAnchors(object.list = list(pbmc,pbmc.wound1), dims = 1:20)
-  object.list <- IntegrateData(anchorset = object.list, dims = 1:20)
-  DefaultAssay(object.list) <- "integrated"
-  
-  object.list <- ScaleData(object.list, verbose = FALSE)
-  object.list <- RunPCA(object.list, npcs = 30, verbose = FALSE)
-  object.list <- RunUMAP(object.list, reduction = "pca", dims = 1:30, verbose = FALSE)
-  p1 <- DimPlot(object.list, reduction = "umap", group.by = "tech")
-  p2 <- DimPlot(object.list, reduction = "umap", group.by = "celltype", label = TRUE, repel = TRUE) +
-    NoLegend()
-  p1 + p2  
-  
+  # object.list <- FindIntegrationAnchors(object.list = list(pbmc,pbmc_nonwound1), dims = 1:20)
+  # object.list <- IntegrateData(anchorset = object.list, dims = 1:20)
+  # DefaultAssay(object.list) <- "integrated"
+  # 
+  # object.list <- ScaleData(object.list, verbose = FALSE)
+  # object.list <- RunPCA(object.list, npcs = 30, verbose = FALSE)
+  # object.list <- RunUMAP(object.list, reduction = "pca", dims = 1:30, verbose = FALSE)
+  # object.list <- RunTSNE(object.list, reduction = "pca", dims = 1:30, verbose = FALSE)
+  # p1 <- DimPlot(object.list, reduction = "umap", group.by = "tech")
+  # p2 <- DimPlot(object.list, reduction = "umap", group.by = "Celltype", label = TRUE, repel = TRUE) +
+  #   NoLegend()
+  # p1 + p2  
+  # p3 <- DimPlot(object.list, reduction = "umap", group.by = "tech")
+  # p4 <- DimPlot(object.list, reduction = "tsne", group.by = "Celltype", label = TRUE, repel = TRUE) +
+  #   NoLegend()
   

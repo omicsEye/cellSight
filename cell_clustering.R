@@ -39,7 +39,7 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
 
 # loop over samples and save figures and results 
 #sample_list <- c("Wound1", "Wound2", "Nonwound1", "Nonwound2")
-sample <- "Nonwound1"
+sample <- "Nonwound2"
 for (sample in sample_list){
   
   print(sample)
@@ -53,7 +53,7 @@ for (sample in sample_list){
   pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
   
   #output to a different path
-  setwd("/Users/Rano/Desktop/Single_Cell_output/")
+  setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
   QC_VlnPlot <- VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
   ggsave(paste0("analysis/figures/QC_Plots/QC_VlnPlot_", sample,".pdf", sep=""), plot=QC_VlnPlot, width = 7.2, height = 4, units = "in", dpi = 350)
   plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
@@ -141,11 +141,16 @@ for (sample in sample_list){
     select(-n)
   labels <- pbmc@meta.data
   
-  new.cluster.ids <- c("Fibroblasts", "Fibroblasts", "Fibroblasts", "Macrophages", "Fibroblasts", "Epithelial",
-                       "Endothelial", "Stromal", "Fibroblast","Fibroblast","Fibroblast")
+  new.cluster.ids <- c("Fibroblasts", "Fibroblasts", "Fibroblasts", "Macrophages", "Fibroblasts", "Fibroblasts",
+                       "Endothelial", "Stromal", "Fibroblasts","Fibroblasts","Fibroblasts","Fibroblasts","Fibroblasts","Fibroblasts")
   names(new.cluster.ids) <- levels(pbmc)
   pbmc <- RenameIdents(pbmc, new.cluster.ids)
   DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+ ###Remove this when done
+  pbmc_nonwound2 <- pbmc
+  pbmc_nonwound1 <- pbmc
+  pbmc$Celltype <- Idents(pbmc)
+  pbmc_nonwound1$Celltype <- Idents(pbmc_nonwound1)
   write.table(labels, file=paste0("analysis/data/Label_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
   # pbmc <- SetIdent(pbmc, value = "ref.data.main")
   # DimPlot(pbmc, reduction = "umap" ,label = T , repel = T, label.size = 3) + NoLegend()
