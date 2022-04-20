@@ -83,7 +83,7 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
   pbmc.nonwound1 <- NormalizeData(pbmc.nonwound1, verbose = FALSE)
   pbmc.nonwound1 <- FindVariableFeatures(pbmc.nonwound1, selection.method = "vst", nfeatures = 2000)  
   ### For testing
-  pbmc.nonwound1 <- pbmc
+  #pbmc.nonwound1 <- pbmc
   
   
   pbmc.nonwound2.data <- Read10X(paste0("data/Nonwound2/filtered_feature_bc_matrix", sep= "")) 
@@ -96,7 +96,7 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
   pbmc.nonwound2 <- FindVariableFeatures(pbmc.nonwound2, selection.method = "vst", nfeatures = 2000)  
   
   
-  object.list <- FindIntegrationAnchors(object.list = list(Nonwound1_uninjuredskin, Nonwound2_uninjuredskin,Wound1_injuredskin,Wound2_injuredskin), dims = 1:20)
+  object.list <- FindIntegrationAnchors(object.list = list(pbmc.nonwound1,pbmc.nonwound2,pbmc.wound1,pbmc.wound2), dims = 1:20)
   object.list <- IntegrateData(anchorset = object.list, dims = 1:20)
   DefaultAssay(object.list) <- "integrated"
   
