@@ -113,7 +113,7 @@ list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.
   dim_plot <- DimPlot(object.list, reduction = "umap", split.by = "stim")
   dim_plot$data$stim <- factor(x = dim_plot$data$stim, levels = c("Uninjured_1","Uninjured_2", "Injured_1","Injured_2")) # change the order of the factor levels
   dim_plot # print again the plot
-  setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
+  #setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
   ggsave("dim_plot.pdf", plot=dimension, width = 7.2, height = 4, units = "in", dpi = 350)
   dimension <- DimPlot(object.list, reduction = "umap", split.by = "stim")
   ggsave("all_samples.pdf", plot=dimension, width = 7.2, height = 4, units = "in", dpi = 350)
@@ -169,7 +169,7 @@ object.list <- list("pbmc.wound1","pbmc.wound2")
   names(object.list) <- sample.name
   pbmc.combined <- merge(pbmc.wound1, y = c(pbmc.wound2, pbmc.nonwound1,pbmc.nonwound2), add.cell.ids = c("1", "2", "3","4"), project = "Mouse")
   #pbmc.combined
-  setwd("/Users/ranoj/Desktop/Single_Cell_output/")
+  #setwd("/Users/ranoj/Desktop/Single_Cell_output/")
   save(pbmc.combined, file = "pbmc_combined.RData")
   
   
