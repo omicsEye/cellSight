@@ -115,7 +115,7 @@ metadata_matched <- subset(metadata, rownames(metadata)%in% final)
 data_unmatched <- subset(data, !(rownames(data)%in% final))
 metadata_unmatched <- subset(metadata, !(rownames(metadata)%in% final))
 
-
+###For matched data####
 cell <- "Stromal"
 for (cell in unique(metadata_matched$Cell_type)){
   cell_metadata <- metadata_matched[(metadata_matched[,"Cell_type"] == cell),]
@@ -162,7 +162,7 @@ for (cell in unique(metadata_matched$Cell_type)){
   }
 }
 
-
+###For unmatched data
 
 cell <- "Stromal"
 for (cell in unique(metadata_unmatched$Cell_type)){
@@ -206,7 +206,7 @@ for (cell in unique(metadata_unmatched$Cell_type)){
                                plot_heatmap = T,
                                plot_scatter = T,
                                standardize = F,
-                               reference = NULL
+                               reference = c("Sample_type,Nonwound")
     )
   }
 }
