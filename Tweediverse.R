@@ -183,7 +183,7 @@ for (cell in unique(metadata_unmatched$Cell_type)){
   names(cell_metadata)<-'Sample_type'
   rownames(cell_metadata) = rownames(cell_data)
   cell_metadata$'Sample_type'<- as.factor(cell_metadata$'Sample_type')
-  cell_metadata$Sample_type<-factor(cell_metadata$'Sample_type', levels = c("Wound","Nonwound"))
+  cell_metadata$Sample_type<-factor(cell_metadata$'Sample_type', levels = c("Nonwound","Wound"))
   cell_data[is.na(cell_data)] <- 0
   # cell_metadata <- metadata[which (metadata[,"Cell_type"] == cell),]
   # cell_metadata <- cell_metadata[,c('Cell_type','Sample_type')]

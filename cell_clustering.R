@@ -9,8 +9,11 @@ if (!require("BiocManager")) {
   install.packages("BiocManager")
 }
 BiocManager::install('CHETAH')
+install.packages("devtools")
+devtools::install_github('cole-trapnell-lab/monocle3')
 
 BiocManager::install("SingleR",force = T)
+library(monocle3)
 library(Seurat)
 library(dplyr)
 library(ggplot2)
@@ -27,11 +30,11 @@ library(SingleR)
 #devtools::install_github('ZJUFanLab/scCATCH')
 library(scCATCH)
 ##This part is for the Rano
-setwd("/Users/Rano/Desktop/Single_Cell_Wound/")
+setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 #This part is for Dr.Rahnavard
 #setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 
-data_dir <- '/Users/Rano/Desktop/Single_Cell_Wound/'
+data_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/"
 #data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
 
 list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
@@ -108,6 +111,17 @@ for (sample in sample_list){
   DimPlot(pbmc, label = T)
   head(Idents(pbmc), 5)
   #UMAP plot with clusters
+  devtools::install_github("satijalab/seurat-wrappers")
+  ##Trajectory using monocle3
+  
+  monocle_object <- SeuratWrappers::as.cell_data_set(pbmc)
+  monocle_object <- cluster_cells(cds = monocle_object, reduction_method = "UMAP")
+  monocle_object <- learn_graph(monocle_object, use_partition = TRUE)
+  monocle_object <- order_cells(monocle_object,reduction_method = "UMAP")
+  plot_cells(monocle_object,
+             color_cells_by = "pseudotime",
+             graph_label_size=5,
+             show_trajectory_graph = TRUE)
   
   ## Load the Immogen dataset using celldex
 
