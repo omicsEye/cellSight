@@ -53,6 +53,7 @@ for (sample in sample_list){
   pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc3k", min.cells = 3, min.features = 200)
   
   # Shows the mitrochrondial percentage in the data
+  
   pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
   
   #output to a different path
@@ -111,17 +112,9 @@ for (sample in sample_list){
   DimPlot(pbmc, label = T)
   head(Idents(pbmc), 5)
   #UMAP plot with clusters
-  devtools::install_github("satijalab/seurat-wrappers")
-  ##Trajectory using monocle3
+
   
-  monocle_object <- SeuratWrappers::as.cell_data_set(pbmc)
-  monocle_object <- cluster_cells(cds = monocle_object, reduction_method = "UMAP")
-  monocle_object <- learn_graph(monocle_object, use_partition = TRUE)
-  monocle_object <- order_cells(monocle_object,reduction_method = "UMAP")
-  plot_cells(monocle_object,
-             color_cells_by = "pseudotime",
-             graph_label_size=5,
-             show_trajectory_graph = TRUE)
+  
   
   ## Load the Immogen dataset using celldex
 
