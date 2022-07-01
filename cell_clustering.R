@@ -30,11 +30,11 @@ library(SingleR)
 #devtools::install_github('ZJUFanLab/scCATCH')
 library(scCATCH)
 ##This part is for the Rano
-setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
+#setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 #This part is for Dr.Rahnavard
-#setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
+setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 
-data_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/"
+#data_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/"
 #data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
 
 list.files(data_dir) # Should show barcodes.tsv.gz, features.tsv.gz, and matrix.mtx.gz
@@ -57,7 +57,7 @@ for (sample in sample_list){
   pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
   
   #output to a different path
-  setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
+  setwd("~/Desktop/Single_Cell_output/")
   QC_VlnPlot <- VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
   ggsave(paste0("analysis/figures/QC_Plots/QC_VlnPlot_", sample,".pdf", sep=""), plot=QC_VlnPlot, width = 7.2, height = 4, units = "in", dpi = 350)
   plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
