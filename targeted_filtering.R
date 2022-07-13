@@ -22,6 +22,7 @@ library(SingleR)
 library(CHETAH)
 library(celldex)
 library(Seurat)
+library(omicsArt)
 library(dplyr)
 library(ggplot2)
 library(patchwork)
@@ -116,4 +117,48 @@ for (samples in sample_list)
   violin <- VlnPlot(pos_cells, features = features)
   feature_plot <- FeaturePlot(pos_cells, features = features)
   pos_cells_wound2 <- pos_cells
-  }
+}
+
+prevelence_injured <- read.delim(
+  "/Users/rah/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/analysis/prevalence.tsv",
+  sep = '\t',
+  header = T,
+  fill = F,
+  comment.char = "" ,
+  check.names = F,
+  #row.names = NA
+)
+
+Injured_scatter_plot <- ggplot(data=prevelence_injured,aes(log(prevalence_injured1), log(prevalence_injured2))) +
+  xlab("Gene prevelance in injured sample 1 (log - scale)") + ylab("Gene prevelance in injured sample 2 (log - scale)")+
+  #stat_density2d( aes(fill = 'grey', alpha = .75), geom='polygon')+
+  geom_point(alpha = .1, shape = 21, size = 1, stroke = 0.1, colour = 'black', fill = "#002654") +
+  theme_omicsEye() +
+  stat_smooth(method = "lm", col="#E5D19D", fill="#FDE725FF", size =0.5)+
+  #ggplot2::geom_vline(xintercept=0, col='red', size = .1) +
+  #ggplot2::geom_hline(yintercept = 0, color = "red",size = 0.1) +
+  #guides(alpha='none', fill='none')+labs("")+
+  theme(legend.position = c(.15, .15),
+        legend.justification = c("left", "bottom")) 
+  #scale_fill_manual(values=c("#002654", "#E5D19D")) 
+
+Injured_scatter_plot
+ggsave(filename='/Users/rah/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/analysis/prevelence.png',
+       plot=Injured_scatter_plot, width = 3.6, height = 2.5, units = "in", dpi = 350)
+
+Injured_scatter_plot <- ggplot(data=prevelence_injured,aes(log(counts_per_gene.x), log(counts_per_gene.y))) +
+  xlab("Counts per gene in injured sample 1 (log - scale)") + ylab("Counts per gene in injured sample 2(log - scale)")+
+  #stat_density2d( aes(fill = 'grey', alpha = .75), geom='polygon')+
+  geom_point(alpha = .1, shape = 21, size = .75, stroke = 0.01, colour = 'black', fill = "#002654") +
+  theme_omicsEye() +
+  stat_smooth(method = "lm", col="#E5D19D", fill="#FDE725FF", size =0.5)+
+  #ggplot2::geom_vline(xintercept=0, col='red', size = .1) +
+  #ggplot2::geom_hline(yintercept = 0, color = "red",size = 0.1) +
+  #guides(alpha='none', fill='none')+labs("")+
+  theme(legend.position = c(.15, .15),
+        legend.justification = c("left", "bottom")) 
+#scale_fill_manual(values=c("#002654", "#E5D19D")) 
+
+Injured_scatter_plot
+ggsave(filename='/Users/rah/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/analysis/gene_counts.png',
+       plot=Injured_scatter_plot, width = 3.6, height = 2.5, units = "in", dpi = 350)
