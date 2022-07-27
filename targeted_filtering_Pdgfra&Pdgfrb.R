@@ -1,7 +1,7 @@
 install.packages('svglite')
 library(svglite)
 
-##Targeted clustering for Pdgfrb and Pdgfrb in the all samples
+##Targeted clustering for Pdgfra and Pdgfrb in the all samples
 
 
 setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
@@ -24,12 +24,13 @@ pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
 #output to a different path
 
 setwd("~/Desktop/Single_Cell_output/")
+setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
 QC_VlnPlot <- VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 #ggsave(paste0("analysis/figures/QC_Plots/QC_VlnPlot_", sample,".pdf", sep=""), plot=QC_VlnPlot, width = 7.2, height = 4, units = "in", dpi = 350)
 plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
 plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 #ggsave(paste0("analysis/figures/QC_Plots/QC_Scatter_", sample,".pdf", sep=""), plot=plot1 + plot2, width = 7.2, height = 4, units = "in", dpi = 350)
-setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
+#setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
 QC_VlnPlot <- VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 #ggsave(paste0("analysis/figures/QC_Plots/QC_VlnPlot_", samples,".pdf", sep=""), plot=QC_VlnPlot, width = 7.2, height = 4, units = "in", dpi = 350)
 plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
@@ -54,6 +55,7 @@ Pdgfrb_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["P
 pos_ids = names(which(Pdgfrb_expression>0))
 
 pos_cells = subset(pbmc,cells=pos_ids)
+pos_cells = pbmc
 pos_cells <- FindVariableFeatures(pos_cells, selection.method = "vst", nfeatures = 2000)
 
 top10 <- head(VariableFeatures(pos_cells), 10)
@@ -119,14 +121,16 @@ top_2 <- pos_cells.markers %>%
 #write.table(pos_cells.markers, file=paste0("data_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
 #write.table(pos_cells.markers, file=paste0("data_top_2_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
 head(Idents(pos_cells), 5)
-features <- c("CD68", "Adgre1", "Ptprc","Pdgfrb", "Pdgfrb", "Col1a1","Krt14", "Krt10", "Krt5","Plin1", "Adipoq", "Pparg", "Fabp4","Ptprc","Pecam1", "CD34")
+features <- c("CD68", "Adgre1", "Ptprc","Pdgfra", "Pdgfrb", "Col1a1","Krt14", "Krt10", "Krt5","Plin1", "Adipoq", "Pparg", "Fabp4","Ptprc","Pecam1", "CD34")
 ridge <- RidgePlot(pos_cells, features = features, ncol = 3)
 ggsave(paste0("analysis/figures/ridge", sample,".pdf", sep="") ,plot=ridge, width = 7.2, height = 4, units = "in", dpi = 350)
 violin <- VlnPlot(pos_cells, features = features)
 feature_plot <- FeaturePlot(pos_cells, features = features)
 pos_cells_nonwound_1 <- pos_cells
+pos_cells_nonwound_1 <- pbmc
 
 
+setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 samples <- "NonWound2"
 
@@ -176,6 +180,7 @@ Pdgfrb_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["P
 pos_ids = names(which(Pdgfrb_expression>0))
 
 pos_cells = subset(pbmc,cells=pos_ids)
+pos_cells = pbmc
 pos_cells <- FindVariableFeatures(pos_cells, selection.method = "vst", nfeatures = 2000)
 
 top10 <- head(VariableFeatures(pos_cells), 10)
@@ -247,8 +252,9 @@ ggsave(paste0("analysis/figures/ridge", sample,".pdf", sep="") ,plot=ridge, widt
 violin <- VlnPlot(pos_cells, features = features)
 feature_plot <- FeaturePlot(pos_cells, features = features)
 pos_cells_nonwound_2 <- pos_cells
+pos_cells_nonwound_2 <- pbmc
 
-
+setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 samples <- "Wound1"
 
@@ -363,13 +369,14 @@ top_2 <- pos_cells.markers %>%
 #write.table(pos_cells.markers, file=paste0("data_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
 #write.table(pos_cells.markers, file=paste0("data_top_2_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
 head(Idents(pos_cells), 5)
-features <- c("CD68", "Adgre1", "Ptprc","Pdgfrb", "Pdgfrb", "Col1a1","Krt14", "Krt10", "Krt5","Plin1", "Adipoq", "Pparg", "Fabp4","Ptprc","Pecam1", "CD34")
+features <- c("CD68", "Adgre1", "Ptprc","Pdgfra", "Pdgfrb", "Col1a1","Krt14", "Krt10", "Krt5","Plin1", "Adipoq", "Pparg", "Fabp4","Ptprc","Pecam1", "CD34")
 ridge <- RidgePlot(pos_cells, features = features, ncol = 3)
 ggsave(paste0("analysis/figures/ridge", sample,".pdf", sep="") ,plot=ridge, width = 7.2, height = 4, units = "in", dpi = 350)
 violin <- VlnPlot(pos_cells, features = features)
 feature_plot <- FeaturePlot(pos_cells, features = features)
 pos_cells_wound_1 <- pos_cells
 
+setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 samples <- "Wound2"
 
@@ -484,7 +491,7 @@ top_2 <- pos_cells.markers %>%
 #write.table(pos_cells.markers, file=paste0("data_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
 #write.table(pos_cells.markers, file=paste0("data_top_2_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
 head(Idents(pos_cells), 5)
-features <- c("CD68", "Adgre1", "Ptprc","Pdgfrb", "Pdgfrb", "Col1a1","Krt14", "Krt10", "Krt5","Plin1", "Adipoq", "Pparg", "Fabp4","Ptprc","Pecam1", "CD34")
+features <- c("CD68", "Adgre1", "Ptprc","Pdgfra", "Pdgfrb", "Col1a1","Krt14", "Krt10", "Krt5","Plin1", "Adipoq", "Pparg", "Fabp4","Ptprc","Pecam1", "CD34")
 ridge <- RidgePlot(pos_cells, features = features, ncol = 3)
 ggsave(paste0("analysis/figures/ridge", sample,".pdf", sep="") ,plot=ridge, width = 7.2, height = 4, units = "in", dpi = 350)
 violin <- VlnPlot(pos_cells, features = features)
@@ -510,9 +517,11 @@ pos_cells_wound_2$type <- "Wound"
 
 anchors <- FindIntegrationAnchors(object.list = list(pos_cells_nonwound_1,pos_cells_nonwound_2,pos_cells_wound_1,pos_cells_wound_2))
 
+anchors <- FindIntegrationAnchors(object.list = list(pos_cells_nonwound_1,pos_cells_nonwound_2))
+
 # integrate data
 ##Remember to change the k.weight to default
-seurat.integrated <- IntegrateData(anchorset = anchors, k.weight = 46)
+seurat.integrated <- IntegrateData(anchorset = anchors, k.weight = 100)
 
 
 # Scale data, run PCA and UMAP and visualize integrated data
@@ -527,11 +536,11 @@ p4 <- DimPlot(seurat.integrated, reduction = 'umap',group.by = "cat")
 p5 <- DimPlot(seurat.integrated, reduction = 'umap',split.by = "cat")
 p4+p5
 DefaultAssay(seurat.integrated) <- "RNA"
-nk.markers_2 <- FindConservedMarkers(seurat.integrated,ident.1=2, grouping.var = "type", verbose = FALSE)
-head(nk.markers_2)
-ggsave(file="Pdgfrb.svg", plot=p4+p5, width=14, height=6)
+nk.markers_1 <- FindConservedMarkers(seurat.integrated,ident.1=12, grouping.var = "cat", verbose = FALSE)
+head(nk.markers_1)
+#ggsave(file="Normal_0.svg", plot=p4+p5, width=14, height=6)
 
-write.table(nk.markers_2, file=paste0("Pdgfrb_2.tsv"), quote=FALSE, sep='\t', col.names = NA)
+write.table(nk.markers_1, file=paste0("Normal_12.tsv"), quote=FALSE, sep='\t', col.names = NA)
 
 
 

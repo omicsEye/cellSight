@@ -37,7 +37,13 @@ data <- read.delim(
   check.names = FALSE,
   row.names = 1
 )
-#data <- test
+
+data <- as.data.frame(GetAssayData(object = seurat.integrated))
+data<- as.data.frame(t(data))
+
+metadata<- seurat.integrated@meta.data
+metadata<- metadata[,c('type','cat')]
+
 #Adding the sample type
 
 #read metadata
@@ -147,17 +153,19 @@ for (cell in unique(metadata_matched$Cell_type)){
   # #cell_metadata$['Sample_type']<-as.factor(cell_metadata$['Sample_type'])
   # #cell_metadata$Sample_type<-factor(cell_metadata$['Sample_type'], levels = c("Wound","Nonwound"))
   # #cell_data[is.na(cell_data)] <- 0
+  cell <- "Pdgfra"
+  test1 <- data.frame(test1[,c( 'type')])
   if (TRUE){
     print(cell_metadata)
-    Tweedieverse::Tweedieverse(cell_data,
-                               cell_metadata,
+    Tweedieverse::Tweedieverse(data,
+                               metadata,
                                paste0('analysis/Tweedieverse_output_', cell, sep = ""),
                                entropy_threshold = 0.0,
                                base_model = 'CPLM',
                                plot_heatmap = T,
                                plot_scatter = T,
                                standardize = F,
-                               reference = c("Sample_type,Nonwound")
+                               reference = c("type,Normal")
           )
   }
 }
@@ -198,15 +206,15 @@ for (cell in unique(metadata_unmatched$Cell_type)){
   # #cell_data[is.na(cell_data)] <- 0
   if (TRUE){
     print(cell_metadata)
-    Tweedieverse::Tweedieverse(cell_data,
-                               cell_metadata,
+    Tweedieverse::Tweedieverse(data,
+                               metadata,
                                paste0('analysis/unmatched/Tweedieverse_output_', cell, sep = ""),
                                entropy_threshold = 0.0,
                                base_model = 'CPLM',
                                plot_heatmap = T,
                                plot_scatter = T,
                                standardize = F,
-                               reference = c("Sample_type,Nonwound")
+                               reference = c("type,Normal")
     )
   }
 }

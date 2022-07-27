@@ -2,6 +2,7 @@
 
 
 setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
+setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 samples <- "Wound1"
 
 
@@ -20,6 +21,7 @@ pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
 #output to a different path
 
 setwd("~/Desktop/Single_Cell_output/")
+setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
 QC_VlnPlot <- VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 #ggsave(paste0("analysis/figures/QC_Plots/QC_VlnPlot_", sample,".pdf", sep=""), plot=QC_VlnPlot, width = 7.2, height = 4, units = "in", dpi = 350)
 plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
@@ -39,15 +41,15 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor 
 pbmc <- NormalizeData(pbmc)
 
 
-sample <- "Pparg"
+sample <- "Fabq4"
 
-Pparg_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Pparg",]
+Fabq4_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Fabq4",]
 
 #sample <- "Ptprc"
 
-#Pparg_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Ptprc",]
+#Fabq4_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Ptprc",]
 
-pos_ids = names(which(Pparg_expression>0))
+pos_ids = names(which(Fabq4_expression>0))
 
 pos_cells = subset(pbmc,cells=pos_ids)
 pos_cells <- FindVariableFeatures(pos_cells, selection.method = "vst", nfeatures = 2000)
@@ -123,6 +125,7 @@ feature_plot <- FeaturePlot(pos_cells, features = features)
 pos_cells_wound_1 <- pos_cells
 
 setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
+setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 samples <- "Wound2"
 
 
@@ -141,6 +144,7 @@ pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
 #output to a different path
 
 setwd("~/Desktop/Single_Cell_output/")
+setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
 QC_VlnPlot <- VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 #ggsave(paste0("analysis/figures/QC_Plots/QC_VlnPlot_", sample,".pdf", sep=""), plot=QC_VlnPlot, width = 7.2, height = 4, units = "in", dpi = 350)
 plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
@@ -160,15 +164,15 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor 
 pbmc <- NormalizeData(pbmc)
 
 
-sample <- "Pparg"
+sample <- "Fabq4"
 
-Pparg_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Pparg",]
+Fabq4_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Fabq4",]
 
 #sample <- "Ptprc"
 
-#Pparg_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Ptprc",]
+#Fabq4_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Ptprc",]
 
-pos_ids = names(which(Pparg_expression>0))
+pos_ids = names(which(Fabq4_expression>0))
 
 pos_cells = subset(pbmc,cells=pos_ids)
 pos_cells <- FindVariableFeatures(pos_cells, selection.method = "vst", nfeatures = 2000)
@@ -242,3 +246,36 @@ ggsave(paste0("analysis/figures/ridge", sample,".pdf", sep="") ,plot=ridge, widt
 violin <- VlnPlot(pos_cells, features = features)
 feature_plot <- FeaturePlot(pos_cells, features = features)
 pos_cells_wound_2 <- pos_cells
+
+pos_cells_nonwound_1$cat <- "Normal1"
+pos_cells_nonwound_2$cat <- "Normal2"
+#pos_cells_wound_1$cat <- "Wound1"
+#pos_cells_wound_2$cat <- "Wound2"
+
+pos_cells_nonwound_1$type <- "Normal"
+pos_cells_nonwound_2$type <- "Normal"
+#pos_cells_wound_1$type <- "Wound"
+#pos_cells_wound_2$type <- "Wound"
+
+
+
+
+anchors <- FindIntegrationAnchors(object.list = list(pos_cells_nonwound_1,pos_cells_nonwound_2))
+
+# integrate data
+##Remember to change the k.weight to default
+seurat.integrated <- IntegrateData(anchorset = anchors, k.weight = 100)
+
+
+# Scale data, run PCA and UMAP and visualize integrated data
+seurat.integrated <- ScaleData(object = seurat.integrated)
+seurat.integrated <- RunPCA(object = seurat.integrated)
+seurat.integrated <- RunUMAP(object = seurat.integrated, dims = 1:50)
+
+p3 <- DimPlot(seurat.integrated, reduction = 'umap')
+p4 <- DimPlot(seurat.integrated, reduction = 'umap',group.by = "cat")
+#p4 <- DimPlot(seurat.integrated, reduction = 'umap', group.by = 'Type',
+#cols = c('red','green','blue'))
+p5 <- DimPlot(seurat.integrated, reduction = 'umap',split.by = "cat")
+p4+p5
+
