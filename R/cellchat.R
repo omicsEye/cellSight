@@ -1,9 +1,12 @@
 devtools::install_github("jokergoo/ComplexHeatmap")
 devtools::install_github("sqjin/CellChat")
 library(CellChat)
-data.input <- GetAssayData(pbmc, assay = "RNA", slot = "data") 
-Idents(pbmc) <- pbmc@active.ident
-labels <- Idents(pbmc)
+data.input <- GetAssayData(pos_cells_nonwound_macro_pdgfrb, assay = "RNA", slot = "data") 
+Idents(pos_cells_nonwound_macro_pdgfrb) <- pos_cells_nonwound_macro_pdgfrb@active.ident
+new.cluster.ids <- c("1","2","3","4","5","6","7")
+names(new.cluster.ids) <- levels(pos_cells_nonwound_macro_pdgfrb)
+pos_cells_nonwound_macro_pdgfrb <- RenameIdents(pos_cells_nonwound_macro_pdgfrb, new.cluster.ids)
+labels <- Idents(pos_cells_nonwound_macro_pdgfrb)
 meta <- data.frame(group = labels, row.names = names(labels)) 
 # create a CellChat object
 cellchat_normal <- createCellChat(object = data.input, meta = meta, group.by = "group")
