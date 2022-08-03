@@ -1,5 +1,5 @@
 setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
-
+samples <- "NonWound1"
 pbmc.data <- Read10X(paste0("data/", samples, "/outs/filtered_feature_bc_matrix", sep= "")) 
 
 
@@ -33,15 +33,15 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor 
 pbmc <- NormalizeData(pbmc)
 
 
-sample <- "Pdgfrb"
+sample <- "Pdgfra"
 
-Pdgfrb_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Pdgfrb",]
+Pdgfra_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Pdgfra",]
 
 #sample <- "Ptprc"
 
 #Pdgfrb_expression = GetAssayData(object = pbmc, assay = "RNA", slot = "data")["Ptprc",]
 
-pos_ids = names(which(Pdgfrb_expression>0))
+pos_ids = names(which(Pdgfra_expression>0))
 
 pos_cells = subset(pbmc,cells=pos_ids)
 #pos_cells = pbmc
@@ -120,8 +120,8 @@ top_2 <- pos_cells.markers %>%
   group_by(cluster) %>%
   slice_max(n = 2, order_by = avg_log2FC)
 
-#write.table(pos_cells.markers, file=paste0("data_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
-#write.table(pos_cells.markers, file=paste0("data_top_2_labelled_", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
+write.table(pos_cells.markers, file=paste0("data_labelled_nonwound1_pdgfra", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
+write.table(pos_cells.markers, file=paste0("data_top_2_labelled_wound2_pdgfra", sample,".tsv"), quote=FALSE, sep='\t', col.names = NA)
 head(Idents(pos_cells), 5)
 features <- c("CD68", "Adgre1", "Ptprc","Pdgfra", "Pdgfrb", "Col1a1","Krt14", "Krt10", "Krt5","Plin1", "Adipoq", "Pparg", "Fabp4","Ptprc","Pecam1", "CD34")
 ridge <- RidgePlot(pos_cells, features = features, ncol = 3)
