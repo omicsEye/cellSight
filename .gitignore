@@ -4,3 +4,5 @@
 .Ruserdata
 
 tweedieverse_output/
+.DS_Store
+.Rprofile
