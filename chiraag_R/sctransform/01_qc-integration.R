@@ -131,7 +131,7 @@ anchors <- obj_list %>% # ~20 min with m1
                          anchor.features = features)
 
 combined_sct <- anchors %>%
-  IntegrateData(normalization.method = "SCT", )
+  IntegrateData(normalization.method = "SCT")
 
 combined_sct %>%
   saveRDS("~/Box/snRNA_Cell_project/objects/integrated.rds")
