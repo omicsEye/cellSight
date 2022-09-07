@@ -2,9 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
-
 tweedieverse_output/
 .DS_Store
 .Rprofile
-
 data/
+~/.boxr-oauth
+objects/
