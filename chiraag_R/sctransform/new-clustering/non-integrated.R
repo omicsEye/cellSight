@@ -3,7 +3,7 @@
 library(Seurat)
 library(ggplot2)
 library(tidyverse)
-library(gridExtra)
+library(omicsArt)
 
 box_dir <- "~/Box/snRNA_CellRanger_Wound_nonWound/data/"
 dirs <- list.dirs(path = box_dir, 
@@ -115,48 +115,42 @@ obj_list$Wound2 <-
 
 obj_list$Wound2$sample <- "wound2"
 
-# SCTransform -------------------------------------------------------------
-obj_list <- obj_list %>%
-  lapply(FUN = function(x) {
-    SCTransform(x, vst.flavor = "v2")
-  })
+data <- merge(obj_list$Nonwound1,
+              y = c(obj_list$Nonwound2,
+                    obj_list$Wound1,
+                    obj_list$Wound2), 
+              add.cell.ids = c("nw1", "nw2", "w1", "w2"))
 
-# Integration -------------------------------------------------------------
-features <- obj_list %>%
-  SelectIntegrationFeatures(nfeatures = 3000)
-obj_list <- obj_list %>%
-  PrepSCTIntegration(anchor.features = features)
-anchors <- obj_list %>% # ~20 min with m1
-  FindIntegrationAnchors(normalization.method = "SCT",
-                         anchor.features = features)
+data <- data %>%
+  SCTransform(vst.flavor = "v2")
 
-combined_sct <- anchors %>%
-  IntegrateData(normalization.method = "SCT")
-
-combined_sct <- combined_sct %>%
+data <- data %>%
   RunPCA(npcs = 30) %>%
   RunUMAP(dims = 1:30) %>%
   FindNeighbors(dims = 1:30) |>
   FindClusters()
 
-combined_sct %>%
+data %>%
+  write_rds("~/Box/snRNA_CellRanger_Wound_nonWound/objects/2022-09-25_sc-non-integrated.rds")
+
+data %>%
   DimPlot(label = T,
-          label.box = T,
-          repel = T) +
+        label.box = T,
+        repel = T) +
   theme(legend.position = "none")
 
-ggsave("~/Box/snRNA_CellRanger_Wound_nonWound/markers/sctransform-diff_qc-integration/sctransform-integration-comparison/integrated/clusters-umap.png")
+ggsave("~/Box/snRNA_CellRanger_Wound_nonWound/markers/sctransform-diff_qc-integration/sctransform-integration-comparison/non-integrated/clusters-umap.png")
 
-combined_sct %>%
+data %>%
   DimPlot(group.by = "sample")
 
-ggsave("~/Box/snRNA_CellRanger_Wound_nonWound/markers/sctransform-diff_qc-integration/sctransform-integration-comparison/integrated/sample-umap.png")
+ggsave("~/Box/snRNA_CellRanger_Wound_nonWound/markers/sctransform-diff_qc-integration/sctransform-integration-comparison/non-integrated/sample-umap.png")
 
-combined_sct$type <-
-  combined_sct$sample %>%
+data$type <-
+  data$sample %>%
   gsub('[[:digit:]]+', '', .)
-
-combined_sct %>%
+       
+data %>%
   DimPlot(group.by = "type")
 
-ggsave("~/Box/snRNA_CellRanger_Wound_nonWound/markers/sctransform-diff_qc-integration/sctransform-integration-comparison/integrated/injury-umap.png")
+ggsave("~/Box/snRNA_CellRanger_Wound_nonWound/markers/sctransform-diff_qc-integration/sctransform-integration-comparison/non-integrated/injury-umap.png")
