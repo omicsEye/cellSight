@@ -1,0 +1,11 @@
+2022-09-06 13:56:48 INFO::Writing function arguments to log file
+2022-09-06 13:56:48 DEBUG::Function arguments
+2022-09-06 13:56:48 DEBUG::Output folder: data/omePath_output
+2022-09-06 13:56:48 DEBUG::Score type: coef
+2022-09-06 13:56:48 DEBUG::p-value threshold: 0.05
+2022-09-06 13:56:48 DEBUG::Pathway subject: NA
+2022-09-06 13:56:48 INFO::Verifying options selected are valid
+2022-09-06 13:56:48 WARNING::Deleting existing stats table file: data/omePath_output/stats_table.tsv
+2022-09-06 13:56:48 INFO::Writing stats table to file data/omePath_output/stats_table.tsv
+2022-09-06 13:56:48 INFO::Running selected analysis method: ks
+2022-09-06 13:56:48 INFO::Loading files is done, now calculating enrichments p-value! This may take 10 or more minutes!!!
