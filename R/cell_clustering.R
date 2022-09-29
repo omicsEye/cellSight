@@ -30,9 +30,9 @@ library(SingleR)
 #devtools::install_github('ZJUFanLab/scCATCH')
 library(scCATCH)
 ##This part is for the Rano
-#setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
+setwd("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/")
 #This part is for Dr.Rahnavard
-setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
+#setwd("~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/")
 
 #data_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/"
 #data_dir <- '~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data'
