@@ -1,8 +1,10 @@
 # script to integrate scRNA-Seq datasets to correct for batch effects
-setwd("C:/Users/ranoj/Desktop/Single_Cell_output/")
+setwd("C:/Users/ranoj/Desktop/Single_cell")
 
-
+#if(!require(devtools)) install.packages("devtools")
+devtools::install_github("kassambara/ggpubr")
 # load libraries
+library(ggpubr)
 library(Seurat)
 library(ggplot2)
 library(tidyverse)
@@ -14,7 +16,7 @@ rm(list = ls())
 # get data location
 dirs <- list.dirs(path = 'data/', recursive = F, full.names = F)
 
-x<- 'Nonwound1_skin_filtered_feature_bc_matrix'
+#x<- 'Nonwound1_skin_filtered_feature_bc_matrix'
 for(x in dirs){
   name <- gsub('_filtered_feature_bc_matrix','', x)
 
@@ -77,10 +79,26 @@ merged_seurat_filtered <- RunUMAP(object = merged_seurat_filtered, dims = 1:20)
 
 
 # plot
-p1 <- DimPlot(merged_seurat_filtered, reduction = 'umap', group.by = 'Patient')
+p1 <- DimPlot(merged_seurat_filtered, reduction = 'umap', group.by = 'Patient') + theme(text = element_text(face = "bold"),
+                                                                                         axis.text.x=element_text( hjust=1, size=5),
+                                                                                         axis.title.x = element_text(size=7,face="bold"),
+                                                                                         axis.text.y=element_text(hjust=1, size=5),
+                                                                                         axis.title.y = element_text(size=7,face="bold"),
+                                                                                         axis.title.y.right = element_text(size = 5),
+                                                                                         legend.text=element_text(size=7),
+                                                                                         legend.title=element_text(size=7),
+                                                                                         legend.position = "right") + ggtitle('Sample Id (Before Integration)')+theme(plot.title = element_text(size = 10))
 p2 <- DimPlot(merged_seurat_filtered, reduction = 'umap', group.by = 'Type',
-              cols = c('red','green','blue'))
-
+              cols = c('red','green','blue')) + theme(text = element_text(face = "bold"),
+                                                      axis.text.x=element_text( hjust=1, size=5),
+                                                      axis.title.x = element_text(size=7,face="bold"),
+                                                      axis.text.y=element_text(hjust=1, size=5),
+                                                      axis.title.y = element_text(size=7,face="bold"),
+                                                      axis.title.y.right = element_text(size = 5),
+                                                      legend.text=element_text(size=7),
+                                                      legend.title=element_text(size=7),
+                                                      legend.position = "right")+ggtitle('Sample Type (Before Integration)')+theme(plot.title = element_text(size = 10))
+p1+p2
 grid.arrange(p1, p2, ncol = 2, nrow = 2)
 
 df1 <- seurat.integrated@meta.data[seurat.integrated@meta.data$Patient == 'Nonwound1', ]
@@ -119,13 +137,99 @@ seurat.integrated <- RunPCA(object = seurat.integrated)
 seurat.integrated <- RunUMAP(object = seurat.integrated, dims = 1:50)
 
 
-p3 <- DimPlot(seurat.integrated, reduction = 'umap', group.by = 'Patient')
+p3 <- DimPlot(seurat.integrated, reduction = 'umap', group.by = 'Patient') + theme(text = element_text(face = "bold"),
+                axis.text.x=element_text( hjust=1, size=5),
+                axis.title.x = element_text(size=7,face="bold"),
+                axis.text.y=element_text( hjust=1, size=5),
+                axis.title.y = element_text(size=7,face="bold"),
+                axis.title.y.right = element_text(size = 5),
+                legend.text=element_text(size=7),
+                legend.title=element_text(size=7),
+                legend.position = "right")+ ggtitle('Sample Id (After Integration)')+theme(plot.title = element_text(size = 10))
 p4 <- DimPlot(seurat.integrated, reduction = 'umap', group.by = 'Type',
-              cols = c('red','green','blue'))
+              cols = c('red','green','blue')) +
+  theme(text = element_text(face = "bold"),
+        axis.text.x=element_text( hjust=1, size=5),
+        axis.title.x = element_text(size=7,face="bold"),
+        axis.text.y=element_text( hjust=1, size=5),
+        axis.title.y = element_text(size=7,face="bold"),
+        axis.title.y.right = element_text(size = 5),
+        legend.text=element_text(size=7),
+        legend.title=element_text(size=7),
+        legend.position = "right")+ggtitle('Sample Type (After Integration)')+theme(plot.title = element_text(size = 8))
+p5 <- DimPlot(seurat.integrated, reduction = 'umap', group.by = 'seurat_clusters',
+              label = TRUE) + theme(text = element_text(face = "bold"),
+                                  axis.text.x=element_text( hjust=1, size=5),
+                                  axis.title.x = element_text(size=7,face="bold"),
+                                  axis.text.y=element_text( hjust=1, size=5),
+                                  axis.title.y = element_text(size=7,face="bold"),
+                                  axis.title.y.right = element_text(size = 5),
+                                  legend.text=element_text(size=7),
+                                  legend.title=element_text(size=7),
+                                  legend.position = "right") + NoLegend() + ggtitle('Integrated with cluster Id')+theme(plot.title = element_text(size = 10))
+p5 
 
-
+p3+p4
 grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
+
+ggsave(file="sample_id_before_integration.pdf", plot=p1, width=5, height=7.2)
+ggsave(file="sample_type_before_integration.pdf", plot=p2, width=5, height=7.2)
+ggsave(file="sample_id_after_integration.pdf", plot=p3, width=5, height=7.2)
+ggsave(file="sample_type_after_integration.pdf", plot=p4, width=5, height=7.2)
+ggsave(file="Clusters_after_integration.pdf", plot=p5, width=5, height=7.2)
+
+seurat.integrated.markers <-FindAllMarkers(seurat.integrated,only.pos = FALSE, min.pct = 0.01)
+seurat.integrated.markers<- seurat.integrated.markers %>%
+  group_by(cluster) %>%
+  slice_max(n = 2, order_by = avg_log2FC)
+
+ggarrange(p5,                                                 # First row with scatter plot
+          ggarrange(p1, p2, p3, p4 + rremove("x.text"), 
+                    labels = c( "B", "C","D","E"),
+                    ncol = 2, nrow = 2),
+          nrow = 2,
+          labels = "A"                                        # Labels of the scatter plot
+) 
+
+library("cowplot")
+p<- ggdraw() +
+  draw_plot(p1, x = 0, y = .5, width = .5, height = .25) +
+  draw_plot(p2, x = .5, y = .5, width = .5, height = .25) +
+  draw_plot(p3, x = 0, y = .5, width = .5, height = .25) +
+  draw_plot(p4, x = .5, y = .5, width = .5, height = .25) +
+  draw_plot(p5, x = 0, y = 0, width = 1, height = 0.5) +
+  draw_plot_label(label = c("A", "B", "C","D","E"), size = 16,
+                  x = c(0, 0.5, 0), y = c(2, 1, 0.5)) 
+
+library(grid)
+# Move to a new page
+grid.newpage()
+# Create layout : nrow = 3, ncol = 2
+pushViewport(viewport(layout = grid.layout(nrow = 3, ncol = 2)))
+# A helper function to define a region on the layout
+define_region <- function(row, col){
+  viewport(layout.pos.row = row, layout.pos.col = col)
+} 
+# Arrange the plots
+ print(p1, vp = define_region(row = 1, col = 1))   # Span over two columns
+ print(p2, vp = define_region(row = 1, col = 2))
+ print(p3, vp = define_region(row = 2, col = 1))
+ print(p4, vp = define_region(row = 2, col = 2))
+ print(p5, vp = define_region(row = 3, col = 1:2))
+
+base.size = 10 * (7/size)
+resolution = 72 * (size/7)
+
+mysvg <- grid.export(res=resolution)
+
+ggsave(file="try1.svg", plot=image, width=5, height=7.2)
+#print(bp + rremove("x.text"), vp = define_region(row = 3, col = 1:2))
+
+
+p <- p + theme(legend.position = "none")
 saveRDS(seurat.integrated, file = "seurat_integrated.rds")
+
+write.table(seurat.integrated.markers, file=paste0("integration_using_gene_markers_seurat.tsv"), quote=FALSE, sep='\t', col.names = NA)
 
 set.seed(1234)
 
