@@ -7,11 +7,22 @@ library(tidyverse)
 library(clustifyr)
 library(clustifyrdata)
 
+
+## for MAC ###
 seur_obj <-
   readRDS("~/Box/snRNA_Cell_project/objects/integrated.rds")
 
+## For Windows ###
+
+seur_obj <-
+  readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/objects/sc-integrated.rds")
+
+
+
 seur_obj <- seur_obj |>
   RunPCA()
+
+DimPlot(seur_obj, group.by = "type")
 
 DimPlot(seur_obj, group.by = "sample")
 
