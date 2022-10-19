@@ -13,14 +13,14 @@ install_github('omicsEye/omicsArt', force = TRUE)
 
 library(omicsArt)
 #setting the working directory
-setwd("C:/Users/ranoj/Desktop/Single_Cell_output/analysis")
+setwd("~/Desktop/Single_Cell_Output/tweedieverse/")
 
 number_of_sig_to_keep <- 20
 sig_threshold <- 0.05
 
 ## read for fibroblast
 fibroblast <- read.delim(
-  "matched/Tweedieverse_output_Fibroblasts/all_results.tsv",
+  '~/Desktop/Single_Cell_output/tweedieverse/cluster_Fibroblast/all_results.tsv',
   sep = '\t',
   header = T,
   fill = F,
@@ -28,13 +28,13 @@ fibroblast <- read.delim(
   check.names = F,
   #row.names = NA
 )
-fibroblast_data_wound <- fibroblast[fibroblast$metadata=="Sample_type" & fibroblast$value=="Wound" ,]
+fibroblast_data_wound <- fibroblast[fibroblast$metadata=="type" & fibroblast$value=="Normal" ,]
 rownames(fibroblast_data_wound) <- fibroblast_data_wound$feature
 
 
 ## read for macrophges
 macrophages <- read.delim(
-  "matched/Tweedieverse_output_Macrophages/all_results.tsv",
+  "~/Desktop/Single_Cell_output/tweedieverse/cluster_Macrophages/all_results.tsv",
   sep = '\t',
   header = T,
   fill = F,
@@ -43,13 +43,13 @@ macrophages <- read.delim(
   #row.names = NA
 )
 
-macrophages_data_wound <- macrophages[macrophages$metadata=="Sample_type" & macrophages$value=="Wound" ,]
+macrophages_data_wound <- macrophages[macrophages$metadata=="type" & macrophages$value=="Normal" ,]
 rownames(macrophages_data_wound) <- macrophages_data_wound$feature
 
 
 ## read for stromal
-stromal <- read.delim(
-  "matched/Tweedieverse_output_Stromal/all_results.tsv",
+keratinocyte <- read.delim(
+  "~/Desktop/Single_Cell_output/tweedieverse/cluster_Keratinocyte/all_results.tsv",
   sep = '\t',
   header = T,
   fill = F,
@@ -58,8 +58,8 @@ stromal <- read.delim(
   #row.names = NA
 )
 
-stromal_data_wound <- stromal[stromal$metadata=="Sample_type" & stromal$value=="Wound" ,]
-rownames(stromal_data_wound) <- stromal_data_wound$feature
+keratinocyte_data_wound <- keratinocyte[keratinocyte$metadata=="type" & keratinocyte$value=="Normal" ,]
+rownames(keratinocyte_data_wound) <- keratinocyte_data_wound$feature
 
 ##Using the defined genes which are markers for different cell types###
 imp_genes <- c("CD68", "Adgre1", "Ptprc","Pdgfra", "Pdgfrb", "Col1a1","Krt14", "Krt10", "Krt5","Plin1", "Adipoq", "Pparg", "Fabp4","Ptprc","Pecam1", "CD34")
@@ -93,13 +93,13 @@ macrophages_data_wound <- within(macrophages_data_wound,
                                                               levels=order_sig_1))
 
 
-stromal_data_wound <- stromal_data_wound[order_sig,]
-rownames(stromal_data_wound) <- order_sig
-stromal_data_wound[is.na(stromal_data_wound$coef),'coef'] = 0
-stromal_data_wound[is.na(stromal_data_wound$pval),'pval'] = 1
-stromal_data_wound[is.na(stromal_data_wound$qval),'qval'] = 1
-stromal_data_wound$feature <- rownames(stromal_data_wound)
-stromal_data_wound <- within(stromal_data_wound,
+keratinocyte_data_wound <- keratinocyte_data_wound[order_sig,]
+rownames(keratinocyte_data_wound) <- order_sig
+keratinocyte_data_wound[is.na(keratinocyte_data_wound$coef),'coef'] = 0
+keratinocyte_data_wound[is.na(keratinocyte_data_wound$pval),'pval'] = 1
+keratinocyte_data_wound[is.na(keratinocyte_data_wound$qval),'qval'] = 1
+keratinocyte_data_wound$feature <- rownames(keratinocyte_data_wound)
+keratinocyte_data_wound <- within(keratinocyte_data_wound,
                                            feature <- factor(feature,
                                                              levels=order_sig_1))
 
@@ -107,13 +107,13 @@ fibroblast_data_wound_temp_diff_bar <- diff_bar_plot(fibroblast_data_wound, thre
                                                   fdr ="qval", orderby = NA, x_label = 'Effect Size', y_label = '')
 macrophages_data_wound_temp_diff_bar <- diff_bar_plot(macrophages_data_wound, threshold = sig_threshold, pvalue_col = "pval",  method = "none",
                                                       fdr ="qval", orderby = NA, x_label = 'Effect size', y_label = '')
-stromal_data_wound_temp_diff_bar <- diff_bar_plot(stromal_data_wound, threshold = sig_threshold, pvalue_col = "pval",  method = "none",
+keratinocyte_data_wound_temp_diff_bar <- diff_bar_plot(keratinocyte_data_wound, threshold = sig_threshold, pvalue_col = "pval",  method = "none",
                                                      fdr ="qval", orderby = NA, x_label = 'Effect size', y_label = '')
 
 
 
 ## read association
-box_association <- readRDS("/Users/rah/Dropbox/Ali-Docs/Research_docs/Projects/COVID-Omics/analysis/meatbolites_Tweedieverse/figures/Group_gg_associations.RDS")
+box_association <- readRDS("~/Desktop/Single_Cell_output/tweedieverse/cluster_Fibroblast/figures/type_gg_associations.RDS")
 ## do plots
 
 fig2_metabolites <- ggdraw() +
@@ -124,7 +124,7 @@ fig2_metabolites <- ggdraw() +
                                                          axis.ticks.y = element_blank(),
                                                          axis.line.y = element_blank()),
             x = .55, y = .47, width = .225, height = .53) +
-  draw_plot(stromal_data_wound_temp_diff_bar + theme(axis.title.y = element_blank(),
+  draw_plot(keratinocyte_data_wound_temp_diff_bar + theme(axis.title.y = element_blank(),
                                                         axis.text.y = element_blank(),
                                                         axis.ticks.y = element_blank(),
                                                         axis.line.y = element_blank()),
@@ -157,9 +157,9 @@ fig3_metabolites
 ggsave(filename = 'figures/fig3/fig#_barplot.pdf', plot=fig2_metabolites, width = 183, height = 110, units = "mm", dpi = 350)
 ggsave(filename = 'figures/fig3/fig#_barplot.pdf', plot=fig2_metabolites, width = 183, height = 110, units = "mm", dpi = 350)
 
-box_association <- readRDS("matched/Tweedieverse_output_Fibroblasts/figures/Sample_type_gg_associations.RDS")
-box_association_1 <- readRDS("matched/Tweedieverse_output_Macrophages/figures/Sample_type_gg_associations.RDS")
-box_association_2 <- readRDS("matched/Tweedieverse_output_Stromal/figures/Sample_type_gg_associations.RDS")
+box_association <- readRDS("~/Desktop/Single_Cell_output/tweedieverse/cluster_Fibroblast/figures/type_gg_associations.RDS")
+box_association_1 <- readRDS("~/Desktop/Single_Cell_output/tweedieverse/cluster_Macrophages/figures/type_gg_associations.RDS")
+box_association_2 <- readRDS("~/Desktop/Single_Cell_output/tweedieverse/cluster_Keratinocyte/figures/type_gg_associations.RDS")
 
 fig_2 <- ggdraw() +
   draw_plot(fibroblast_data_wound_temp_diff_bar,
@@ -169,7 +169,7 @@ fig_2 <- ggdraw() +
                                                          axis.ticks.y = element_blank(),
                                                          axis.line.y = element_blank()),
             x = .40, y = .47, width = .35, height = .55) +
-  draw_plot(stromal_data_wound_temp_diff_bar + theme(axis.title.y = element_blank(),
+  draw_plot(keratinocyte_data_wound_temp_diff_bar + theme(axis.title.y = element_blank(),
                                                      axis.text.y = element_blank(),
                                                      axis.ticks.y = element_blank(),
                                                      axis.line.y = element_blank()),
@@ -195,7 +195,7 @@ fig_2 <- ggdraw() +
     axis.title.y = element_text(size = 7),
     axis.text.y = element_text(size = 5)), x = .75, y = 0, width = .25, height = .45) +
   
-  draw_plot_label((label = c("a",  "Fibroblast", "Macrophages","Stromal" , "b", "c", "d", "e")),
+  draw_plot_label((label = c("a",  "Fibroblast", "Macrophages","keratinocyte" , "b", "c", "d", "e")),
                   size = 7,x = c(0, .10, .55, .80, 0, .25, .5, .75), y = c(1, 1, 1, 1, 0.47, 0.47, 0.47, 0.47))
 
 ggsave(filename = 'matched_barplot_fibroblast.pdf', plot=fig_2, width = 183, height = 110, units = "mm", dpi = 350)

@@ -1,5 +1,10 @@
 # load libraries ----------------------------------------------------------
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 
+BiocManager::install("clustifyr")
+
+install.packages("clustree")
 library(Seurat)
 library(ggplot2)
 library(clustree)

@@ -10,17 +10,19 @@ install.packages("dplyr")
 
 library(dplyr)
 library(glmGamPoi)
+library(DelayedMatrixStats)
 library(Seurat)
 library(ggplot2)
 library(tidyverse)
 library(gridExtra)
 
-box_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/"
+box_dir <- "~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data/"
+#box_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/"
 dirs <- list.dirs(path = box_dir, 
                   recursive = F, 
                   full.names = F)
 
-local_dir <- "C:/Users/ranoj/Desktop/Single_Cell_output/"
+local_dir <- "~/Desktop/Single_Cell_output/"
 
 obj_list <- dirs %>%
   set_names() %>%
