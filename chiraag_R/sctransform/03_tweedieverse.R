@@ -31,8 +31,7 @@ i <- "Immune cells"
 for (i in seur_obj$Celltype %>% unique()) {
   print(i)
   obj_sub <- seur_obj %>%
-    subset(Celltype == i,
-           features = VariableFeatures(.))
+    subset(Celltype == i)
   
   counts <- obj_sub %>%
     GetAssayData(assay = "RNA", slot = "counts")
