@@ -22,11 +22,16 @@ library(omicsArt)
 seur_obj <-
   readRDS("~/Box/snRNA_Cell_project/objects/2022-08-23_integrated-clustered.rds")
 
+seur_obj <- combined_sct
+
 seur_obj$Celltype <- Idents(seur_obj)
 seur_obj$type <- seur_obj$type %>%
   as.factor()
+
+seur_obj %>%
+  write_rds("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/objects/scintegrated_final.rds")
 ###For chekcing ####
-i <- "Immune cells"
+i <- "Adipocyte"
 ####################
 for (i in seur_obj$Celltype %>% unique()) {
   print(i)
@@ -48,13 +53,12 @@ for (i in seur_obj$Celltype %>% unique()) {
   test <- Tweedieverse(
     input_features,
     obj_sub@meta.data[6] ,
-    output = paste0('~/Desktop/Single_Cell_output/tweedieverse/cluster_', i),
+    output = paste0('C:/Users/ranoj/Desktop/Single_cell_output/tweedieverse/cluster_', i),
     entropy_threshold = 0.0,
     base_model = 'CPLM',
     plot_heatmap = T,
     plot_scatter = T,
-    reference = c("type, Normal"),
-    cores = 7
+    reference = c("type, Normal")
   )
 }
 

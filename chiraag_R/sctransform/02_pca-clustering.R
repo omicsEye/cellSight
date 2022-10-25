@@ -22,7 +22,7 @@ seur_obj <-
 seur_obj <-
   readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/objects/sc-integrated.rds")
 
-
+seur_obj <- combined_sct
 
 seur_obj <- seur_obj |>
   RunPCA()
@@ -35,9 +35,9 @@ ElbowPlot(seur_obj, ndims = 50)
 
 DefaultAssay(seur_obj) <- "integrated"
 seur_obj <- seur_obj |>
-  RunUMAP(dims = 1:11) |>
-  FindNeighbors(dims = 1:11) |>
-  FindClusters(resolution = c(.2, .4, .6, .8))
+  RunUMAP(dims = 1:30) |>
+  FindNeighbors(dims = 1:30) |>
+  FindClusters()
 
 DimPlot(seur_obj,
         group.by = "integrated_snn_res.0.2",
@@ -60,13 +60,21 @@ DimPlot(seur_obj,
 seur_obj |>
   DimPlot(split.by = "sample")
 
-Idents(seur_obj) <- "integrated_snn_res.0.6"
+Idents(seur_obj) <- "integrated_snn_res.0.8"
 seur_obj <- seur_obj |>
   NormalizeData(assay = "RNA")
 
 seur_obj$type <-
   seur_obj$sample %>%
   gsub('[[:digit:]]+', '', .)
+
+new.cluster.ids <- c("Fibroblasts 1", "Fibroblasts 2", "Fibroblasts 3", "Keratinocytes", "Fibroblasts 4", "Monocytes",
+                     "Fibroblasts 5", "Macrophages", "N/A","Endothelial","Errector Pilli","Endothelial","Macrophages",
+                     "Fibroblasts 6","Sk Mucle 1","SK Muscle 2","Adipocyte","Sk Muscle 3","Fibroblasts 7","Unknown 1", "unknown 2")
+names(new.cluster.ids) <- levels(seur_obj)
+seur_obj <- RenameIdents(seur_obj, new.cluster.ids)
+DimPlot(seur_obj, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+
 
 seur_obj |>
   saveRDS(
