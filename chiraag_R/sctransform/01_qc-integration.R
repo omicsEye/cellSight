@@ -17,7 +17,7 @@ library(tidyverse)
 library(gridExtra)
 
 box_dir <- "~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data/"
-#box_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/"
+box_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/"
 dirs <- list.dirs(path = box_dir, 
                   recursive = F, 
                   full.names = F)
@@ -62,6 +62,7 @@ obj_list$Nonwound1 <-
            percent.mt < 1)
 
 obj_list$Nonwound1$sample <- "nonwound1"
+obj_list$Nonwound1$type<- "normal"
 
 # nonwound 2 qc -----------------------------------------------------------
 
@@ -85,7 +86,7 @@ obj_list$Nonwound2 <-
            percent.mt < 1)
 
 obj_list$Nonwound2$sample <- "nonwound2"
-
+obj_list$Nonwound2$type<- "normal"
 # wound 1 qc -----------------------------------------------------------
 
 obj_list$Wound1[["percent.mt"]] <- obj_list$Wound1 %>%
@@ -108,6 +109,7 @@ obj_list$Wound1 <-
            percent.mt < 1.5)
 
 obj_list$Wound1$sample <- "wound1"
+obj_list$Wound1$type<- "wound"
 
 # wound 2 qc -----------------------------------------------------------
 
@@ -131,7 +133,7 @@ obj_list$Wound2 <-
            percent.mt < 1.5)
 
 obj_list$Wound2$sample <- "wound2"
-
+obj_list$Wound2$type<- "wound"
 # SCTransform -------------------------------------------------------------
 obj_list <- obj_list %>%
   lapply(FUN = function(x) {

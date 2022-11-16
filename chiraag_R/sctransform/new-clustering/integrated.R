@@ -143,6 +143,14 @@ combined_sct <- combined_sct %>%
   FindNeighbors(dims = 1:30) |>
   FindClusters()
 
+new.cluster.ids <- c("Fibroblasts 1", "Fibroblasts 2", "Fibroblasts 3", "Keratinocytes", "Fibroblasts 4", "Monocytes",
+                     "Fibroblasts 5", "Macrophages", "N/A","Endothelial","Errector Pilli","Endothelial","Macrophages",
+                     "Fibroblasts 6","Sk Mucle 1","SK Muscle 2","Adipocyte","Sk Muscle 3","Fibroblasts 7","Unknown 1", "unknown 2")
+names(new.cluster.ids) <- levels(combined_sct)
+combined_sct <- RenameIdents(combined_sct, new.cluster.ids)
+DimPlot(combined_sct, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+
+
 combined_sct %>%
   write_rds("~/Box/snRNA_CellRanger_Wound_nonWound/objects/2022-09-25_sc-integrated.rds")
 

@@ -20,7 +20,7 @@ library(omicsArt)
 
 
 seur_obj <-
-  readRDS("~/Box/snRNA_Cell_project/objects/2022-08-23_integrated-clustered.rds")
+  readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
 
 seur_obj <- combined_sct
 
@@ -28,8 +28,10 @@ seur_obj$Celltype <- Idents(seur_obj)
 seur_obj$type <- seur_obj$type %>%
   as.factor()
 
-seur_obj %>%
-  write_rds("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/objects/scintegrated_final.rds")
+saveRDS(seur_obj,"scintegrated_final.rds")
+
+seur_obj <-
+  readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
 ###For chekcing ####
 i <- "Adipocyte"
 ####################
@@ -54,6 +56,7 @@ for (i in seur_obj$Celltype %>% unique()) {
     input_features,
     obj_sub@meta.data[6] ,
     output = paste0('C:/Users/ranoj/Desktop/Single_cell_output/tweedieverse/cluster_', i),
+    prev_threshold = 0.0,
     entropy_threshold = 0.0,
     base_model = 'CPLM',
     plot_heatmap = T,
@@ -61,4 +64,8 @@ for (i in seur_obj$Celltype %>% unique()) {
     reference = c("type, Normal")
   )
 }
+
+unwounded <- subset(x = seur_obj, subset = (sample  == 'normal1'))
+
+#test.subset <- subset(x = epithelial, subset = (stim == "Healthy" | stim == "another_condition"))
 
