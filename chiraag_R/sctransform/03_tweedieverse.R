@@ -20,7 +20,11 @@ library(omicsArt)
 
 
 seur_obj <-
-  readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
+  readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/object/final_integrated_clustered1118.rds")
+
+seur_obj <-
+  readRDS("C:/Users/ranoj/Desktop/Single_cell_output/objects/final_integrated_clustered1118.rds")
+
 
 seur_obj <- combined_sct
 
@@ -65,7 +69,7 @@ for (i in seur_obj$Celltype %>% unique()) {
   )
 }
 
-unwounded <- subset(x = seur_obj, subset = (sample  == 'normal1'))
+wounded <- subset(x = seur_obj, subset = (type  == 'wound'))
 
 #test.subset <- subset(x = epithelial, subset = (stim == "Healthy" | stim == "another_condition"))
 

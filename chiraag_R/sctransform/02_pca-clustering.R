@@ -69,8 +69,8 @@ seur_obj$type <-
   gsub('[[:digit:]]+', '', .)
 
 new.cluster.ids <- c("Fibroblasts 1", "Fibroblasts 2", "Fibroblasts 3", "Keratinocytes", "Fibroblasts 4", "Monocytes",
-                     "Fibroblasts 5", "Macrophages", "N/A","Endothelial","Errector Pilli","Endothelial","Macrophages",
-                     "Fibroblasts 6","Sk Mucle 1","SK Muscle 2","Adipocyte","Sk Muscle 3","Fibroblasts 7","Unknown 1", "unknown 2")
+                     "Fibroblasts 5", "Macrophages", "Sebaceous gland cells 1","Endothelial","Errector Pilli","Endothelial","Macrophages",
+                     "Fibroblasts 6","Sk Mucle 1","SK Muscle 2","Adipocyte","Sk Muscle 3","Fibroblasts 7","Sebaceous gland cells 1", "Immune")
 names(new.cluster.ids) <- levels(seur_obj)
 seur_obj <- RenameIdents(seur_obj, new.cluster.ids)
 DimPlot(seur_obj, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()

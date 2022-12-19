@@ -1,16 +1,17 @@
 library(CellChat)
 library(gridExtra)
 library(ggpubr)
+library(svglite)
 theme_set(theme_pubr())
 
-data.input <- GetAssayData(unwounded, assay = "RNA", slot = "data") 
+data.input <- GetAssayData(wounded, assay = "RNA", slot = "data") 
 
-labels <- Idents(unwounded)
+labels <- Idents(wounded)
 meta <- data.frame(group = labels, row.names = names(labels)) 
 
 cellchat_normal <- createCellChat(object = data.input, meta = meta, group.by = "group")
 
-rm(seur_obj,obj_list,meta,unwounded)
+rm(seur_obj,obj_list,meta,wounded,data.input,p,p1,p2,p3,umap_theme,cluster.markers)
 
 ##import cellchat database
 CellChatDB <- CellChatDB.mouse
@@ -29,13 +30,18 @@ future::plan("multiprocess", workers = 4)
 cellchat_normal <- identifyOverExpressedGenes(cellchat_normal)
 cellchat_normal <- identifyOverExpressedInteractions(cellchat_normal)
 
+gc()
+
 cellchat_normal <- computeCommunProb(cellchat_normal)
+
+gc()
+
 # Filter out the cell-cell communication if there are only few number of cells in certain cell groups
 cellchat_normal <- filterCommunication(cellchat_normal, min.cells = 10)
 
 
-cellchat_normal <- computeCommunProbPathway(cellchat_normal)
-cellchat_normal <- aggregateNet(cellchat_normal)
+cellchat_normal <- computeCommunProbPathway(cellchat_normal,thresh = 1)
+cellchat_normal <- aggregateNet(cellchat_normal,thresh = 1)
 
 groupSize <- as.numeric(table(cellchat_normal@idents))
 par(mfrow = c(1,2), xpd=TRUE)
@@ -45,9 +51,25 @@ count <- netVisual_circle(cellchat_normal@net$count, vertex.weight = groupSize, 
 weight <- netVisual_circle(cellchat_normal@net$weight, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Interaction weights/strength")
 
 dev.off()
+fig_dir <- "C:/Users/ranoj/Desktop/Single_cell_output/cellchat/"
+svglite(paste0(fig_dir,file = "pathway_count.svg"), width=20, height=10)
+#pdf(paste0(fig_dir, "count.pdf"), width=2.45, height=1.3)
+#(p1|p2)/p3 +umap_theme
+#CombinePlots(, ncol=3)
+count
+dev.off()
+
+fig_dir <- "C:/Users/ranoj/Desktop/Single_cell_output/cellchat/"
+svglite(paste0(fig_dir,file = "pathway_weight.svg"), width=20, height=10)
+#pdf(paste0(fig_dir, "count.pdf"), width=2.45, height=1.3)
+#(p1|p2)/p3 +umap_theme
+#CombinePlots(, ncol=3)
+weight
+dev.off()
+
 mat <- cellchat_normal@net$weight
 #svg(paste0("comp_pmfs", ".svg"), width=5.3, height=7)
-par(mar=c(0.5, 0.5, 0.2, 0.2), mfrow=c(1,2),
+par(mar=c(0.5, 0.5, 0.2, 0.2), mfrow=c(4,3),
     oma = c(4, 4, 0.2, 0.2))
 
 for (i in 1:nrow(mat)) {
