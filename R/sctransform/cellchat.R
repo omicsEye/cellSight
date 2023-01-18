@@ -40,8 +40,10 @@ gc()
 cellchat_normal <- filterCommunication(cellchat_normal, min.cells = 10)
 
 
-cellchat_normal <- computeCommunProbPathway(cellchat_normal,thresh = 1)
-cellchat_normal <- aggregateNet(cellchat_normal,thresh = 1)
+cellchat_normal <- computeCommunProbPathway(cellchat_normal,thresh = 100)
+df.netP <- reshape2::melt(cellchat_normal@netP$prob, value.name = "prob")
+
+cellchat_normal <- aggregateNet(cellchat_normal,thresh = 100)
 
 groupSize <- as.numeric(table(cellchat_normal@idents))
 par(mfrow = c(1,2), xpd=TRUE)
