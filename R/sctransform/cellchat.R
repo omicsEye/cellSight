@@ -40,11 +40,14 @@ gc()
 cellchat_normal <- filterCommunication(cellchat_normal, min.cells = 10)
 
 
-cellchat_normal <- computeCommunProbPathway(cellchat_normal,thresh = 100)
-df.netP <- reshape2::melt(cellchat_normal@netP$prob, value.name = "prob")
+cellchat_normal <- computeCommunProbPathway(cellchat_normal,thresh = 0.05)
+df.netP <- reshape2::melt(cellchat_normal@net$prob, value.name = "prob")
 
-cellchat_normal <- aggregateNet(cellchat_normal,thresh = 100)
+df_significant_netP <- df.netP[apply(df.netP!=0, 1, all),]
 
+
+cellchat_normal <- aggregateNet(cellchat_normal,thresh = 0.05)
+cellchat_normal@net$pathways <- df_significant_netP$Var3
 groupSize <- as.numeric(table(cellchat_normal@idents))
 par(mfrow = c(1,2), xpd=TRUE)
 count <- netVisual_circle(cellchat_normal@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Number of interactions")
@@ -82,7 +85,7 @@ for (i in 1:nrow(mat)) {
 
 ###Just change the output directory based on the sample##
 setwd("C:/Users/ranoj/Desktop/Single_cell_output/cellchat/wound2")
-pathways.show.all <- cellchat_normal@netP$pathways
+pathways.show.all <- cellchat_normal@net$pathways
 # check the order of cell identity to set suitable vertex.receiver
 levels(cellchat_normal@idents)
 vertex.receiver = c(1,2,3,5,12,17)

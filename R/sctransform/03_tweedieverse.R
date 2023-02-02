@@ -29,10 +29,10 @@ seur_obj <-
 seur_obj <- combined_sct
 
 seur_obj$Celltype <- Idents(seur_obj)
-seur_obj$type <- seur_obj$type %>%
-  as.factor()
+seur_obj$type <- ifelse(seur_obj$sample %in% c("nonwound1","nonwound2"), "Naive", "Injured")
 
-saveRDS(seur_obj,"scintegrated_final.rds")
+
+saveRDS(seur_obj,"C:/Users/ranoj/Desktop/Single_cell_output/objects/scintegrated_final.rds")
 
 seur_obj <-
   readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")

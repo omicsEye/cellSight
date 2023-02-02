@@ -154,3 +154,4 @@ combined_sct <- anchors %>%
 
 combined_sct %>%
   saveRDS("~/Box/snRNA_Cell_project/objects/integrated.rds")
+
