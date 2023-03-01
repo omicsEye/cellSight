@@ -14,6 +14,7 @@ dim(ligand_target_matrix)
 
 
 dim(ligand_target_matrix)
+rm(list = ls())
 ligand_target_matrix = readRDS("nichenetr/ligand_target_matrix.rds")
 
 weighted_networks = readRDS("nichenetr/weighted_networks.rds")
@@ -35,17 +36,39 @@ ligand_target_matrix = ligand_target_matrix %>% .[!is.na(rownames(ligand_target_
 
 weighted_networks_lr = weighted_networks_lr %>% mutate(from = convert_human_to_mouse_symbols(from), to = convert_human_to_mouse_symbols(to)) %>% drop_na()
 
+###Testing for 1 vs 1
+#receiver = c( "Macrophages 2")
+#sender_celltypes = c("Fibroblasts 1")
+####
 
-#receiver_celltypes_oi = c("Fibroblasts 1", "Fibroblasts 2", "Fibroblasts 3","Fibroblasts 4" ,"Fibroblasts 5", "Fibroblasts 6","Fibroblasts 7","Macrophages 1", "Macrophages 2")
+###Testing for 1 vs many
+receiver = c( "Fibroblasts 6", "Monocytes","Fibroblasts 1","Fibroblasts 2" ,"Fibroblasts 3", "Fibroblasts 4","Fibroblasts 5","Fibroblasts 7","Macrophages 1","Sebaceous gland cells 1","Macrophages 2" ,
+              "Sk Muscle 1","Immune","Sk Muscle 3","SK Muscle 2" ,"Endothelial 1","Endothelial 2","Sebaceous gland cells 2","Errector Pilli")
 #receiver_celltypes_oi = seuratObj %>% Idents() %>% unique() # for all celltypes in the dataset: use only when this would make sense biologically
 
-receiver = c("Macrophages 2")
+sender_celltypes = c("Fibroblasts 1")
+#####
+
+#temp = list(unique(seuratObj$Celltype))
+#temp1 = temp[!(temp %in% sender)]
+#receiver = temp1
 expressed_genes_receiver = get_expressed_genes(receiver, seuratObj, pct = 0.10)
 
 background_expressed_genes = expressed_genes_receiver %>% .[. %in% rownames(ligand_target_matrix)]
-temp = list(unique(seuratObj$Celltype))
-temp1 = temp[!(temp %in% receiver)]
-sender_celltypes = temp1
+#temp = list(unique(seuratObj$Celltype))
+#temp1 = temp[!(temp %in% receiver)]
+#sender_celltypes = seuratObj$Celltype
+
+
+#nichenet_output = nichenet_seuratobj_aggregate(seurat_obj = seuratObj, receiver = receiver, condition_colname = "type", condition_oi = "Injured", condition_reference = "Naive", sender = "all", ligand_target_matrix = ligand_target_matrix, lr_network = lr_network, weighted_networks = weighted_networks, organism = "mouse")
+## [1] "Read in and process NicheNet's networks"
+## [1] "Define expressed ligands and receptors in receiver and sender cells"
+## [1] "Perform DE analysis in receiver cell"
+## [1] "Perform NicheNet ligand activity analysis"
+## [1] "Infer active target genes of the prioritized ligands"
+## [1] "Infer receptors of the prioritized ligands"
+
+#nichenet_output$ligand_activity_target_heatmap
 
 list_expressed_genes_sender = sender_celltypes %>% unique() %>% lapply(get_expressed_genes, seuratObj, 0.10) # lapply to get the expressed genes of every sender cell type separately here
 expressed_genes_sender = list_expressed_genes_sender %>% unlist() %>% unique()
@@ -56,9 +79,9 @@ seurat_obj_receiver = SetIdent(seurat_obj_receiver, value = seurat_obj_receiver[
 condition_oi = "Injured"
 condition_reference = "Naive" 
 
-DE_table_receiver = FindMarkers(object = seurat_obj_receiver, ident.1 = condition_oi, ident.2 = condition_reference, min.pct = 0.10) %>% rownames_to_column("gene")
+DE_table_receiver = FindMarkers(object = seurat_obj_receiver, ident.1 = condition_oi, ident.2 = condition_reference,logfc.threshold = 0, min.pct = 0.0) %>% rownames_to_column("gene")
 
-geneset_oi = DE_table_receiver %>% filter(p_val_adj <= 0.05 & abs(avg_log2FC) >= 0.25) %>% pull(gene)
+geneset_oi = DE_table_receiver %>% filter(p_val_adj <= 1 & avg_log2FC >= 0.0) %>% pull(gene)
 geneset_oi = geneset_oi %>% .[. %in% rownames(ligand_target_matrix)]
 
 ligands = lr_network %>% pull(from) %>% unique()
@@ -74,7 +97,7 @@ ligand_activities = predict_ligand_activities(geneset = geneset_oi, background_e
 ligand_activities = ligand_activities %>% arrange(-pearson) %>% mutate(rank = rank(desc(pearson)))
 ligand_activities
 
-best_upstream_ligands = ligand_activities %>% top_n(20, pearson) %>% arrange(-pearson) %>% pull(test_ligand) %>% unique()
+best_upstream_ligands = ligand_activities  %>% arrange(-pearson) %>% pull(test_ligand) %>% unique()
 d1 <- DotPlot(seuratObj, features = best_upstream_ligands %>% rev(), cols = "RdYlBu") + RotatedAxis()+ omicsArt::theme_omicsEye()
 
 
@@ -89,8 +112,14 @@ rownames(active_ligand_target_links) = rownames(active_ligand_target_links) %>% 
 colnames(active_ligand_target_links) = colnames(active_ligand_target_links) %>% make.names() # make.names() for heatmap visualization of genes like H2-T23
 
 vis_ligand_target = active_ligand_target_links[order_targets,order_ligands] %>% t()
-save(vis_ligand_target, file = "macrophages2_ligand_target.csv")
-vis_ligand_target_sub = vis_ligand_target[1:20,1:45]
+vis_ligand_target<- as.data.frame(vis_ligand_target)
+vis_ligand_target<-vis_ligand_target[,order(colSums(vis_ligand_target!= 0),decreasing=TRUE)]
+vis_ligand_target<- data.matrix(vis_ligand_target)
+
+#save(vis_ligand_target, file = "fibroblast7_ligand_target.csv")
+write.csv(vis_ligand_target,"try_fib1_upregulated.csv",row.names = T )
+
+vis_ligand_target_sub = vis_ligand_target[1:34,1:40]
 
 p_ligand_target_network = vis_ligand_target_sub %>% make_heatmap_ggplot( "Prioritized ligands","Predicted target genes", color = "purple",legend_position = "top", x_axis_position = "top",legend_title = "Regulatory potential")  + theme(axis.text.x = element_text(face = "italic")) + scale_fill_gradient2(low = "whitesmoke",  high = "purple", breaks = c(0,0.0045,0.0090))+ omicsArt::theme_omicsEye()+ theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=-0.2))+ labs(fill="Reg Potential")
 p_ligand_target_network
@@ -118,8 +147,16 @@ vis_ligand_receptor_network = lr_network_top_matrix[order_receptors, order_ligan
 rownames(vis_ligand_receptor_network) = order_receptors %>% make.names()
 colnames(vis_ligand_receptor_network) = order_ligands_receptor %>% make.names()
 
-p_ligand_receptor_network = vis_ligand_receptor_network %>% t() %>% make_heatmap_ggplot("Ligands","Receptors", color = "mediumvioletred", x_axis_position = "top",legend_title = "Prior interaction") + omicsArt::theme_omicsEye()+ theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=-0.2))
-save(vis_ligand_receptor_network, file = "macrophages2_ligand_receptor.csv")
+vis_ligand_receptor_network<-as.data.frame(vis_ligand_receptor_network)
+vis_ligand_receptor_network<-vis_ligand_receptor_network[,order(colSums(vis_ligand_receptor_network!= 0),decreasing=TRUE)]
+vis_ligand_receptor_network<- data.matrix(vis_ligand_receptor_network)
+
+vis_ligand_receptor_network_sub = vis_ligand_receptor_network[1:30,1:25]
+
+p_ligand_receptor_network = vis_ligand_receptor_network_sub %>% t() %>% make_heatmap_ggplot("Ligands","Receptors", color = "mediumvioletred", x_axis_position = "top",legend_title = "Prior interaction") + omicsArt::theme_omicsEye()+ theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=-0.2))
+#save(vis_ligand_receptor_network, file = "adipocytes_ligand_receptor.csv")
+
+write.csv(vis_ligand_receptor_network,"try_fib1_ligand_receptor_upregulated.csv",row.names = T )
 p_ligand_receptor_network
 
 library(ggplot2)
@@ -133,12 +170,13 @@ library(omicsArt)
 plot1 <- ggarrange(
   d1,                # First row with line plot
   # Second row with box and dot plots
-  ggarrange(p_ligand_target_network, p_ligand_receptor_network, ncol = 2, labels = c("B", "C")), 
+  ggarrange(p_ligand_receptor_network,p_ligand_target_network ,ncol = 2, labels = c("B", "C")), 
   nrow = 2, 
   labels = "A"       # Label of the line plot
 )
-
-ggsave('Macrophages1_ligands_receptors.pdf', dpi = 300, height = 3, width = 7.5, unit = 'in')
+plot1
+ggsave('try_fib1_ligands_receptors_upregulated.pdf', dpi = 300, height = 4, width = 7.5, unit = 'in')
+ggsave(file="try_fib1_ligands_receptors_upregulated.svg", plot=plot1, width=7.5, height=4.5)
 
 
 lr_network_strict = lr_network %>% filter(database != "ppi_prediction_go" & database != "ppi_prediction")
