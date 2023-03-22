@@ -124,7 +124,7 @@ gaps = c(
   width_ligand_target
 )
 library(circlize)
-#gaps <- c(-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1)
+gaps <- c(-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1)
 circos.par(gap.degree = gaps)
 chordDiagram(links_circle, directional = 1,order=order,link.sort = TRUE, link.decreasing = FALSE, grid.col = grid_col,transparency = 0, diffHeight = 0.005, direction.type = c("diffHeight", "arrows"),link.arr.type = "big.arrow", link.visible = links_circle$weight >= cutoff_include_all_ligands,annotationTrack = "grid", 
              preAllocateTracks = list(track.height = 0.075))
@@ -135,13 +135,13 @@ circos.track(track.index = 1, panel.fun = function(x, y) {
 }, bg.border = NA)
 circos.clear()
 
-svg("ligand_receptor_circos.svg", width = 15, height = 15)
+svg("ligand_receptor_circos.svg", width = 5, height = 2.3)
 circos.par(gap.degree = gaps)
 chordDiagram(links_circle, directional = 1,order=order,link.sort = TRUE, link.decreasing = FALSE, grid.col = grid_col,transparency = transparency, diffHeight = 0.005, direction.type = c("diffHeight", "arrows"),link.arr.type = "big.arrow", link.visible = links_circle$weight >= cutoff_include_all_ligands,annotationTrack = "grid", 
              preAllocateTracks = list(track.height = 0.075))
 # we go back to the first track and customize sector labels
 circos.track(track.index = 1, panel.fun = function(x, y) {
   circos.text(CELL_META$xcenter, CELL_META$ylim[1], CELL_META$sector.index,
-              facing = "clockwise", niceFacing = TRUE, adj = c(0, 0.55), cex = 1)
+              facing = "clockwise", niceFacing = TRUE, adj = c(0, 0.55), cex = 0.2)
 }, bg.border = NA) #
 

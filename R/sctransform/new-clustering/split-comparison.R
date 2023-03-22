@@ -39,14 +39,14 @@ nonint_injury <- nonint %>%
 int_sample <- int %>%
   DimPlot(group.by = "sample",cols=alpha(my_cols,0.4),pt.size=0.3) +
   labs(title = "After integration") +
-  theme(axis.text = element_blank()) +
+  theme(axis.text = element_blank(),text = element_text(size = 2)) +
   NoAxes()+ggtitle(" ")+guides(color = guide_legend(override.aes = list(size=4), ncol=1) )+
   scale_fill_brewer(palette = "Dark2")
 
 int_injury <- int %>%
   DimPlot(group.by = "type") +
   labs(title = "After integration",cols=alpha(my_cols,0.4),pt.size=0.3) +
-  theme(axis.text = element_blank()) +
+  theme(axis.text = element_blank(),text = element_text(size = 2)) +
   NoAxes()+ggtitle(" ")+ guides(color = guide_legend(override.aes = list(size=4), ncol=1) )+
   scale_fill_brewer(palette = "Dark2")
 
@@ -58,7 +58,7 @@ sc_int <- seur_obj %>%
   ) +
   labs(title = NULL, x = NULL, y = NULL) +
   theme(legend.position = "none") +
-  theme(axis.text = element_blank()) +
+  theme(axis.text = element_blank(),text = element_text(size = 2)) +
   NoAxes()
   
 

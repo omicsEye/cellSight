@@ -4,12 +4,12 @@ library(ggpubr)
 library(svglite)
 theme_set(theme_pubr())
 
-data.input <- GetAssayData(wounded, assay = "RNA", slot = "data") 
+data.input <- GetAssayData(naive, assay = "RNA", slot = "data") 
 
-labels <- Idents(wounded)
+labels <- Idents(naive)
 meta <- data.frame(group = labels, row.names = names(labels)) 
 
-cellchat_normal <- createCellChat(object = data.input, meta = meta, group.by = "group")
+cellchat_naive <- createCellChat(object = data.input, meta = meta, group.by = "group")
 
 rm(seur_obj,obj_list,meta,wounded,data.input,p,p1,p2,p3,umap_theme,cluster.markers)
 
@@ -20,20 +20,20 @@ showDatabaseCategory(CellChatDB)
 CellChatDB.use <- CellChatDB 
 
 # set the used database in the object
-cellchat_normal@DB <- CellChatDB.use
+cellchat_naive@DB <- CellChatDB.use
 
 
-cellchat_normal <- subsetData(cellchat_normal) # This step is necessary even if using the whole database
+cellchat_naive <- subsetData(cellchat_naive) # This step is necessary even if using the whole database
 future::plan("multiprocess", workers = 4)
 
 
-cellchat_normal <- identifyOverExpressedGenes(cellchat_normal,thresh.p = 1)
-cellchat_normal <- identifyOverExpressedInteractions(cellchat_normal)
-#df.net <- subsetCommunication(cellchat_normal,slot.name = "net")
+cellchat_naive <- identifyOverExpressedGenes(cellchat_naive,thresh.p = 1)
+cellchat_naive <- identifyOverExpressedInteractions(cellchat_naive)
+#df.net <- subsetCommunication(cellchat_naive,slot.name = "net")
 
 #feature.name = as.data.frame(rownames(wounded))
-#net <- netMappingDEG(cellchat_normal, features.name = df_try)
-#net.up <- subsetCommunication(cellchat_normal, net = cellchat_normal@net, ligand.logFC = 0.2, receptor.logFC = NULL)
+#net <- netMappingDEG(cellchat_naive, features.name = df_try)
+#net.up <- subsetCommunication(cellchat_naive, net = cellchat_naive@net, ligand.logFC = 0.2, receptor.logFC = NULL)
 
 #net.up <- subsetCommunication(cellchat, net = netP, datasets = "NPD",ligand.logFC = 0.2, receptor.logFC = NULL)
 
@@ -41,28 +41,28 @@ cellchat_normal <- identifyOverExpressedInteractions(cellchat_normal)
 
 gc()
 
-cellchat_normal <- computeCommunProb(cellchat_normal,trim = 0, nboot = 1)
+cellchat_naive <- computeCommunProb(cellchat_naive,trim = 0, nboot = 1)
 
 gc()
 
 # Filter out the cell-cell communication if there are only few number of cells in certain cell groups
-cellchat_normal <- filterCommunication(cellchat_normal, min.cells = 10)
+cellchat_naive <- filterCommunication(cellchat_naive, min.cells = 10)
 
 
-cellchat_normal <- computeCommunProbPathway(cellchat_normal)
-df.netP <- reshape2::melt(cellchat_normal@net$prob, value.name = "prob")
+cellchat_naive <- computeCommunProbPathway(cellchat_naive)
+
 
 df_significant_netP <- df.netP[apply(df.netP!=0, 1, all),]
 
 
-cellchat_normal <- aggregateNet(cellchat_normal,thresh = 0.05)
-cellchat_normal@net$pathways <- df_significant_netP$Var3
-groupSize <- as.numeric(table(cellchat_normal@idents))
+cellchat_naive <- aggregateNet(cellchat_naive,thresh = 0.05)
+cellchat_naive@net$pathways <- df_significant_netP$Var3
+groupSize <- as.numeric(table(cellchat_naive@idents))
 par(mfrow = c(1,2), xpd=TRUE)
-count <- netVisual_circle(cellchat_normal@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Number of interactions")
+count <- netVisual_circle(cellchat_naive@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Number of interactions")
 
 
-weight <- netVisual_circle(cellchat_normal@net$weight, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Interaction weights/strength")
+weight <- netVisual_circle(cellchat_naive@net$weight, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Interaction weights/strength")
 
 dev.off()
 fig_dir <- "C:/Users/ranoj/Desktop/Single_cell_output/cellchat/"
@@ -82,7 +82,7 @@ weight
 dev.off()
 
 
-mat <- cellchat_normal@net$weight
+mat <- cellchat_naive@net$weight
 #svg(paste0("comp_pmfs", ".svg"), width=5.3, height=7)
 par(mar=c(0.5, 0.5, 0.2, 0.2), mfrow=c(4,3),
     oma = c(4, 4, 0.2, 0.2))
@@ -95,16 +95,16 @@ for (i in 1:nrow(mat)) {
 
 ###Just change the output directory based on the sample##
 setwd("C:/Users/ranoj/Desktop/Single_cell_output/cellchat/wound2")
-pathways.show.all <- cellchat_normal@net$pathways
+pathways.show.all <- cellchat_naive@net$pathways
 # check the order of cell identity to set suitable vertex.receiver
-levels(cellchat_normal@idents)
+levels(cellchat_naive@idents)
 vertex.receiver = c(1,2,3,5,12,17)
 for (i in 1:length(pathways.show.all)) {
   # Visualize communication network associated with both signaling pathway and individual L-R pairs
-  gg1 <- netVisual(cellchat_normal, signaling = pathways.show.all[i], vertex.receiver = vertex.receiver, layout = "hierarchy")
+  gg1 <- netVisual(cellchat_naive, signaling = pathways.show.all[i], vertex.receiver = vertex.receiver, layout = "hierarchy")
   # Compute and visualize the contribution of each ligand-receptor pair to the overall signaling pathway
-  gg2 <- netVisual_aggregate(cellchat_normal, signaling = pathways.show.all[i], layout = "chord")
-  gg <- netAnalysis_contribution(cellchat_normal, signaling = pathways.show.all[i])
+  gg2 <- netVisual_aggregate(cellchat_naive, signaling = pathways.show.all[i], layout = "chord")
+  gg <- netAnalysis_contribution(cellchat_naive, signaling = pathways.show.all[i])
   #ggsave(filename=paste0(pathways.show.all[i], "_wound2_L-R_contribution.svg"), plot=gg, width = 3, height = 2, units = 'in', dpi = 300)
   #ggsave(filename=paste0(pathways.show.all[i], "_net_visual.svg"), plot=gg1, width = 3, height = 2, units = 'in', dpi = 300)
   #ggsave(filename=paste0(pathways.show.all[i], "_wound1_net_contribution.svg"), plot=gg1, width = 3, height = 2, units = 'in', dpi = 300)
@@ -112,41 +112,40 @@ for (i in 1:length(pathways.show.all)) {
 }
 
 i = 1
-gg <- netAnalysis_contribution(cellchat_normal, signaling = pathways.show.all[i])
-netVisual(cellchat_normal, signaling = pathways.show.all[i], vertex.receiver = vertex.receiver, layout = "hierarchy")
-
-ggsave(filename=paste0(pathways.show.all[i], "_L-R_contribution.pdf"), plot=gg, width = 3, height = 2, units = 'in', dpi = 300)
+gg <- netAnalysis_contribution(cellchat_naive, signaling = pathways.show.all[i])
+netVisual(cellchat_naive, signaling = pathways.show.all[i], vertex.receiver = vertex.receiver, layout = "hierarchy")
 
 
-# Access all the signaling pathways showing significant communications
-pathways.show.all <- cellchat_normal@netP$pathways
+
+pathways.show.all <- cellchat_naive@netP$pathways
 # check the order of cell identity to set suitable vertex.receiver
-levels(cellchat_normal@idents)
+levels(cellchat_naive@idents)
 vertex.receiver = seq(1,4)
 for (i in 1:length(pathways.show.all)) {
   # Visualize communication network associated with both signaling pathway and individual L-R pairs
-  netVisual(cellchat_normal, signaling = pathways.show.all[i], vertex.receiver = vertex.receiver, layout = "hierarchy")
+  netVisual(cellchat_naive, signaling = pathways.show.all[i], vertex.receiver = vertex.receiver, layout = "hierarchy")
   # Compute and visualize the contribution of each ligand-receptor pair to the overall signaling pathway
-  gg <- netAnalysis_contribution(cellchat_normal, signaling = pathways.show.all[i])
+  gg <- netAnalysis_contribution(cellchat_naive, signaling = pathways.show.all[i])
   #ggsave(filename=paste0(pathways.show.all[i], "_L-R_contribution.pdf"), plot=gg, width = 3, height = 2, units = 'in', dpi = 300)
 }
 
 
 # show all the significant interactions (L-R pairs) from some cell groups (defined by 'sources.use') to other cell groups (defined by 'targets.use')
-netVisual_bubble(cellchat_normal, sources.use = 4, targets.use = c(5:11), remove.isolate = FALSE)
+netVisual_bubble(cellchat_naive, sources.use = 4, targets.use = c(5:11), remove.isolate = FALSE)
 
 #> Comparing communications on a single object
 
 
 # Compute the network centrality scores
-cellchat_normal <- netAnalysis_computeCentrality(cellchat_normal, slot.name = "netP") # the slot 'netP' means the inferred intercellular communication network of signaling pathways
+cellchat_naive <- netAnalysis_computeCentrality(cellchat_naive, slot.name = "netP") # the slot 'netP' means the inferred intercellular communication network of signaling pathways
 # Visualize the computed centrality scores using heatmap, allowing ready identification of major signaling roles of cell groups
-netAnalysis_signalingRole_network(cellchat_normal, signaling = pathways.show.all, width = 8, height = 2.5, font.size = 10)
+netAnalysis_signalingRole_network(cellchat_naive, signaling = pathways.show.all, width = 8, height = 2.5, font.size = 10)
 
 # Signaling role analysis on the aggregated cell-cell communication network from all signaling pathways
-gg1 <- netAnalysis_signalingRole_scatter(cellchat_normal)
+gg1 <- netAnalysis_signalingRole_scatter(cellchat_naive)
 #> Signaling role analysis on the aggregated cell-cell communication network from all signaling pathways
 # Signaling role analysis on the cell-cell communication networks of interest
-gg2 <- netAnalysis_signalingRole_scatter(cellchat_normal)
+gg2 <- netAnalysis_signalingRole_scatter(cellchat_naive)
 #> Signaling role analysis on the cell-cell communication network from user's input
 gg1 + gg2
+
