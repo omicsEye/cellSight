@@ -35,9 +35,13 @@ seur_obj$type <- ifelse(seur_obj$sample %in% c("nonwound1","nonwound2"), "Naive"
 saveRDS(seur_obj,"C:/Users/ranoj/Desktop/Single_cell_output/objects/scintegrated_final.rds")
 
 seur_obj <-
+<<<<<<< HEAD
   readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
 
 seur_obj <- readRDS("~/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
+=======
+  readRDS("C:/Users/ranoj/Desktop/Single_cell_output/objects/scintegrated_final.rds")
+>>>>>>> 99482be2a8ff615ea9b58e3e67f19267b29feca6
 ###For chekcing ####
 i <- "Adipocyte"
 ####################
@@ -57,7 +61,11 @@ for (i in seur_obj$Celltype %>% unique()) {
   test <- Tweedieverse(
     input_features,
     obj_sub@meta.data[6] ,
+<<<<<<< HEAD
     output = paste0('~/Box/snRNA_CellRanger_Wound_nonWound/tweedieverse/2022-03-14/cluster_', i),
+=======
+    output = paste0('C:/Users/ranoj/Desktop/Single_cell_output/tweedieverse_rerun/cluster_', i),
+>>>>>>> 99482be2a8ff615ea9b58e3e67f19267b29feca6
     prev_threshold = 0.0,
     entropy_threshold = 0.0,
     base_model = 'CPLM',
@@ -67,7 +75,7 @@ for (i in seur_obj$Celltype %>% unique()) {
   )
 }
 
-wounded <- subset(x = seur_obj, subset = (type  == 'wound'))
-
+wounded <- subset(x = seur_obj, subset = (type  == 'Injured'))
+naive <- subset(x = seur_obj, subset = (type  == 'Naive'))
 #test.subset <- subset(x = epithelial, subset = (stim == "Healthy" | stim == "another_condition"))
 
