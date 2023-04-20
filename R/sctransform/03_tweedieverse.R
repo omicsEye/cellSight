@@ -36,6 +36,8 @@ saveRDS(seur_obj,"C:/Users/ranoj/Desktop/Single_cell_output/objects/scintegrated
 
 seur_obj <-
   readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
+
+seur_obj <- readRDS("~/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
 ###For chekcing ####
 i <- "Adipocyte"
 ####################
@@ -47,10 +49,6 @@ for (i in seur_obj$Celltype %>% unique()) {
   counts <- obj_sub %>%
     GetAssayData(assay = "RNA", slot = "counts")
   
-  
-  
-  
-  
   input_features <- counts |>
     as.matrix() |>
     t() |>
@@ -59,7 +57,7 @@ for (i in seur_obj$Celltype %>% unique()) {
   test <- Tweedieverse(
     input_features,
     obj_sub@meta.data[6] ,
-    output = paste0('C:/Users/ranoj/Desktop/Single_cell_output/tweedieverse/cluster_', i),
+    output = paste0('~/Box/snRNA_CellRanger_Wound_nonWound/tweedieverse/2022-03-14/cluster_', i),
     prev_threshold = 0.0,
     entropy_threshold = 0.0,
     base_model = 'CPLM',
