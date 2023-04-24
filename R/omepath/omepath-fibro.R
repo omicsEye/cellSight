@@ -13,9 +13,9 @@ library(fgsea)
 library(org.Mm.eg.db)
 
 data_dir <-
-  "~/box/snRNA_CellRanger_Wound_nonWound/analysis/Tweedieverse_output_Fibroblasts/"
+  setwd("/Users/ranojoychatterjee/Desktop/Single_cell_output/tweedieverse_rerun/cluster_Fibroblasts 7/")
 df <- read.table(
-  file = paste0(data_dir, "all_results.tsv"),
+  file = paste0(data_dir, "/all_results.tsv"),
   sep = '\t',
   header = TRUE
 )
@@ -52,3 +52,4 @@ omepath_results <- omePath(
   min_member = 2,
   do_plot = TRUE
 )
+
