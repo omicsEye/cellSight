@@ -34,14 +34,10 @@ seur_obj$type <- ifelse(seur_obj$sample %in% c("nonwound1","nonwound2"), "Naive"
 
 saveRDS(seur_obj,"C:/Users/ranoj/Desktop/Single_cell_output/objects/scintegrated_final.rds")
 
-seur_obj <-
-<<<<<<< HEAD
-  readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
+#seur_obj <- readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
 
-seur_obj <- readRDS("~/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
-=======
-  readRDS("C:/Users/ranoj/Desktop/Single_cell_output/objects/scintegrated_final.rds")
->>>>>>> 99482be2a8ff615ea9b58e3e67f19267b29feca6
+seur_obj <- readRDS("Users/ranojoychatterjee/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/objects/scintegrated_final.rds")
+
 ###For chekcing ####
 i <- "Adipocyte"
 ####################
