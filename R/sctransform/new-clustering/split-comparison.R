@@ -2,6 +2,8 @@ library(Seurat)
 library(tidyverse)
 library(patchwork)
 library(RColorBrewer)
+install.packages("svglite")
+library(svglite)
 my_cols = brewer.pal(4,"Dark2")
 int <-
   read_rds("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/objects/sc-integrated.rds")
@@ -15,6 +17,9 @@ nonint <-
   read_rds("/Users/ranojoychatterjee/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/objects/sc-non-integrated.rds")
 
 seur_obj <- read_rds("/Users/ranojoychatterjee/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/objects/scintegrated_final.rds")
+
+#int<- read_rds("scintegrated_final.rds")
+
 
 nonint$type <-
   nonint$sample %>%
@@ -60,19 +65,26 @@ sc_int <- seur_obj %>%
     label.size = 2,
     raster = T, 
     pt.size = .01,
-    repel =T
+    repel =T,
+    cols = c('KC' = "#49B500", 'SG 1' = '#00B4F0', 'SG 2' = '#FF61CC', 'Mono' = '#E36EF6',
+                      'Mac' = '#FF64B0','Macro' ='#9F8CFF', 'Mast' = '#619CFF', 'FB 1' = '#CD9600',
+                      'FB 2' = '#00BBDC','FB 3' = '#00C08B', 'FB 4' = '#00A9FF','FB 5' = '#9DA700','FB 6' = '#DE8C00','FB 7' = '#C77CFF',
+                      'Adipo' = '#B79F00','Mu 1' = '#00BE67','Mu 2' = '#00BFC4', 'Mu 3' = '#00C1A9', 'APM' = '#00BA38', 'EC 1' = "#7CAE00",
+                      ' EC 2' =  "#F564E3")
   ) +
   labs(title = NULL, x = NULL, y = NULL) +
   theme(legend.position = "none") +
   theme(axis.text = element_blank(),text = element_text(size = 2)) +
   NoAxes()
   
+ggsave("/Users/ranojoychatterjee/Desktop/Single_cell_output/plot_integrated.svg", width = 3.2,   height = 2, dpi ="retina")
 
 sc_nonint <- seur_obj %>%
   DimPlot(
     group.by = "seurat_clusters",
     label = T,
-    label.size = 2.5
+    label.size = 2.5,
+    
   ) +
   labs(title = NULL, x = NULL, y = NULL) +
   theme(axis.text = element_blank()) +
@@ -112,3 +124,28 @@ DoHeatmap(object = obj, genes.use = top10$gene, slim.col.label = TRUE, remove.ke
 
 
 DoHeatmap(subset(seur_obj, downsample = 100), features = features, size = 3)
+
+
+
+
+seur_obj$Celltype <- sub('Fibroblasts 1', "KC", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Fibroblasts 2", "SG1", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Fibroblasts 3", "SG2", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Fibroblasts 4", "Mac", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Fibroblasts 5", "Mast", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Fibroblasts 6", "FB 7", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Fibroblasts 7", "APM", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Keratinocytes", "Mono", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Adipocyte", "Mu 2", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Sebaceous gland cells 1", "FB 2", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Sebaceous gland cells 2", "EC 1", seur_obj$Celltype)
+seur_obj$Celltype <- sub("SK Muscle 1", "Adipo", seur_obj$Celltype)
+seur_obj$Celltype <- sub("SK Muscle 2", "Mu 1", seur_obj$Celltype)
+seur_obj$Celltype <- sub("SK Muscle 3", "Mu 3", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Endothelial 1", "FB 3", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Endothelial 2", "FB 5", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Errector Pilli", "FB 4", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Immune", "EC 2", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Macrophages 1", "FB 1", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Macrophages 2", "FB 6", seur_obj$Celltype)
+seur_obj$Celltype <- sub("Monocytes", "Macro", seur_obj$Celltype)

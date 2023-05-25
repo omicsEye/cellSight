@@ -15,3 +15,5 @@ features <- c("Adgre1", "Ptprc","Krt10", "Plin1",
 
 seur_obj |>
   FeaturePlot(features)
+
+
