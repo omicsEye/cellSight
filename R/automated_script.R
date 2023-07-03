@@ -133,6 +133,9 @@ sctransform_integration<-function(obj_list){
     obj_list <- anchors %>%
       IntegrateData(normalization.method = "SCT")
   }
+  saveRDS(
+    "/Users/ranoj/Desktop/Single_cell_output/integrated.rds"
+  )
   return(obj_list)
 }
 
@@ -155,7 +158,7 @@ pca_clustering<-function(obj_list, resolution = "integrated_snn_res.0.8",cluster
     names(new.cluster.ids) <- levels(seur_obj)
     seur_obj <- RenameIdents(seur_obj, new.cluster.ids)
   }
-  for (i in seur_obj$integrated_snn_res.0.6 |> unique()) {
+  for (i in seur_obj$integrated_snn_res.0.8 |> unique()) {
     if (!dir.exists("~/analysis/")){
       dir.create("~/analysis/")
       seur_obj |>
@@ -221,11 +224,18 @@ cellchat_eval <- function(obj_list,organism){
   rm(seur_obj,obj_list,meta,wounded,data.input,p,p1,p2,p3,umap_theme,cluster.markers)
   
   ##import cellchat database
+  if(organism == "Mouse"){
   CellChatDB <- CellChatDB.mouse
   showDatabaseCategory(CellChatDB)
   
   CellChatDB.use <- CellChatDB 
-  
+  }
+  if(organism == "Human"){
+    CellChatDB <- CellChatDB.human
+    showDatabaseCategory(CellChatDB)
+    
+    CellChatDB.use <- CellChatDB 
+  }  
   # set the used database in the object
   cellchat_normal@DB <- CellChatDB.use
   
@@ -360,10 +370,20 @@ cellchat_eval <- function(obj_list,organism){
 }  
 }
 
-main_function<- function(dir){
+cellsight<- function(dir){
   directory = readline(prompt = "Enter the path to your directory : ")
   seur_obj <- data_directory(directory)
-  var1 = readline(prompt = "Enter  : ")
+  qc_plot(seur_obj)
+  var1 = readline(prompt = "Enter the minimun RNA : ")
+  var2 = readline(prompt = "Enter the number of feature : ")
+  var3 = readline(prompt = "Enter the number of count : ")
+  var4 =  readline(prompt  = "Enter the mitochondrial percentage : ")
+  seur_obj <- filtering(seur_obj,min_rna = var1,nfeature_rna = var2,ncount_rna = var3,mit.percent = var4)
+  int_seur <- sctransform_integration(seur_obj)
+  int_seur <- pca_clustering(int_seur)
+  tweedieverse_analysis(int_seur)
+  cellchat_eval(int_seur,organism)
+  
 }
 
 
