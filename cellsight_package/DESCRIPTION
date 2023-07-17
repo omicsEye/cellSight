@@ -1,0 +1,13 @@
+Package: cellsight
+Type: Package
+Title: Pipeline to facilitate the downstream analysis of single cell experiment
+Version: 0.1.0
+Author: Ranojoy Chatterjee, Chiraag Gohel, ALi Rahnavard
+Maintainer: Ranojoy Chatterjee <ranojoy@gwu.edu>,Chiraag Gohel <chiraag@gwu.edu>, Ali Rahnavard <rahnavard@gwu.edu>
+Description: The pipeline helps to streamline the down stream analysis of a single cell experiment
+    It doe standard filtering and qc plot followed by differential exprssion using tweedieverse
+    an cell communication using cellchat.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
