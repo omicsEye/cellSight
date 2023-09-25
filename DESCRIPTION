@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Ranojoy Chatterjee, Chiraag Gohel, Ali Rahnavard
 Maintainer: Ranojoy Chatterjee <ranojoy@gwu.edu>,Chiraag Gohel <chiraag@gwu.edu>, Ali Rahnavard <rahnavard@gwu.edu>
 Description: The pipeline helps to streamline the down stream analysis of a single cell experiment
-    It doe standard filtering and qc plot followed by differential exprssion using tweedieverse
+    It does standard filtering and qc plot followed by differential exprssion using tweedieverse
     an cell communication using cellchat.
 License: GPL-3
 Encoding: UTF-8
