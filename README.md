@@ -24,7 +24,18 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 # Install cellSight from GitHub
 devtools::install_github("omicsEye/cellSight")
 ```
+If Bioconductor is missing, run the following commands in the R console:
+```R
+# Install Bioconductor Manager and install DelayedMatrixStats
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 
+BiocManager::install("DelayedMatrixStats")
+
+BiocManager::install("glmGamPoi")
+
+
+```
 ## Usage
 
 Using cellSight is straightforward. Load the package, provide your data files, and let it do the magic. Here's a basic example:

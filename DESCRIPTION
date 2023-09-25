@@ -19,4 +19,5 @@ Imports:
     Seurat,
     glmGamPoi,
     gridExtra,
-    tidyverse
+    tidyverse,
+    devtools
