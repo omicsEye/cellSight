@@ -32,8 +32,8 @@ if (!require("BiocManager", quietly = TRUE))
 
 BiocManager::install("DelayedMatrixStats")
 
+#Install glmGamPoi
 BiocManager::install("glmGamPoi")
-
 
 ```
 ## Usage
