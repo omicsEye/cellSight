@@ -1,4 +1,4 @@
-Package: cellsight
+Package: cellSight
 Type: Package
 Title: Pipeline to facilitate the downstream analysis of single cell experiment
 Version: 0.1.0

@@ -12,19 +12,7 @@ cellSight is an R package that offers a fully automated pipeline for the analysi
 - [License](#license)
 
 ## Installation
-
-To install cellSight, you'll need to have R and the 'devtools' package installed. Run the following commands in your R console:
-
-```R
-# Install devtools if you haven't already
-if (!requireNamespace("devtools", quietly = TRUE)) {
-  install.packages("devtools")
-}
-
-# Install cellSight from GitHub
-devtools::install_github("omicsEye/cellSight")
-```
-If Bioconductor is missing, run the following commands in the R console:
+Install Bioconductor packages before installing cellSight on the R console:
 ```R
 # Install Bioconductor Manager and install DelayedMatrixStats
 if (!require("BiocManager", quietly = TRUE))
@@ -36,6 +24,19 @@ BiocManager::install("DelayedMatrixStats")
 BiocManager::install("glmGamPoi")
 
 ```
+
+To install cellSight, you'll need have the 'devtools' package installed. Run the following commands in your R console:
+
+```R
+# Install devtools if you haven't already
+if (!requireNamespace("devtools", quietly = TRUE)) {
+  install.packages("devtools")
+}
+
+# Install cellSight from GitHub
+devtools::install_github("omicsEye/cellSight")
+```
+
 ## Usage
 
 Using cellSight is straightforward. Load the package, provide your data files, and let it do the magic. Here's a basic example:
