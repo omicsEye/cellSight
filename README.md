@@ -2,6 +2,8 @@
 
 cellSight is an R package that offers a fully automated pipeline for the analysis of single-cell RNA sequencing (scRNA-seq) data. This package is designed to streamline the analysis process, making it accessible and efficient for both beginners and experienced bioinformaticians. The best part? It requires only the data files, taking care of the rest.
 
+* **Citation:** if you use the cellSight software, please cite: Ranojoy Chatterjee, Chiraag Gohel, and Ali Rahnavard (2023+). **cellSight: Deciphering underlying dynamics of cells and gene expression.** R package version 0.0.1. https://www.rahnavard.org/cellSight.
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -9,7 +11,6 @@ cellSight is an R package that offers a fully automated pipeline for the analysi
 - [Features](#features)
 - [Example](#example)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Installation
 Install Bioconductor packages before installing cellSight on the R console:
@@ -71,12 +72,8 @@ cellSight comes with a wide range of features, including:
 
 We welcome contributions from the community. If you'd like to contribute to cellSight, please follow our [Contributing Guidelines](CONTRIBUTING.md).
 
-## License
-
-cellSight is distributed under the [MIT License](LICENSE). You are free to use, modify, and distribute this software as per the terms of the license. See the [LICENSE](LICENSE) file for details.
-
 ---
 
 Thank you for choosing cellSight for your scRNA-seq analysis. We hope this tool simplifies your research and helps you gain valuable insights from your single-cell data. If you have any questions, encounter issues, or want to contribute, please don't hesitate to get in touch with us.
 
-For updates and news, follow us on Twitter [@rahlab](https://twitter.com/rahlab). Happy analyzing!
+For updates and news, follow us on Twitter [@RahnavardLab](https://twitter.com/RahnavardLab). Happy analyzing!
