@@ -3,6 +3,7 @@
 cellSight is an R package that offers a fully automated pipeline for the analysis of single-cell RNA sequencing (scRNA-seq) data. This package is designed to streamline the analysis process, making it accessible and efficient for both beginners and experienced bioinformaticians. The best part? It requires only the data files, taking care of the rest.
 
 * **Citation:** if you use the cellSight software, please cite: Ranojoy Chatterjee, Chiraag Gohel, and Ali Rahnavard (2023+). **cellSight: Deciphering underlying dynamics of cells and gene expression.** R package version 0.0.1. https://www.rahnavard.org/cellSight.
+[![DOI](https://zenodo.org/badge/429576005.svg)](https://zenodo.org/doi/10.5281/zenodo.10041146)
 
 ## Table of Contents
 
@@ -54,7 +55,7 @@ results <- cellSight(expression_matrix)
 # Explore the results and visualize the output
 ```
 
-## Features
+## Functions
 
 cellSight comes with a wide range of features, including:
 
