@@ -9,7 +9,7 @@ cellSight is an R package that offers a fully automated pipeline for the analysi
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Features](#functions)
+- [Funtions](#functions)
 - [Example](#example)
 - [Contributing](#contributing)
 
