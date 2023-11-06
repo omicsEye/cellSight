@@ -21,3 +21,4 @@ Imports:
     gridExtra,
     tidyverse,
     devtools
+Roxygen: list(markdown = TRUE)

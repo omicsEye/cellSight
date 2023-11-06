@@ -10,7 +10,7 @@ data_directory(dir)
 \item{dir}{The directory path}
 }
 \value{
-The output form \code{\link{print}}
+The output form \code{\link[=print]{print()}}
 }
 \description{
 The function looks for the desired files under the supplied directory

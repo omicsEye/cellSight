@@ -60,6 +60,7 @@ results <- cellSight(expression_matrix)
 cellSight comes with a wide range of features, including:
 
 - **Quality Control:** Automated quality control (QC) checks for cells and genes.
+cellsight::
 - **Normalization:** Data normalization to ensure accurate downstream analysis.
 - **Clustering:** Cell clustering based on gene expression profiles.
 - **Differential Expression Analysis:** Identifying differentially expressed genes between clusters.

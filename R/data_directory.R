@@ -15,7 +15,8 @@
 #' @import gridExtra
 #' @import cowplot
 #'
-#' @return The output form \code{\link{print}}
+#'
+#' @return The output form [print()]
 #' @export
 #'
 #' @examples
