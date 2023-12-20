@@ -8,7 +8,7 @@
 #'
 #' @examples
 
-qc_plot <- function(seur_object){
+qc_plots<- function(seur_object){
   obj_list <- seur_object
   for(index in 1:length(obj_list)){
     print(index)
