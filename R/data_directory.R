@@ -31,7 +31,7 @@ data_directory<- function(dir){
 
 
   obj_list <- dirs %>%
-    set_names() %>%
+    dplyr::set_names() %>%
     { map(.f = function(x) {
       paste0(box_dir, x, "/outs/filtered_feature_bc_matrix") %>%
         Read10X() %>%
