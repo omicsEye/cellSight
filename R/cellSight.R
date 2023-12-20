@@ -14,11 +14,7 @@
 #' data(iris)
 #' result <- cellSight(iris)
 #'
-#' @importFrom other_package data_directory filtering pca_clusters qc_plots
-#' @import other_package
-#' @dependsOn other_package
-#' @references
-#' Author, et al. (Year). Title. Journal.
+#'
 #'
 #' @seealso
 #' \code{\link{data_directory}}, \code{\link{filtering}}, \code{\link{pca_clusters}}, \code{\link{qc_plots}}

@@ -22,9 +22,8 @@ following functions in order: data_directory, filtering, pca_clusters, and qc_pl
 data(iris)
 result <- cellSight(iris)
 
-}
-\references{
-Author, et al. (Year). Title. Journal.
+
+
 }
 \seealso{
 \code{\link{data_directory}}, \code{\link{filtering}}, \code{\link{pca_clusters}}, \code{\link{qc_plots}}
