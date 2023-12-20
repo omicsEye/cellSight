@@ -32,11 +32,11 @@ data_directory<- function(dir){
 
   obj_list <- dirs %>%
     set_names() %>%
-    map(.f = function(x) {
+    { map(.f = function(x) {
       paste0(box_dir, x, "/outs/filtered_feature_bc_matrix") %>%
         Read10X() %>%
         CreateSeuratObject()
-    })
+    })}
 
   ## Just changed the length to dimension to get both the size##
   #dim(obj_list$Nonwound1),dim(obj_list$Nonwound2),dim(obj_list$Wound1),dim(obj_list$Wound2)
