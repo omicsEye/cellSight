@@ -38,7 +38,7 @@ cellSight <- function(data_directory) {
   sctransform_data <- sctransform_integration(filtered_data)
 
   # Step 5: Call clustering
-  pca_clusters_result <- pca_clusters(filtered_data)
+  pca_clusters_result <- pca_clustering(filtered_data)
 
   # Step 6: Call qc_plots function
   tweedieverse_result <- tweedieverse(pca_clusters_result)
