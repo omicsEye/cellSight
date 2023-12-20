@@ -14,7 +14,7 @@
 #' @import tidyverse
 #' @import gridExtra
 #' @import cowplot
-#' @import purr
+#' @import purrr
 #'
 #' @return The output form [print()]
 #' @export
