@@ -32,7 +32,7 @@ data_directory<- function(dir){
 
   obj_list <- dirs %>%
     purrr::set_names() %>%
-    { map(.f = function(x) {
+    { map(.x =.,.f = function(x) {
       paste0(box_dir, x, "/outs/filtered_feature_bc_matrix") %>%
         Read10X() %>%
         CreateSeuratObject()
