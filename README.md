@@ -25,6 +25,8 @@ BiocManager::install("DelayedMatrixStats")
 #Install glmGamPoi
 BiocManager::install("glmGamPoi")
 
+#Install mulltest
+BiocManager::install('multtest')
 ```
 
 To install cellSight, you'll need have the 'devtools' package installed. Run the following commands in your R console:

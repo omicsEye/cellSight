@@ -15,7 +15,7 @@
 #' @import gridExtra
 #' @import cowplot
 #' @import purrr
-#'
+#' @import metap
 #' @return The output form [print()]
 #' @export
 #'
