@@ -17,6 +17,7 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
   }
 
   int_seur <- int_seur |>
+    FindVariableFeatures() |>
     RunPCA()|>
     RunUMAP(dims = 1:30) |>
     FindNeighbors(dims = 1:30) |>
