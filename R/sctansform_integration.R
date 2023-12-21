@@ -14,8 +14,8 @@ sctransform_integration<-function(obj_list){
       lapply(FUN = function(x) {
         SCTransform(x, vst.flavor = "v2")
       })
+    return(obj_list)
   }
-  return(obj_list)
   if(length(obj_list)>1){
     obj_list <- obj_list %>%
       lapply(FUN = function(x) {
@@ -36,5 +36,4 @@ sctransform_integration<-function(obj_list){
   saveRDS(
     "/Users/ranoj/Desktop/Single_cell_output/integrated.rds"
   )
-  return(obj_list)
 }
