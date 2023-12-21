@@ -13,7 +13,8 @@ filtering(
   mit.percent = 1,
   sample_type = NULL,
   sample_name = NULL,
-  stepwise = FALSE
+  stepwise = FALSE,
+  outpt_directory
 )
 }
 \arguments{

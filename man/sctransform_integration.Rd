@@ -4,7 +4,7 @@
 \alias{sctransform_integration}
 \title{Title}
 \usage{
-sctransform_integration(obj_list)
+sctransform_integration(obj_list, output_directory)
 }
 \arguments{
 \item{obj_list}{}

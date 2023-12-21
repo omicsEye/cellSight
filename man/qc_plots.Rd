@@ -4,7 +4,7 @@
 \alias{qc_plots}
 \title{Quality control filtering with plots}
 \usage{
-qc_plots(seur_object)
+qc_plots(seur_object, output_directory)
 }
 \arguments{
 \item{seur_object}{The seurat object from the previous directory step}

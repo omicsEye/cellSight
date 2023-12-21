@@ -4,7 +4,7 @@
 \alias{cellSight}
 \title{cellSight Function}
 \usage{
-cellSight(data_directory)
+cellSight(data_directory, output_directory)
 }
 \arguments{
 \item{input_data}{A data frame or matrix containing the single-cell data.}

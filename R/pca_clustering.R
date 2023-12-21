@@ -8,8 +8,9 @@
 #' @export
 #'
 #' @examples
-pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster_name= NULL){
-    DefaultAssay(int_seur) <- "integrated"
+pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster_name= NULL,output_directory){
+  setwd(output_directory)
+  DefaultAssay(int_seur) <- "integrated"
 
   int_seur <- int_seur |>
     FindVariableFeatures() |>

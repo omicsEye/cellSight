@@ -24,24 +24,24 @@
 #' @aliases cellSight
 #' @concept Cell analysis
 #' @concept Single-cell RNA-seq
-cellSight <- function(data_directory) {
+cellSight <- function(data_directory,output_directory) {
   # Step 1: Call data_directory function
-  data_dir_result <- data_directory(data_directory)
+  data_dir_result <- data_directory(data_directory,output_dirctory)
 
   # Step 2: Call QC plots
-  qc_plots <- qc_plots(data_dir_result)
+  qc_plots <- qc_plots(data_dir_result,output_directory)
 
   # Step 3: Call filtering function
-  filtered_data <- filtering(data_dir_result)
+  filtered_data <- filtering(data_dir_result,output_directory)
 
   # Step 4: Call sctransform integration
-  sctransform_data <- sctransform_integration(filtered_data)
+  sctransform_data <- sctransform_integration(filtered_data,output_directory)
 
   # Step 5: Call clustering
-  pca_clusters_result <- pca_clustering(sctransform_data)
+  pca_clusters_result <- pca_clustering(sctransform_data,output_directory)
 
   # Step 6: Call qc_plots function
-  tweedieverse_result <- tweedieverse(pca_clusters_result)
+  tweedieverse_result <- tweedieverse(pca_clusters_result,output_directory)
 
   # Combine results into a list
   results_list <- list(

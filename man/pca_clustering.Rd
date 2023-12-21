@@ -7,7 +7,8 @@
 pca_clustering(
   int_seur,
   resolution = "integrated_snn_res.0.8",
-  cluster_name = NULL
+  cluster_name = NULL,
+  output_directory
 )
 }
 \arguments{

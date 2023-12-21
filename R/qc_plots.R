@@ -8,7 +8,8 @@
 #'
 #' @examples
 
-qc_plots<- function(seur_object){
+qc_plots<- function(seur_object,output_directory){
+  setwd(output_directory)
   obj_list <- seur_object
   for(index in 1:length(obj_list)){
     print(index)
@@ -17,13 +18,18 @@ qc_plots<- function(seur_object){
 
     plot_violin <- VlnPlot(obj_list[[index]],features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),
                            ncol = 3)
-    ggsave(paste0("~/qc/qcplot_violin_",index,".png"))
+    file_path <- paste0(output_directory,"qcplot_violin_",index,".png")
+    ggsave(file_path,plot_violin,bg="white")
     plot_scatter <- FeatureScatter(obj_list[[index]],feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
-    ggsave(paste0("~/qc/qcplot_scatter_",index,".png"),bg="white")
+    file_path_1 <- paste0(output_directory,"qcplot_scatter_",index,".png")
+    ggsave(file_path_1,plot_scatter,bg="white")
     grid <- plot_grid(
       plot_violin, plot_scatter,
       labels = "AUTO", ncol = 1
     )
-    ggsave(paste0("~/qc/qcplot_grid_joined_",index,".png"),bg="white")
+    file_path_2 <- paste0(output_directory,"qcplot_grid_joined_",index,".png")
+    save_plot(file_path_2,grid,bg="white")
   }
+
+
 }
