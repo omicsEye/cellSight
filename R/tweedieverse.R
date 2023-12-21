@@ -23,7 +23,7 @@ tweedieverse_analysis<-function(obj_list){
     test <- Tweedieverse(
       input_features,
       obj_list@meta.data[6] ,
-      output = paste0('C:/Users/ranoj/Desktop/Single_cell_output/tweedieverse_rerun/cluster_', i),
+      output = paste0('~/tweedieverse_run/cluster_', i),
       prev_threshold = 0.0,
       entropy_threshold = 0.0,
       base_model = 'CPLM',

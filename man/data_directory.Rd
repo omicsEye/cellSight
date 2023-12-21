@@ -4,7 +4,7 @@
 \alias{data_directory}
 \title{Directory function}
 \usage{
-data_directory(dir)
+data_directory(dir, output_dir)
 }
 \arguments{
 \item{dir}{The directory path}

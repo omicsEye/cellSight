@@ -34,6 +34,6 @@ sctransform_integration<-function(obj_list){
     return(obj_list)
   }
   saveRDS(
-    "/Users/ranoj/Desktop/Single_cell_output/integrated.rds"
+    "~/sc_transform/integrated.rds"
   )
 }
