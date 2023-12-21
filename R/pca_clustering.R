@@ -29,20 +29,20 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
     if (!dir.exists("~/analysis/")){
       dir.create("~/analysis/")
       int_seur |>
-        FindConservedMarkers(ident.1 = i) |>
+        FindAllMarkers(ident.1 = i) |>
         write.csv(
           paste0(
-            "~/analysis/conserved-",
+            "~/analysis/all-",
             i,
             ".csv"
           )
         )
     }else{
       int_seur |>
-        FindConservedMarkers(ident.1 = i) |>
+        FindAllMarkers(ident.1 = i) |>
         write.csv(
           paste0(
-            "~/analysis/conserved-",
+            "~/analysis/all-",
             i,
             ".csv"
           )
