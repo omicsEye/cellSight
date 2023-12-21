@@ -39,8 +39,7 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
         )
     }else{
       int_seur |>
-        FindConservedMarkers(ident.1 = i,
-                             grouping.var = "type") |>
+        FindConservedMarkers(ident.1 = i) |>
         write.csv(
           paste0(
             "~/analysis/conserved-",
