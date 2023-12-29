@@ -13,9 +13,9 @@ LazyData: true
 RoxygenNote: 7.2.3
 Imports: 
     BiocManager (>= 1.30.15),
-    BiocManager::DelayedMatrixStats (>= 1.14.0),
-    BiocManager::glmGamPoi (>= 1.10.0),
-    BiocManager::multtest (>= 2.48.0),
+    DelayedMatrixStats (>= 1.14.0),
+    glmGamPoi (>= 1.10.0),
+    multtest (>= 2.48.0),
     cowplot,
     dplyr,
     ggplot2,
