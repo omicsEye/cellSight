@@ -6,6 +6,7 @@
 \usage{
 filtering(
   obj_list,
+  output_directory,
   index = 1,
   min_rna = 200,
   nfeature_rna = 2500,
@@ -13,8 +14,7 @@ filtering(
   mit.percent = 1,
   sample_type = NULL,
   sample_name = NULL,
-  stepwise = FALSE,
-  outpt_directory
+  stepwise = FALSE
 )
 }
 \arguments{

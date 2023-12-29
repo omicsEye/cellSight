@@ -15,8 +15,8 @@
 #'
 #' @examples
 
-filtering<-function(obj_list,index=1,min_rna = 200,nfeature_rna = 2500,ncount_rna = 8000,mit.percent = 1,sample_type=NULL,sample_name=NULL,stepwise = FALSE,output_directory){
-  setwd(output_directory)
+filtering<-function(obj_list,output_directory,index=1,min_rna = 200,nfeature_rna = 2500,ncount_rna = 8000,mit.percent = 1,sample_type=NULL,sample_name=NULL,stepwise = FALSE){
+  #setwd(output_directory)
   for(i in 1:length(obj_list)){
     obj_list[[i]][["percent.mt"]] <- obj_list[[i]] %>%
       PercentageFeatureSet(pattern = "^mt-")
