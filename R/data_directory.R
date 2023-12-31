@@ -41,6 +41,15 @@ data_directory<- function(dir,output_dir){
 
   ## Just changed the length to dimension to get both the size##
   #dim(obj_list$Nonwound1),dim(obj_list$Nonwound2),dim(obj_list$Wound1),dim(obj_list$Wound2)
-  for(i in 1:length(obj_list)){print(dim(obj_list[[i]]))}
+  #for(i in 1:length(obj_list)){print(dim(obj_list[[i]]))}
+  for (i in seq_along(obj_list)) {
+    seuratObjectName <- names(obj_list)[i]
+    print(seuratObjectName)
+    print(dim(obj_list[[i]]))
+    onlyCharacters <- gsub("[^a-zA-Z]", "", as.character(seuratObjectName))
+    #print(onlyCharacters)
+    obj_list[[seuratObjectName]]$sample <- seuratObjectName
+    obj_list[[seuratObjectName]]$type <- onlyCharacters
+  }
   return(obj_list)
 }

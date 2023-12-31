@@ -35,6 +35,6 @@ sctransform_integration<-function(obj_list,output_directory){
     return(obj_list)
   }
   saveRDS(
-    "~/sc_transform/integrated.rds"
+    "integrated.rds"
   )
 }
