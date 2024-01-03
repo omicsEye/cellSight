@@ -28,7 +28,7 @@ qc_plots<- function(seur_object,output_directory){
       labels = "AUTO", ncol = 1
     )
     file_path_2 <- paste0(output_directory,"qcplot_grid_joined_",index,".png")
-    save_plot(file_path_2,grid,bg="white")
+    ggsave(file_path_2,grid,bg="white")
   }
 
 

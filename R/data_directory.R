@@ -50,6 +50,19 @@ data_directory<- function(dir,output_dir){
     #print(onlyCharacters)
     obj_list[[seuratObjectName]]$sample <- seuratObjectName
     obj_list[[seuratObjectName]]$type <- onlyCharacters
+    # Specify the directory path
+    directory_path <- paste0(output_dir,"data")
+
+    # Check if the directory exists
+    if (!dir.exists(directory_path)) {
+      # If it doesn't exist, create it
+      dir.create(directory_path, recursive = TRUE)
+      cat("Directory created:", directory_path, "\n")
+    } else {
+      cat("Directory already exists:", directory_path, "\n")
+    }
+    file <- paste0(directory_path,"data_curation.rds")
+    saveRDS(obj_list,file)
   }
   return(obj_list)
 }
