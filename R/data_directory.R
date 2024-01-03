@@ -23,7 +23,7 @@
 data_directory<- function(dir,output_dir){
   #box_dir <- "~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data/"
   #box_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/"
-  setwd(output_dir)
+  #setwd(output_dir)
   box_dir <- dir
   dirs <- list.dirs(path = box_dir,
                     recursive = F,
