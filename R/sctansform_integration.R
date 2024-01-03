@@ -32,9 +32,9 @@ sctransform_integration<-function(obj_list,output_directory){
 
     obj_list <- anchors %>%
       IntegrateData(normalization.method = "SCT")
-    return(obj_list)
+
   }
-  saveRDS(
-    "integrated.rds"
-  )
+  file <- paste0(output_directory,"sctransform.rds")
+  saveRDS(obj_list,file)
+  return(obj_list)
 }
