@@ -55,7 +55,7 @@ data_directory<- function(dir,output_dir){
 
   print("Entering the directory creation section")
   # Specify the directory path
-  directory_path <- paste0(output_dir,"data")
+  directory_path <- paste0(output_dir,"/data/")
 
   # Check if the directory exists
   if (!dir.exists(directory_path)) {
