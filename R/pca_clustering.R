@@ -9,7 +9,7 @@
 #'
 #' @examples
 pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster_name= NULL,output_directory){
-  setwd(output_directory)
+  #setwd(output_directory)
   DefaultAssay(int_seur) <- "integrated"
 
   int_seur <- int_seur |>
@@ -18,6 +18,47 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
     RunUMAP(dims = 1:30) |>
     FindNeighbors(dims = 1:30) |>
     FindClusters()
+  directory_path <- paste0(output_dir,"/pca_clusters/")
+
+  # Check if the directory exists
+  if (!dir.exists(directory_path)) {
+    # If it doesn't exist, create it
+    dir.create(directory_path, recursive = TRUE)
+    cat("Directory created:", directory_path, "\n")
+  } else {
+    cat("Directory already exists:", directory_path, "\n")
+  }
+  file<- paste0(directory_path,"/dimplots/")
+
+  if (!dir.exists(file)) {
+    # If it doesn't exist, create it
+    dir.create(file, recursive = TRUE)
+    cat("Directory created:", file, "\n")
+  } else {
+    cat("Directory already exists:", file, "\n")
+  }
+
+  dim_plot_0.2 <- DimPlot(seur_obj,
+          group.by = "integrated_snn_res.0.2",
+          label = T,
+          label.box = T) +
+    theme(legend.position = "none")
+
+  ggsave("dintegrated_snn_res(0.2).png", plot = dim_plot_0.2,file )
+  dim_plot_0.4 <- DimPlot(seur_obj,
+          group.by = "integrated_snn_res.0.4",
+          label = T,
+          label.box = T) +
+    theme(legend.position = "none")
+  ggsave("dintegrated_snn_res(0.4).png", plot = dim_plot_0.4,file )
+  dim_plot_0.6 <- DimPlot(seur_obj,
+          group.by = "integrated_snn_res.0.6",
+          label = T,
+          label.box = T) +
+    theme(legend.position = "none")
+  ggsave("dintegrated_snn_res(0.6).png", plot = dim_plot_0.6,file )
+  seur_obj |>
+    DimPlot(split.by = "sample")
   Idents(int_seur) <- resolution
   int_seur <- int_seur |>
     NormalizeData(assay = "RNA")
@@ -26,11 +67,31 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
     names(new.cluster.ids) <- levels(int_seur)
     int_seur <- RenameIdents(int_seur, new.cluster.ids)
   }
+  dim_plot_0.8 <- DimPlot(seur_obj, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+  ggsave("dintegrated_snn_res(0.8).png", plot = dim_plot_0.8,file )
+
   for (i in int_seur$integrated_snn_res.0.8 |> unique()) {
-    if (!dir.exists("~/analysis/")){
-      dir.create("~/analysis/")
+    marker_file<- paste0(directory_path,"/markers/")
+    if (!dir.exists(file)) {
+      # If it doesn't exist, create it
+      dir.create(file, recursive = TRUE)
+      cat("Directory created:", file, "\n")
       int_seur |>
-        FindAllMarkers(ident.1 = i) |>
+        FindConservedMarkers(ident.1 = i,
+                             grouping.var = "type") |>
+        write.csv(
+          paste0(
+            "~/analysis/all-",
+            i,
+            ".csv")
+          )
+    } else {
+      cat("Directory already exists:", file, "\n")
+    }
+
+      int_seur |>
+        FindConservedMarkers(ident.1 = i,
+                             grouping.var = "type") |>
         write.csv(
           paste0(
             "~/analysis/all-",

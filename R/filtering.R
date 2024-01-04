@@ -44,5 +44,17 @@ filtering<-function(obj_list,output_directory,index=1,min_rna = 200,nfeature_rna
   }
   #obj_list[[index]]$sample <- sample_name
   #obj_list[[index]]$type <- sample_type
+  directory_path <- paste0(output_dir,"/filtering/")
+
+  # Check if the directory exists
+  if (!dir.exists(directory_path)) {
+    # If it doesn't exist, create it
+    dir.create(directory_path, recursive = TRUE)
+    cat("Directory created:", directory_path, "\n")
+  } else {
+    cat("Directory already exists:", directory_path, "\n")
+  }
+  file <- paste0(directory_path,"filtering.rds")
+  saveRDS(obj_list,file)
   return(obj_list)
 }
