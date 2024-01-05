@@ -11,7 +11,7 @@
 qc_plots<- function(seur_object,output_directory){
   ##setwd(output_directory)
   obj_list <- seur_object
-  directory_path <- paste0(output_dir,"/QC_Plots/")
+  directory_path <- paste0(output_directory,"/QC_Plots/")
 
   # Check if the directory exists
   if (!dir.exists(directory_path)) {
