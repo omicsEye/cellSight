@@ -9,7 +9,7 @@
 #' @examples
 
 qc_plots<- function(seur_object,output_directory){
-  #setwd(output_directory)
+  ##setwd(output_directory)
   obj_list <- seur_object
   directory_path <- paste0(output_dir,"/QC_Plots/")
 
