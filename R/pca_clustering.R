@@ -45,18 +45,21 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
     theme(legend.position = "none")
 
   ggsave("dintegrated_snn_res(0.2).png", plot = dim_plot_0.2,file )
+
   dim_plot_0.4 <- DimPlot(seur_obj,
           group.by = "integrated_snn_res.0.4",
           label = T,
           label.box = T) +
     theme(legend.position = "none")
   ggsave("dintegrated_snn_res(0.4).png", plot = dim_plot_0.4,file )
+
   dim_plot_0.6 <- DimPlot(seur_obj,
           group.by = "integrated_snn_res.0.6",
           label = T,
           label.box = T) +
     theme(legend.position = "none")
   ggsave("dintegrated_snn_res(0.6).png", plot = dim_plot_0.6,file )
+
   seur_obj |>
     DimPlot(split.by = "sample")
   Idents(int_seur) <- resolution
@@ -66,9 +69,15 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
     new.cluster.ids <- cluster_name
     names(new.cluster.ids) <- levels(int_seur)
     int_seur <- RenameIdents(int_seur, new.cluster.ids)
+    dim_plot_0.8 <- DimPlot(seur_obj, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+
   }
+  else{
   dim_plot_0.8 <- DimPlot(seur_obj, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+  }
   ggsave("dintegrated_snn_res(0.8).png", plot = dim_plot_0.8,file )
+
+
 
   for (i in int_seur$integrated_snn_res.0.8 |> unique()) {
     marker_file<- paste0(directory_path,"/markers/")
@@ -89,27 +98,15 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
       cat("Directory already exists:", file, "\n")
     }
 
-      int_seur |>
-        FindConservedMarkers(ident.1 = i,
-                             grouping.var = "type") |>
-        write.csv(
-          paste0(
-            "~/analysis/all-",
-            i,
-            ".csv"
-          )
-        )
-    }else{
-      int_seur |>
-        FindAllMarkers(ident.1 = i) |>
-        write.csv(
-          paste0(
-            "~/analysis/all-",
-            i,
-            ".csv"
-          )
-        )
-    }
+    int_seur |>
+      FindConservedMarkers(ident.1 = i,
+                           grouping.var = "type") |>
+      write.csv(
+        paste0(
+          "~/analysis/all-",
+          i,
+          ".csv")
+      )
 
   }
 }
