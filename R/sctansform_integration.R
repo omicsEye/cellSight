@@ -9,7 +9,7 @@
 #' @examples
 
 sctransform_integration<-function(obj_list,output_directory){
-  setwd(output_directory)
+  #setwd(output_directory)
   if(length(obj_list) == 1 ){
     obj_list <- obj_list %>%
       lapply(FUN = function(x) {

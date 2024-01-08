@@ -44,7 +44,7 @@ filtering<-function(obj_list,output_directory,index=1,min_rna = 200,nfeature_rna
   }
   #obj_list[[index]]$sample <- sample_name
   #obj_list[[index]]$type <- sample_type
-  directory_path <- paste0(output_dir,"/filtering/")
+  directory_path <- paste0(output_directory,"/filtering/")
 
   # Check if the directory exists
   if (!dir.exists(directory_path)) {
