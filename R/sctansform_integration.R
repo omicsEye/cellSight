@@ -15,7 +15,7 @@ sctransform_integration<-function(obj_list,output_directory){
       lapply(FUN = function(x) {
         SCTransform(x, vst.flavor = "v2")
       })
-    directory_path <- paste0(output_directory,"sctransform.rds")
+    directory_path <- paste0(output_directory,"/sctransform.rds")
     if (!dir.exists(directory_path)) {
       # If it doesn't exist, create it
       dir.create(directory_path, recursive = TRUE)
@@ -43,7 +43,7 @@ sctransform_integration<-function(obj_list,output_directory){
     obj_list <- anchors %>%
       IntegrateData(normalization.method = "SCT")
 
-    directory_path <- paste0(output_directory,"sctransform.rds")
+    directory_path <- paste0(output_directory,"/sctransform.rds")
     if (!dir.exists(directory_path)) {
       # If it doesn't exist, create it
       dir.create(directory_path, recursive = TRUE)
@@ -52,8 +52,8 @@ sctransform_integration<-function(obj_list,output_directory){
       cat("Directory already exists:", directory_path, "\n")
     }
     #file <- paste0(output_directory,"sctransform.rds")
-    saveRDS(obj_list,directory_path)
-    return(obj_list)
+    #saveRDS(obj_list,directory_path)
+    #return(obj_list)
   }
 
 }

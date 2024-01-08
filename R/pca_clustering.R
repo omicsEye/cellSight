@@ -10,11 +10,32 @@
 #' @examples
 pca_clustering<-function(int_seur, output_directory, resolution = "integrated_snn_res.0.8",cluster_name= NULL){
   #setwd(output_directory)
-  DefaultAssay(int_seur) <- "integrated"
 
   int_seur <- int_seur |>
     FindVariableFeatures() |>
-    RunPCA()|>
+    RunPCA()
+  path <- paste0(output_directory,"/sample_plot/")
+  # Check if the directory exists
+  if (!dir.exists(path)) {
+    # If it doesn't exist, create it
+    dir.create(path, recursive = TRUE)
+    cat("Directory created:", path, "\n")
+  } else {
+    cat("Directory already exists:", path, "\n")
+  }
+
+  dim_type <- DimPlot(seur_obj, group.by = "type")
+  ggsave("dimplot_type.png", plot = dim_type,path)
+
+  dim_sample <- DimPlot(seur_obj, group.by = "sample")
+  ggsave("dimplot_sample.png", plot = dim_sample,path)
+
+  elbow_plot <- ElbowPlot(seur_obj, ndims = 50)
+  ggsave("elbow_plot.png", plot = elbow_plot,path)
+
+  DefaultAssay(int_seur) <- "integrated"
+
+  int_seur <- int_seur |>
     RunUMAP(dims = 1:30) |>
     FindNeighbors(dims = 1:30) |>
     FindClusters()
@@ -44,21 +65,21 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
           label.box = T) +
     theme(legend.position = "none")
 
-  ggsave("dintegrated_snn_res(0.2).png", plot = dim_plot_0.2,file )
+  ggsave("integrated_snn_res(0.2).png", plot = dim_plot_0.2,file )
 
   dim_plot_0.4 <- DimPlot(int_seur,
           group.by = "integrated_snn_res.0.4",
           label = T,
           label.box = T) +
     theme(legend.position = "none")
-  ggsave("dintegrated_snn_res(0.4).png", plot = dim_plot_0.4,file )
+  ggsave("integrated_snn_res(0.4).png", plot = dim_plot_0.4,file )
 
   dim_plot_0.6 <- DimPlot(int_seur,
           group.by = "integrated_snn_res.0.6",
           label = T,
           label.box = T) +
     theme(legend.position = "none")
-  ggsave("dintegrated_snn_res(0.6).png", plot = dim_plot_0.6,file )
+  ggsave("integrated_snn_res(0.6).png", plot = dim_plot_0.6,file )
 
   int_seur |>
     DimPlot(split.by = "sample")
@@ -75,7 +96,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
   else{
   dim_plot_0.8 <- DimPlot(int_seur, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
   }
-  ggsave("dintegrated_snn_res(0.8).png", plot = dim_plot_0.8,file )
+  ggsave("integrated_snn_res(0.8).png", plot = dim_plot_0.8,file )
 
 
 
