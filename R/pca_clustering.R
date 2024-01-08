@@ -38,7 +38,7 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
     cat("Directory already exists:", file, "\n")
   }
 
-  dim_plot_0.2 <- DimPlot(seur_obj,
+  dim_plot_0.2 <- DimPlot(int_seur,
           group.by = "integrated_snn_res.0.2",
           label = T,
           label.box = T) +
@@ -46,21 +46,21 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
 
   ggsave("dintegrated_snn_res(0.2).png", plot = dim_plot_0.2,file )
 
-  dim_plot_0.4 <- DimPlot(seur_obj,
+  dim_plot_0.4 <- DimPlot(int_seur,
           group.by = "integrated_snn_res.0.4",
           label = T,
           label.box = T) +
     theme(legend.position = "none")
   ggsave("dintegrated_snn_res(0.4).png", plot = dim_plot_0.4,file )
 
-  dim_plot_0.6 <- DimPlot(seur_obj,
+  dim_plot_0.6 <- DimPlot(int_seur,
           group.by = "integrated_snn_res.0.6",
           label = T,
           label.box = T) +
     theme(legend.position = "none")
   ggsave("dintegrated_snn_res(0.6).png", plot = dim_plot_0.6,file )
 
-  seur_obj |>
+  int_seur |>
     DimPlot(split.by = "sample")
   Idents(int_seur) <- resolution
   int_seur <- int_seur |>
@@ -69,11 +69,11 @@ pca_clustering<-function(int_seur, resolution = "integrated_snn_res.0.8",cluster
     new.cluster.ids <- cluster_name
     names(new.cluster.ids) <- levels(int_seur)
     int_seur <- RenameIdents(int_seur, new.cluster.ids)
-    dim_plot_0.8 <- DimPlot(seur_obj, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+    dim_plot_0.8 <- DimPlot(int_seur, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
 
   }
   else{
-  dim_plot_0.8 <- DimPlot(seur_obj, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+  dim_plot_0.8 <- DimPlot(int_seur, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
   }
   ggsave("dintegrated_snn_res(0.8).png", plot = dim_plot_0.8,file )
 
