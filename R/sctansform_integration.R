@@ -51,9 +51,9 @@ sctransform_integration<-function(obj_list,output_directory){
     } else {
       cat("Directory already exists:", directory_path, "\n")
     }
-    #file <- paste0(output_directory,"sctransform.rds")
-    #saveRDS(obj_list,directory_path)
-    #return(obj_list)
+    file <- paste0(output_directory,"sctransform.rds")
+    saveRDS(obj_list,directory_path)
+    return(obj_list)
   }
 
 }
