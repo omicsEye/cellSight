@@ -23,15 +23,17 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
   } else {
     cat("Directory already exists:", path, "\n")
   }
-
+  file_path_1 <- paste0(path,"dimplot_type.png")
   dim_type <- DimPlot(int_seur, group.by = "type")
-  ggsave("dimplot_type.png", plot = dim_type,path)
+  ggsave(file_path_1,dim_type,bg="white")
 
+  file_path_2 <- paste0(path,"dimplot_sample.png")
   dim_sample <- DimPlot(int_seur, group.by = "sample")
-  ggsave("dimplot_sample.png", plot = dim_sample,path)
+  ggsave(file_path_2,dim_sample,bg="white")
 
+  file_path_3 <- paste0(path,"elbow_plot.png")
   elbow_plot <- ElbowPlot(int_seur, ndims = 50)
-  ggsave("elbow_plot.png", plot = elbow_plot,path)
+  ggsave(file_path_3, elbow_plot,bg="white")
 
   DefaultAssay(int_seur) <- "integrated"
 
@@ -65,21 +67,26 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
           label.box = T) +
     theme(legend.position = "none")
 
-  ggsave("integrated_snn_res(0.2).png", plot = dim_plot_0.2,file )
+  file_path_4 <- paste0(file,"integrated_snn_res(0.2).png")
+  ggsave(file_path_4,dim_plot_0.2,bg="white")
 
   dim_plot_0.4 <- DimPlot(int_seur,
           group.by = "integrated_snn_res.0.4",
           label = T,
           label.box = T) +
     theme(legend.position = "none")
-  ggsave("integrated_snn_res(0.4).png", plot = dim_plot_0.4,file )
+
+  file_path_5 <- paste0(file,"integrated_snn_res(0.4).png")
+  ggsave(file_path_4,dim_plot_0.4,bg="white")
 
   dim_plot_0.6 <- DimPlot(int_seur,
           group.by = "integrated_snn_res.0.6",
           label = T,
           label.box = T) +
     theme(legend.position = "none")
-  ggsave("integrated_snn_res(0.6).png", plot = dim_plot_0.6,file )
+
+  file_path_6 <- paste0(file,"integrated_snn_res(0.6).png")
+  ggsave(file_path_6,dim_plot_0.6,bg="white")
 
   int_seur |>
     DimPlot(split.by = "sample")
@@ -96,7 +103,10 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
   else{
   dim_plot_0.8 <- DimPlot(int_seur, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
   }
-  ggsave("integrated_snn_res(0.8).png", plot = dim_plot_0.8,file )
+
+  file_path_7 <- paste0(file,"integrated_snn_res(0.8).png")
+  ggsave(file_path_7,dim_plot_0.8,bg="white")
+
 
 
 

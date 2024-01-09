@@ -55,5 +55,7 @@ sctransform_integration<-function(obj_list,output_directory){
     saveRDS(obj_list,file)
 
   }
+  file <- paste0(output_directory,"sctransform.rds")
+  saveRDS(obj_list,file)
   return(obj_list)
 }
