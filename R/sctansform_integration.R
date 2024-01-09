@@ -43,7 +43,7 @@ sctransform_integration<-function(obj_list,output_directory){
     obj_list <- anchors %>%
       IntegrateData(normalization.method = "SCT")
 
-    directory_path <- paste0(output_directory,"/sctransform.rds")
+    directory_path <- paste0(output_directory,"/sctransform/")
     if (!dir.exists(directory_path)) {
       # If it doesn't exist, create it
       dir.create(directory_path, recursive = TRUE)

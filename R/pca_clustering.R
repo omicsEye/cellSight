@@ -24,13 +24,13 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
     cat("Directory already exists:", path, "\n")
   }
 
-  dim_type <- DimPlot(seur_obj, group.by = "type")
+  dim_type <- DimPlot(int_seur, group.by = "type")
   ggsave("dimplot_type.png", plot = dim_type,path)
 
-  dim_sample <- DimPlot(seur_obj, group.by = "sample")
+  dim_sample <- DimPlot(int_seur, group.by = "sample")
   ggsave("dimplot_sample.png", plot = dim_sample,path)
 
-  elbow_plot <- ElbowPlot(seur_obj, ndims = 50)
+  elbow_plot <- ElbowPlot(int_seur, ndims = 50)
   ggsave("elbow_plot.png", plot = elbow_plot,path)
 
   DefaultAssay(int_seur) <- "integrated"
