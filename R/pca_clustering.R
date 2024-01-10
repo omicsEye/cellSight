@@ -112,7 +112,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
 
   for (i in int_seur$integrated_snn_res.0.8 |> unique()) {
     marker_file<- paste0(directory_path,"/markers/")
-    if (!dir.exists(file)) {
+    if (!dir.exists(marker_file)) {
       # If it doesn't exist, create it
       dir.create(file, recursive = TRUE)
       cat("Directory created:", file, "\n")
@@ -138,6 +138,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
           i,
           ".csv")
       )
+
 
   }
 }
