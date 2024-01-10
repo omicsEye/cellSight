@@ -117,7 +117,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
       dir.create(file, recursive = TRUE)
       cat("Directory created:", file, "\n")
       int_seur |>
-        FindConservedMarkers(ident.1 = i,
+        FindMarkers(ident.1 = i,
                              grouping.var = "type") |>
         write.csv(
           paste0(
@@ -127,10 +127,10 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
           )
     } else {
       cat("Directory already exists:", file, "\n")
-    }
+
 
     int_seur |>
-      FindConservedMarkers(ident.1 = i,
+      FindMarkers(ident.1 = i,
                            grouping.var = "type") |>
       write.csv(
         paste0(
@@ -138,7 +138,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
           i,
           ".csv")
       )
-
+    }
 
   }
 }
