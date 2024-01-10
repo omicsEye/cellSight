@@ -46,15 +46,14 @@ devtools::install_github("omicsEye/cellSight")
 Using cellSight is straightforward. Load the package, provide your data files, and let it do the magic. Here's a basic example:
 
 ```R
-# Load the cellSight package
+# Load the cellSight package from the github repo
 library(cellSight)
 
 # Provide your data files (e.g., expression matrix )
 
 # Run cellSight
-results <- cellSight(expression_matrix)
+cellSight("path/to/data", "path/to/output")
 
-# Explore the results and visualize the output
 ```
 
 ## Functions
@@ -62,7 +61,11 @@ results <- cellSight(expression_matrix)
 cellSight comes with a wide range of features, including:
 
 - **Quality Control:** Automated quality control (QC) checks for cells and genes.
-cellsight::
+```
+cellsight::qc_plot Takes the seurat object and the path to the output as parameter to this function
+```
+![Expression Distribution Plot](path/to/expression_distribution_plot.png)
+
 - **Normalization:** Data normalization to ensure accurate downstream analysis.
 - **Clustering:** Cell clustering based on gene expression profiles.
 - **Differential Expression Analysis:** Identifying differentially expressed genes between clusters.
