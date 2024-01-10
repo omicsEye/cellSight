@@ -40,7 +40,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
   int_seur <- int_seur |>
     RunUMAP(dims = 1:30) |>
     FindNeighbors(dims = 1:30) |>
-    FindClusters()
+    FindClusters(resolution = c(0.2,0.4, 0.6, 0.8))
   directory_path <- paste0(output_directory,"/pca_clusters/")
 
   # Check if the directory exists
