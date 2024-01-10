@@ -61,13 +61,37 @@ cellSight("path/to/data", "path/to/output")
 cellSight comes with a wide range of features, including:
 
 - **Quality Control:** Automated quality control (QC) checks for cells and genes.
-```
-cellsight::qc_plot Takes the seurat object and the path to the output as parameter to this function
-```
-![Expression Distribution Plot](path/to/expression_distribution_plot.png)
+```R
+cellSight::qc_plot() Takes the seurat object and the path to the output as parameter to this function
 
-- **Normalization:** Data normalization to ensure accurate downstream analysis.
+```
+**The distribution of the number of feature, number of counts and the mitochondria percentage present in the data.
+
+![Expression Distribution Plot](plots/qcplot_violin_1.png)
+
+**The distribution of the counts for each feature in the data
+
+![Expression of count vs feature](plots/qcplot_scatter_1.png)
+
+**The joined distribution of the counts for each feature in the data and the violin plot for the distribution of the number of feature, number of counts and the mitochondria percentage present in the data
+
+![Joined Distribution plot](plots/qcplot_grid_joined_1.png)
+
+- **Filtering:** Data filtering to ensure accurate downstream analysis by removing doublets.
+
+```R
+cellSight::filtering() The parameters for this function are the seurat object and the output destination. It filters and the data within a given range. 
+
+```
 - **Clustering:** Cell clustering based on gene expression profiles.
+```R
+cellSight::pca_clustering() The fnction expects 2 parameters. 1) The seurat object 2) The output path
+
+```
+![0.2 Resolution based plot](plots/integrated_snn_res(0.2).png)
+![0.6 Resolution based plot](plots/integrated_snn_res(0.6).png)
+![0.8 Resolution based plot](plots/integrated_snn_res(0.8).png)
+
 - **Differential Expression Analysis:** Identifying differentially expressed genes between clusters.
 - **Visualization:** Visualize the results with various plots, including t-SNE, UMAP, and more.
 - **Annotation:** Annotate cell clusters with known cell types or states.
