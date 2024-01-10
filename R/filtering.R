@@ -14,6 +14,10 @@
 #' @export
 #'
 #' @examples
+#' filtering(seurat_object,output_directory)
+#' filtering(seur_obj,"C:/Users/Desktop/output")
+#' Filters each dataset to a pre-defined values
+#' Returns a filtered dataset with the desired values
 
 filtering<-function(obj_list,output_directory,index=1,min_rna = 200,nfeature_rna = 2500,ncount_rna = 8000,mit.percent = 1,sample_type=NULL,sample_name=NULL,stepwise = FALSE){
   #setwd(output_directory)

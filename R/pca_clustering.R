@@ -8,6 +8,12 @@
 #' @export
 #'
 #' @examples
+#' pca_clustering(Seurat object, output_directory)
+#' pca_clustering(sctransform_data,"C:/Users/Desktop/output")
+#' This function will take the seurat object and perform the PCA analysis, them procduces plots
+#' based on sample and type, followed byt eh dimension plots base on the various resolution.
+#' It also saves the markers genes of each clusters.
+#'
 pca_clustering<-function(int_seur, output_directory, resolution = "integrated_snn_res.0.8",cluster_name= NULL){
   #setwd(output_directory)
 

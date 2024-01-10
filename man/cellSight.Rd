@@ -19,9 +19,10 @@ This function performs a series of analysis steps on single-cell data using the
 following functions in order: data_directory, filtering, pca_clusters, and qc_plots.
 }
 \examples{
-data(iris)
-result <- cellSight(iris)
-
+The path to your data, and the path to your output
+cellSight("C:/Users/snRNA_CellRanger_Wound_nonWound/data/","C:/Users/Desktop/output")
+This will automates the process, which plots the required qc plots, performs filtering, plots the dimplots and finally followed by
+the differential expression analsis using tweedieverse.
 
 
 }

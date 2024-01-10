@@ -15,3 +15,9 @@ The output form \code{\link[=print]{print()}}
 \description{
 The function looks for the desired files under the supplied directory
 }
+\examples{
+data_directory<- function(input_directory,output_directory)
+Will create a directory with the rds file
+data_directory("C:/Users/snRNA_CellRanger_Wound_nonWound/data/","C:/Users/Desktop/output")
+The data directory will be created in the output folder path
+}

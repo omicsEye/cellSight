@@ -7,6 +7,9 @@
 #' @export
 #'
 #' @examples
+#' sctransform_integration(seurat_object,output_directory)
+#' sctransform_integration(seur_obj,"C:/Users/Desktop/output")
+#' Returns an integrated dataset where multiple dataset are merged into one using CCA
 
 sctransform_integration<-function(obj_list,output_directory){
   #setwd(output_directory)

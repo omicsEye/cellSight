@@ -23,3 +23,9 @@ filtering(
 \description{
 Title
 }
+\examples{
+filtering(seurat_object,output_directory)
+filtering(seur_obj,"C:/Users/Desktop/output")
+Filters each dataset to a pre-defined values
+Returns a filtered dataset with the desired values
+}

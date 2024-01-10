@@ -20,6 +20,10 @@
 #' @export
 #'
 #' @examples
+#' data_directory<- function(input_directory,output_directory)
+#' Will create a directory with the rds file
+#' data_directory("C:/Users/snRNA_CellRanger_Wound_nonWound/data/","C:/Users/Desktop/output")
+#' The data directory will be created in the output folder path
 data_directory<- function(dir,output_dir){
   #box_dir <- "~/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/data/"
   #box_dir <- "C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/"

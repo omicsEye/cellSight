@@ -12,3 +12,8 @@ sctransform_integration(obj_list, output_directory)
 \description{
 Title
 }
+\examples{
+sctransform_integration(seurat_object,output_directory)
+sctransform_integration(seur_obj,"C:/Users/Desktop/output")
+Returns an integrated dataset where multiple dataset are merged into one using CCA
+}

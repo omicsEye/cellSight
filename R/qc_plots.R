@@ -7,6 +7,10 @@
 #' @export
 #'
 #' @examples
+#' qc_plots(seurat_object,output_directory)
+#' qc_plots(seur_obj, C:/Users/Desktop/output)
+#' Returns the qc plots for each individual dataset which can be used to defined the values for
+#' filtering step
 
 qc_plots<- function(seur_object,output_directory){
   ##setwd(output_directory)
