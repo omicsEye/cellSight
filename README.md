@@ -25,6 +25,9 @@ BiocManager::install("DelayedMatrixStats")
 #Install glmGamPoi
 BiocManager::install("glmGamPoi")
 
+#Install metap
+BiocManager::install("metap")
+
 #Install mulltest
 BiocManager::install('multtest')
 ```
