@@ -27,7 +27,7 @@
 #' @concept Single-cell RNA-seq
 cellSight <- function(data_directory,output_directory) {
   # Step 1: Call data_directory function
-  data_dir_result <- data_directory(data_directory,output_dirctory)
+  data_dir_result <- data_directory(data_directory,output_directory)
 
   # Step 2: Call QC plots
   qc_plots <- qc_plots(data_dir_result,output_directory)
