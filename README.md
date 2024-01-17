@@ -101,7 +101,7 @@ cellSight::pca_clustering() The fnction expects 2 parameters. 1) The seurat obje
 - **Differential Expression Analysis:** Identifying differentially expressed genes between clusters.
 - **Visualization:** Visualize the results with various plots, including t-SNE, UMAP, and more.
 - **Annotation:** Annotate cell clusters with known cell types or states.
-- **Cell communication** Explore cell communication by inferring the possible Ligand receptor interactions.
+- **Cell communication** Explore cell communication by inferring the possible Ligand-Receptor interactions.
 
 
 
