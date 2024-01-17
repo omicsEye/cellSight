@@ -92,9 +92,9 @@ cellSight::pca_clustering() The fnction expects 2 parameters. 1) The seurat obje
 
 ```
 <p float="left">
-  <img src="plots/integrated_snn_res(0.2).png" width="285" />
-  <img src="plots/integrated_snn_res(0.6).png" width="285" />
-  <img src="plots/integrated_snn_res(0.8).png" width="285" />
+  <img src="plots/integrated_snn_res(0.2).png" width="280" />
+  <img src="plots/integrated_snn_res(0.6).png" width="280" />
+  <img src="plots/integrated_snn_res(0.8).png" width="280" />
 </p>
 
 
