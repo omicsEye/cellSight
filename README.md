@@ -1,6 +1,6 @@
 # cellSight
 
-cellSight is an R package that offers a fully automated pipeline for the analysis of single-cell RNA sequencing (scRNA-seq) data. This package is designed to streamline the analysis process, making it accessible and efficient for both beginners and experienced bioinformaticians. The best part? It requires only the data files, taking care of the rest.
+cellSight is an R package for automated single-cell RNA sequencing (scRNA-seq) data analysis. It streamlines the process for both beginners and experienced bioinformaticians, requiring only data files.
 
 * **Citation:** if you use the cellSight software, please cite: Ranojoy Chatterjee, Chiraag Gohel, and Ali Rahnavard (2023+). **cellSight: Deciphering underlying dynamics of cells and gene expression.** R package version 0.0.1. https://www.rahnavard.org/cellSight.
 [![DOI](https://zenodo.org/badge/429576005.svg)](https://zenodo.org/doi/10.5281/zenodo.10041146)
@@ -16,23 +16,15 @@ cellSight is an R package that offers a fully automated pipeline for the analysi
 ## Installation
 Install Bioconductor packages before installing cellSight on the R console:
 ```R
-# Install Bioconductor Manager and install DelayedMatrixStats
+# Install Bioconductor Manager and required packages
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-BiocManager::install("DelayedMatrixStats")
+BiocManager::install(c("DelayedMatrixStats", "glmGamPoi", "metap", "multtest"))
 
-#Install glmGamPoi
-BiocManager::install("glmGamPoi")
-
-#Install metap
-BiocManager::install("metap")
-
-#Install mulltest
-BiocManager::install('multtest')
 ```
 
-To install cellSight, you'll need have the 'devtools' package installed. Run the following commands in your R console:
+To install cellSight using devtools:
 
 ```R
 # Install devtools if you haven't already
@@ -46,7 +38,13 @@ devtools::install_github("omicsEye/cellSight")
 
 ## Usage
 
-Using cellSight is straightforward. Load the package, provide your data files, and let it do the magic. Here's a basic example:
+For cellSight, ensure your transcriptomics data is in the format:
+
+Single dataset: <br>"path/to/data/outs/filtered_feature_bc_matrix/sample"
+
+Multiple datasets:<br>"path/to/data/outs/filtered_feature_bc_matrix/sample1",<br>                         "path/to/data/outs/filtered_feature_bc_matrix/sample2",
+<br>
+                  "path/to/data/outs/filtered_feature_bc_matrix/sample3"
 
 ```R
 # Load the cellSight package from the github repo
@@ -57,6 +55,7 @@ library(cellSight)
 # Run cellSight
 cellSight("path/to/data", "path/to/output")
 
+
 ```
 
 ## Functions
@@ -65,20 +64,21 @@ cellSight comes with a wide range of features, including:
 
 - **Quality Control:** Automated quality control (QC) checks for cells and genes.
 ```R
-cellSight::qc_plot() Takes the seurat object and the path to the output as parameter to this function
+cellSight::qc_plot() 
+#Takes the seurat object and the path to the output as parameter to this function
 
 ```
-**The distribution of the number of feature, number of counts and the mitochondria percentage present in the data.
+**The distribution of the number of feature, number of counts and the mitochondria percentage present in the data.**
 
-![Expression Distribution Plot](plots/qcplot_violin_1.png)
+<img src="plots/qcplot_violin_1.png" width="900" height="900">
 
-**The distribution of the counts for each feature in the data
+**The distribution of the counts for each feature in the data**
 
-![Expression of count vs feature](plots/qcplot_scatter_1.png)
+<img src="plots/qcplot_scatter_1.png" width="900" height="900">
 
-**The joined distribution of the counts for each feature in the data and the violin plot for the distribution of the number of feature, number of counts and the mitochondria percentage present in the data
+**The joined distribution of the counts for each feature in the data and the violin plot for the distribution of the number of feature, number of counts and the mitochondria percentage present in the data**
 
-![Joined Distribution plot](plots/qcplot_grid_joined_1.png)
+<img src="plots/qcplot_grid_joined_1.png" width="1000" height="900">
 
 - **Filtering:** Data filtering to ensure accurate downstream analysis by removing doublets.
 
@@ -91,9 +91,12 @@ cellSight::filtering() The parameters for this function are the seurat object an
 cellSight::pca_clustering() The fnction expects 2 parameters. 1) The seurat object 2) The output path
 
 ```
-![0.2 Resolution based plot](plots/integrated_snn_res(0.2).png)
-![0.6 Resolution based plot](plots/integrated_snn_res(0.6).png)
-![0.8 Resolution based plot](plots/integrated_snn_res(0.8).png)
+<p float="left">
+  <img src="plots/integrated_snn_res(0.2).png" width="300" />
+  <img src="plots/integrated_snn_res(0.6).png" width="300" />
+  <img src="plots/integrated_snn_res(0.8).png" width="300" />
+</p>
+
 
 - **Differential Expression Analysis:** Identifying differentially expressed genes between clusters.
 - **Visualization:** Visualize the results with various plots, including t-SNE, UMAP, and more.
