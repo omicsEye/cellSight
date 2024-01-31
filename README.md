@@ -55,7 +55,8 @@ library(cellSight)
 # Run cellSight
 cellSight("path/to/data", "path/to/output")
 
-
+# To use the sample datafiles available with the package run please provide the path for the datafiles and your desired output file locations repectively:
+Example - cellSight("C:/Users/Desktop/cellSight/datafiles/","C:/Users/Desktop/test")
 ```
 
 ## Functions

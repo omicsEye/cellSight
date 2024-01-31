@@ -10,7 +10,7 @@ Description: The pipeline helps to streamline the down stream analysis of a sing
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Imports: 
     BiocManager (>= 1.30.15),
     DelayedMatrixStats (>= 1.14.0),
