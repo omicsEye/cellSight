@@ -61,9 +61,15 @@ Example - cellSight("C:/Users/Desktop/cellSight/datafiles/","C:/Users/Desktop/te
 ```
 
 ## Functions
+cellSight is an automated R package, which is an amulgation of several processes for performing numerous downstream analysis. When the main function "cellSight" is invoked, the function recursively calls the rest of the subroutines. 
+The various subprogram's under cellSight performs various task:
 
-cellSight comes with a wide range of features, including:
-
+- **Data Acquisition:** The function fetches all the various single cell datasets located in the input directory and reads the raw files and creates a list of seurat objects.
+- Input parameters: The location of the datasets and the desired output directory.
+- Output: It creates a "data" folder in the output directory and saves the R object as an RDS file.
+```R
+cellSight::data_directory("C:/Users/Desktop/cellSight/datafiles/","C:/Users/Desktop/test")
+```
 - **Quality Control:** Automated quality control (QC) checks for cells and genes.
 ```R
 cellSight::qc_plot() 
