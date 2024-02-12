@@ -70,15 +70,61 @@ The various subprogram's under cellSight performs various task:
 ```R
 cellSight::data_directory("C:/Users/Desktop/cellSight/datafiles/","C:/Users/Desktop/test")
 ```
-- **Quality Control:** Automated quality control (QC) checks for cells and genes.
+- **Quality Control:** Exploring QC Metrics with cellSight
+
+cellSight provides a convenient platform that facilitates the exploration of quality control (QC) metrics and enables the filtering of cells based on user-defined criteria. In the field, several QC metrics are commonly employed, aiding in the identification and removal of problematic cells. Some of these metrics include:
+
+1. **Number of Unique Genes Detected in Each Cell:**
+   - Low-quality cells or empty droplets often exhibit very few genes.
+   - Cell doublets or multiplets may show an unusually high gene count.
+
+2. **Total Number of Molecules Detected within a Cell:**
+   - Correlates strongly with the count of unique genes.
+   - Aberrations in this metric may indicate low-quality cells.
+
+3. **Percentage of Reads Mapping to the Mitochondrial Genome:**
+   - Low-quality or dying cells may display extensive mitochondrial contamination.
+
+To calculate mitochondrial QC metrics, the `PercentageFeatureSet()` function is employed. This function computes the percentage of counts originating from a specific set of features. In this case, the set of mitochondrial genes is defined as all genes starting with "MT-".
+
+
 ```R
 cellSight::qc_plot() 
 #Takes the seurat object and the path to the output as parameter to this function
 
 ```
-**The distribution of the number of feature, number of counts and the mitochondria percentage present in the data.**
-
 <img src="plots/qcplot_violin_1.png" width="900" height="900">
+
+QC Metrics Visualized in the Violin Plot:
+
+1. **Number of Detected Features (Genes) per Cell (nFeature_RNA)**:
+
+    Purpose: This metric represents the number of unique genes detected in each cell.
+    
+    Interpretation: A violin plot for this metric helps identify cells with unusually low      or high gene detection. Outliers may indicate low-quality cells or potential cell          doublets.
+    
+2. **Total RNA Molecule Counts per Cell (nCount_RNA)**:
+
+    Purpose: Indicates the total number of RNA molecules detected in each cell.
+    
+    Interpretation: Examining the distribution of RNA molecule counts helps identify cells     with unusually low or high total counts, which may be indicative of low-quality or         outlier cells.
+    
+3. **Percentage of Reads Mapping to Mitochondrial Genes (percent.mt)**:
+
+    Purpose: Measures the percentage of RNA reads originating from mitochondrial genes.
+    
+    Interpretation: High percentages may suggest mitochondrial contamination, often            observed in low-quality or dying cells.
+    
+*Interpretation of the Violin Plot*:
+The violin plot visually represents the distribution of each QC metric across all cells in the dataset. Each vertical violin corresponds to one metric, and the width of the violin at different points indicates the density of cells with specific metric values.
+
+**nFeature_RNA Violin**: Check for outliers or asymmetry, which may indicate cells with aberrant gene detection.
+
+**nCount_RNA Violin**: Assess the spread of total RNA molecule counts, identifying cells with extreme values.
+
+**percent.mt Violin**: Examine the distribution of mitochondrial contamination percentages, identifying cells with potential issues.
+
+
 
 **The distribution of the counts for each feature in the data**
 
