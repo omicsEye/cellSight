@@ -93,7 +93,13 @@ cellSight::qc_plot()
 #Takes the seurat object and the path to the output as parameter to this function
 
 ```
-<img src="plots/qcplot_violin_1.png" width="900" height="900">
+
+<p float="left">
+  <img src="plots/qcplot_violin_1.png" width="200" />
+  <img src="plots/qcplot_violin_2.png" width="200" />
+  <img src="plots/qcplot_violin_3.png" width="200" />
+  <img src="plots/qcplot_violin_4.png" width="200" />
+</p>
 
 QC Metrics Visualized in the Violin Plot:
 
@@ -124,9 +130,12 @@ The violin plot visually represents the distribution of each QC metric across al
 
 **percent.mt Violin**: Examine the distribution of mitochondrial contamination percentages, identifying cells with potential issues.
 
-
-<img src="plots/qcplot_scatter_1.png" width="900" height="900">
-
+<p float="left">
+  <img src="plots/qcplot_scatter_1.png" width="200" />
+  <img src="plots/qcplot_scatter_2.png" width="200" />
+  <img src="plots/qcplot_scatter_3.png" width="200" />
+  <img src="plots/qcplot_scatter_4.png" width="200" />
+</p>
 
 **Understanding the Plot**:
 
