@@ -37,7 +37,7 @@ devtools::install_github("omicsEye/cellSight")
 ```
 
 ## Usage
-
+Single-cell analysis has emerged as a powerful tool in biology, enabling researchers to dissect cellular heterogeneity and better understand complex biological systems at unprecedented resolution. However, downstream single-cell data analysis is riddled with challenges and intricacies that must be carefully addressed to derive meaningful insights. Streamlining and having a well-detailed pipeline mitigates the issues mentioned above related to scRNA data and also, in turn, creates a generalized platform that eases the overhead associated with single-cell downstream analyses. Thus, we created a software cellSight that automates a series of downstream QC and normalization processes along with tools required for differential analysis and cell communication under its banner. 
 For cellSight, ensure your transcriptomics data is in the format:
 
 Single dataset: <br>"path/to/data/outs/filtered_feature_bc_matrix/sample"
@@ -195,6 +195,22 @@ This code is used to create a subset of cells from the original dataset based on
 
 **Conclusion**:
 Subsetting based on QC criteria is a crucial step in the analysis of single-cell RNA-seq data. This process allows researchers to focus on a subset of high-quality cells for further investigation and analysis, improving the accuracy and reliability of downstream results.
+
+- **Normalization and Integration:** Normalization of the gene expression data and integration of the several datasets into one.
+```R
+cellSight::sctransform_integration()
+```
+
+The above function has two important tasks it undertakes. Firstly, the SCTransform function is used for performing variance stabilization and normalization on scRNA-seq count data. It applies a transformation to the input data matrix `x` to stabilize the variance across genes and normalize the data, making it suitable for downstream analysis. The function takes in scRNA-seq count data matrix as input to the function and returns a transformed and normalized expression matrix suitable for downstream analysis, such as clustering, dimensionality reduction, or differential expression analysis. The function aims to stabilize the variance across genes in scRNA-seq data, reducing the dependency of variance on mean expression levels. Additionally, the function performs normalization to account for differences in sequencing depth and library size across cells, ensuring that the expression values are comparable between cells.
+
+The SCTransform function is typically applied as a preprocessing step in scRNA-seq analysis pipelines before performing downstream analyses. It helps improve the quality of the data and enhances the performance of subsequent analytical methods.
+
+Secondly, the sctransfrom_integration() also is employed to integrate various datasets into one. The function typically needs to identify anchor points that serve as common reference points across datasets. After identifying the anchor genes the function utilizes the identified anchor sets to integrate the datasets. It aligns the datasets in a shared space, reducing batch effects and allowing for more accurate downstream analyses.
+
+The integration is very useful in mitigating batch effects, enabling the combined analysis of datasets from different experimental conditions. The integrated dataset can be used for various downstream analyses, such as clustering, cell type identification, and differential expression analysis, as if it were a single, homogeneous dataset.
+
+In summary, sctransfrom_integration() is a crucial step in the workflow when dealing with multiple single-cell RNA-seq datasets. It facilitates the creation of a normalized, harmonized, integrated dataset, allowing for robust and meaningful downstream analyses across heterogeneous experimental conditions.
+
 
 - **Clustering:** Cell clustering based on gene expression profiles.
 ```R
