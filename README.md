@@ -37,7 +37,10 @@ devtools::install_github("omicsEye/cellSight")
 ```
 
 ## Usage
-Single-cell analysis has emerged as a powerful tool in biology, enabling researchers to dissect cellular heterogeneity and better understand complex biological systems at unprecedented resolution. However, downstream single-cell data analysis is riddled with challenges and intricacies that must be carefully addressed to derive meaningful insights. Streamlining and having a well-detailed pipeline mitigates the issues mentioned above related to scRNA data and also, in turn, creates a generalized platform that eases the overhead associated with single-cell downstream analyses. Thus, we created a software cellSight that automates a series of downstream QC and normalization processes along with tools required for differential analysis and cell communication under its banner. 
+Single-cell analysis has emerged as a powerful tool in biology, enabling researchers to dissect cellular heterogeneity and better understand complex biological systems at unprecedented resolution. However, downstream single-cell data analysis is riddled with challenges and intricacies that must be carefully addressed to derive meaningful insights. Streamlining and having a well-detailed pipeline mitigates the issues mentioned above related to scRNA data and also, in turn, creates a generalized platform that eases the overhead associated with single-cell downstream analyses. Thus, we created a software cellSight that automates a series of downstream QC and normalization processes along with tools required for differential analysis and cell communication under its banner.
+![overview](plots/overviewfig.png)
+The pipeline for “cellSight” accepts the snRNA data as input and carries out standard quality control and normalization on the data. cellSight then performs data merging based on anchor genes and uses the merged data to run differential expression using Tweedieverse, cell communication using CellChat, and pathway enrichment analysis using omePath.
+
 For cellSight, ensure your transcriptomics data is in the format:
 
 Single dataset: <br>"path/to/data/outs/filtered_feature_bc_matrix/sample"
