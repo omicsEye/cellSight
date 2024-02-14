@@ -220,6 +220,8 @@ In summary, sctransfrom_integration() is a crucial step in the workflow when dea
 cellSight::pca_clustering() The fnction expects 2 parameters. 1) The seurat object 2) The output path
 
 ```
+We can leverage the significant Principal Components (PCs) obtained from the dimensionality reduction to identify cells with similar expression patterns through a graph-based clustering approach in cellSight. This approach involves embedding cells into a graph structure, typically using a K-nearest neighbor (KNN) graph, with edges connecting cells exhibiting similar gene expression patterns. The goal is to partition this graph into highly interconnected 'quasi-cliques' or 'communities.' For this purpose, we utilize the `FindClusters()` function. The `resolution` argument in this function, determining the granularity of clustering, needs optimization based on the experiment. Higher values result in more clusters. Typically, setting this parameter between 0.6-1.2 yields good results for single-cell datasets of around 3K cells.
+
 <p float="left">
   <img src="plots/integrated_snn_res(0.2).png" width="250" />
   <img src="plots/integrated_snn_res(0.6).png" width="250" />
