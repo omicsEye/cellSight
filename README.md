@@ -236,7 +236,7 @@ We can leverage the significant Principal Components (PCs) obtained from the dim
 
 ## Example
 
--[Using cellSight package for performing standard qc and various downstream analyses on a single cell data](https://github.com/omicsEye/cellSight/wiki)
+- [Using cellSight package for performing standard qc and various downstream analyses on a single cell data](https://github.com/omicsEye/cellSight/wiki)
 
 ## Contributing
 
