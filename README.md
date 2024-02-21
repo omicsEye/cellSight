@@ -234,7 +234,9 @@ We can leverage the significant Principal Components (PCs) obtained from the dim
 - **Annotation:** Annotate cell clusters with known cell types or states.
 - **Cell communication** Explore cell communication by inferring the possible Ligand-Receptor interactions.
 
+## Example
 
+-[Using cellSight package for performing standard qc and various downstream analyses on a single cell data](https://github.com/omicsEye/cellSight/wiki)
 
 ## Contributing
 
