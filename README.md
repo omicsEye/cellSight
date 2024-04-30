@@ -249,6 +249,7 @@ Effective tissue repair relies on precise orchestration of immune cell recruitme
 Fibroblasts priming in aging
 </h2>
 <img src="plots/aging.jpg">
+
 Despite the well-established importance of fibroblasts in human skin architecture and function, their heterogeneous nature has not yet been systematically analyzed. In the study conducted by [Solé-Boldo, Llorenç et al](https://www.nature.com/articles/s42003-020-0922-4), utilizing single-cell RNA sequencing, identifies four distinct fibroblast subpopulations in human skin and reveals their differential functions, including secretion, mesenchymal support, and inflammation. We observe a reduction in fibroblast heterogeneity and functional diversity with age, along with decreased interactions between fibroblasts and other skin cells, potentially contributing to skin aging.
 To follow along the detailed illustration of the steps please refer to the [RMarkdown](https://github.com/omicsEye/cellSight/wiki/Detailed-outline-to-use-the-individual-function-of-cellSight-on-available-data:) file.
 
