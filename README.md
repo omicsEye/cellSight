@@ -241,11 +241,12 @@ We can leverage the significant Principal Components (PCs) obtained from the dim
 <h2 id="injury">
 Studying the dynamics of cells and gene expression during injury-induced skin regeneration
 </h2>
-![injury](plots/injury.png)
-Effective tissue repair relies on precise orchestration of immune cell recruitment and activation at the injury site. Although the roles of tissue-resident immune cells and keratinocytes in initiating the skin's early immune response are well-established, our understanding of how various mesenchymal cell subsets contribute to the initial stages of injury-induced inflammation remains in its early stages. In our study design we collected tissue samples from 2 from naive/uninjured mice and 2 from injured mice. We ran the cellSight pipeline and found pivotal role of fibroblast for healing during injury.
-[Using cellSight package for performing standard qc and various downstream analyses on a single cell data](https://github.com/omicsEye/cellSight/wiki/Using-cellSight-package-for-performing-standard-qc-and-various-downstream-analyses-on-a-single-cell-data-:)
+<img src="plots/injury.png">
+
+Effective tissue repair relies on precise orchestration of immune cell recruitment and activation at the injury site. Although the roles of tissue-resident immune cells and keratinocytes in initiating the skin's early immune response are well-established, our understanding of how various mesenchymal cell subsets contribute to the initial stages of injury-induced inflammation remains in its early stages. In our study design we collected tissue samples from 2 from naive/uninjured mice and 2 from injured mice. We ran the cellSight pipeline and found pivotal role of fibroblast for healing during injury. To follow along the detailed illustration of the steps please refer to the [RMarkdown](https://github.com/omicsEye/cellSight/wiki/Using-cellSight-package-for-performing-standard-qc-and-various-downstream-analyses-on-a-single-cell-data-:) file
+
 <h2 id="aging">
-<i>deepBreaks</i> identifies amino acids associated with color sensitivity
+Fibroblasts priming in aging
 </h2>
 [Detailed outline to use the individual function of cellSight on available data](https://github.com/omicsEye/cellSight/wiki/Detailed-outline-to-use-the-individual-function-of-cellSight-on-available-data:)
 
