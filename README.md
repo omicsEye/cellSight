@@ -12,7 +12,7 @@ cellSight is an R package for automated single-cell RNA sequencing (scRNA-seq) d
 - [Funtions](#functions)
 - [Example](#example)
   * [Studying the dynamics of cells and gene expression during injury-induced skin regeneration](#injury)
-  * [Novel insights of niche associations in the oral microbiome](#aging)
+  * [Fibroblasts priming in aging](#aging)
 - [Contributing](#contributing)
 
 ## Installation
@@ -243,12 +243,14 @@ Studying the dynamics of cells and gene expression during injury-induced skin re
 </h2>
 <img src="plots/injury.png">
 
-Effective tissue repair relies on precise orchestration of immune cell recruitment and activation at the injury site. Although the roles of tissue-resident immune cells and keratinocytes in initiating the skin's early immune response are well-established, our understanding of how various mesenchymal cell subsets contribute to the initial stages of injury-induced inflammation remains in its early stages. In our study design we collected tissue samples from 2 from naive/uninjured mice and 2 from injured mice. We ran the cellSight pipeline and found pivotal role of fibroblast for healing during injury. To follow along the detailed illustration of the steps please refer to the [RMarkdown](https://github.com/omicsEye/cellSight/wiki/Using-cellSight-package-for-performing-standard-qc-and-various-downstream-analyses-on-a-single-cell-data-:) file
+Effective tissue repair relies on precise orchestration of immune cell recruitment and activation at the injury site. Although the roles of tissue-resident immune cells and keratinocytes in initiating the skin's early immune response are well-established, our understanding of how various mesenchymal cell subsets contribute to the initial stages of injury-induced inflammation remains in its early stages. In our study design we collected tissue samples from 2 from naive/uninjured mice and 2 from injured mice. We ran the cellSight pipeline and found pivotal role of fibroblast for healing during injury. To follow along the detailed illustration of the steps please refer to the [RMarkdown](https://github.com/omicsEye/cellSight/wiki/Using-cellSight-package-for-performing-standard-qc-and-various-downstream-analyses-on-a-single-cell-data-:) file.
 
 <h2 id="aging">
 Fibroblasts priming in aging
 </h2>
-[Detailed outline to use the individual function of cellSight on available data](https://github.com/omicsEye/cellSight/wiki/Detailed-outline-to-use-the-individual-function-of-cellSight-on-available-data:)
+<img src="plots/aging.jpg">
+Despite the well-established importance of fibroblasts in human skin architecture and function, their heterogeneous nature has not yet been systematically analyzed. In the study conducted by [Solé-Boldo, Llorenç et al](https://www.nature.com/articles/s42003-020-0922-4), utilizing single-cell RNA sequencing, identifies four distinct fibroblast subpopulations in human skin and reveals their differential functions, including secretion, mesenchymal support, and inflammation. We observe a reduction in fibroblast heterogeneity and functional diversity with age, along with decreased interactions between fibroblasts and other skin cells, potentially contributing to skin aging.
+To follow along the detailed illustration of the steps please refer to the [RMarkdown](https://github.com/omicsEye/cellSight/wiki/Detailed-outline-to-use-the-individual-function-of-cellSight-on-available-data:) file.
 
 ## Contributing
 
