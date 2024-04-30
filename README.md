@@ -11,6 +11,8 @@ cellSight is an R package for automated single-cell RNA sequencing (scRNA-seq) d
 - [Usage](#usage)
 - [Funtions](#functions)
 - [Example](#example)
+  * [Studying the dynamics of cells and gene expression during injury-induced skin regeneration](#injury)
+  * [Novel insights of niche associations in the oral microbiome](#aging)
 - [Contributing](#contributing)
 
 ## Installation
@@ -236,8 +238,16 @@ We can leverage the significant Principal Components (PCs) obtained from the dim
 
 ## Example
 
-- [Using cellSight package for performing standard qc and various downstream analyses on a single cell data](https://github.com/omicsEye/cellSight/wiki/Using-cellSight-package-for-performing-standard-qc-and-various-downstream-analyses-on-a-single-cell-data-:)
-- [Detailed outline to use the individual function of cellSight on available data](https://github.com/omicsEye/cellSight/wiki/Detailed-outline-to-use-the-individual-function-of-cellSight-on-available-data:)
+<h2 id="injury">
+Studying the dynamics of cells and gene expression during injury-induced skin regeneration
+</h2>
+![injury](plots/injury.png)
+Effective tissue repair relies on precise orchestration of immune cell recruitment and activation at the injury site. Although the roles of tissue-resident immune cells and keratinocytes in initiating the skin's early immune response are well-established, our understanding of how various mesenchymal cell subsets contribute to the initial stages of injury-induced inflammation remains in its early stages. In our study design we collected tissue samples from 2 from naive/uninjured mice and 2 from injured mice. We ran the cellSight pipeline and found pivotal role of fibroblast for healing during injury.
+[Using cellSight package for performing standard qc and various downstream analyses on a single cell data](https://github.com/omicsEye/cellSight/wiki/Using-cellSight-package-for-performing-standard-qc-and-various-downstream-analyses-on-a-single-cell-data-:)
+<h2 id="aging">
+<i>deepBreaks</i> identifies amino acids associated with color sensitivity
+</h2>
+[Detailed outline to use the individual function of cellSight on available data](https://github.com/omicsEye/cellSight/wiki/Detailed-outline-to-use-the-individual-function-of-cellSight-on-available-data:)
 
 ## Contributing
 
