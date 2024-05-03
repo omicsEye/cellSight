@@ -239,11 +239,11 @@ We can leverage the significant Principal Components (PCs) obtained from the dim
 ## Example
 
 <h2 id="injury">
-Studying the dynamics of cells and gene expression during injury-induced skin regeneration
+Characterizing dynamics of cells and gene expression during injury-induced skin
 </h2>
 <img src="plots/injury.png">
 
-Effective tissue repair relies on precise orchestration of immune cell recruitment and activation at the injury site. Although the roles of tissue-resident immune cells and keratinocytes in initiating the skin's early immune response are well-established, our understanding of how various mesenchymal cell subsets contribute to the initial stages of injury-induced inflammation remains in its early stages. In our study design we collected tissue samples from 2 from naive/uninjured mice and 2 from injured mice. We ran the cellSight pipeline and found pivotal role of fibroblast for healing during injury. To follow along the detailed illustration of the steps please refer to the [RMarkdown](https://github.com/omicsEye/cellSight/wiki/Studying-the-dynamics-of-cells-and-gene-expression-during-injury%E2%80%90induced-skin-regeneration:) file.
+Effective tissue repair relies on precise orchestration of immune cell recruitment and activation at the injury site. Although the roles of tissue-resident immune cells and keratinocytes in initiating the skin's early immune response are well-established, our understanding of how various mesenchymal cell subsets contribute to the initial stages of injury-induced inflammation remains in its early stages. In our study design we collected tissue samples from 2 from naive/uninjured mice and 2 from injured mice. We ran the cellSight pipeline and found pivotal role of fibroblast for healing during injury. To follow along the detailed illustration of the steps please refer to the [RMarkdown](https://github.com/omicsEye/cellSight/wiki/Characterizing-dynamics-of-cells-and-gene-expression-during-injury%E2%80%90induced-skin:) file.
 
 <h2 id="aging">
 Fibroblasts priming in aging
