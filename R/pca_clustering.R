@@ -127,24 +127,25 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
                              grouping.var = "type") |>
         write.csv(
           paste0(
-            "/all-",
+            "all-",
             i,
             ".csv")
           )
     } else {
       cat("Directory already exists:", file, "\n")
-
-
-    int_seur |>
+      int_seur |>
       FindMarkers(ident.1 = i,
                            grouping.var = "type") |>
       write.csv(
         paste0(
-          "/all-",
+          "all-",
           i,
           ".csv")
       )
     }
 
   }
+  file <- paste0(directory_path,"filtering.rds")
+  saveRDS(int_seur,file)
+  return(int_seur)
 }
