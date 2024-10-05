@@ -126,18 +126,18 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
         FindMarkers(ident.1 = i,
                              grouping.var = "type") |>
         write.csv(
-          paste0(
+          paste0(marker_file,
             "all-",
             i,
             ".csv")
           )
     } else {
-      cat("Directory already exists:", file, "\n")
+      cat("Directory already exists:", marker_file, "\n")
       int_seur |>
       FindMarkers(ident.1 = i,
                            grouping.var = "type") |>
       write.csv(
-        paste0(
+        paste0(marker_file,
           "all-",
           i,
           ".csv")
