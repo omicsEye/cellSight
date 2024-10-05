@@ -120,8 +120,8 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
     marker_file<- paste0(directory_path,"/markers/")
     if (!dir.exists(marker_file)) {
       # If it doesn't exist, create it
-      dir.create(file, recursive = TRUE)
-      cat("Directory created:", file, "\n")
+      dir.create(marker_file, recursive = TRUE)
+      cat("Marker file directory created:", marker_file, "\n")
       int_seur |>
         FindMarkers(ident.1 = i,
                              grouping.var = "type") |>
@@ -145,7 +145,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
     }
 
   }
-  file <- paste0(directory_path,"filtering.rds")
+  file <- paste0(output_directory,"pca_clusters.rds")
   saveRDS(int_seur,file)
   return(int_seur)
 }
