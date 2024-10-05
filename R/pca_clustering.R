@@ -127,7 +127,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
                              grouping.var = "type") |>
         write.csv(
           paste0(
-            "~/analysis/all-",
+            "/analysis/all-",
             i,
             ".csv")
           )
