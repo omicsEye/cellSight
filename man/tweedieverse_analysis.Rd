@@ -4,7 +4,7 @@
 \alias{tweedieverse_analysis}
 \title{Title}
 \usage{
-tweedieverse_analysis(obj_list)
+tweedieverse_analysis(obj_list, output_directory, imp_var)
 }
 \arguments{
 \item{obj_list}{}
