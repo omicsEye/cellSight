@@ -7,6 +7,8 @@
 #'
 #' @examples
 tweedieverse_analysis<-function(obj_list,output_directory,imp_var){
+  imp_var = imp_var
+  cat("Important Variable selected:", imp_var, "\n")
   path <- paste0(output_directory,"/tweedieverse/")
   # Check if the directory exists
   if (!dir.exists(path)) {
@@ -31,7 +33,7 @@ tweedieverse_analysis<-function(obj_list,output_directory,imp_var){
 
     test <- Tweedieverse(
       input_features,
-      obj_sub@meta.data[imp] ,
+      obj_sub@meta.data[imp_var] ,
       output = paste0(path,'/cluster_', i),
       prev_threshold = 0.0,
       entropy_threshold = 0.0,
