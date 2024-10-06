@@ -6,7 +6,16 @@
 #' @export
 #'
 #' @examples
-tweedieverse_analysis<-function(obj_list){
+tweedieverse_analysis<-function(obj_list,output_directory,imp_var){
+  path <- paste0(output_directory,"/tweedieverse/")
+  # Check if the directory exists
+  if (!dir.exists(path)) {
+    # If it doesn't exist, create it
+    dir.create(path, recursive = TRUE)
+    cat("Directory created:", path, "\n")
+  } else {
+    cat("Directory already exists:", path, "\n")
+  }
   for (i in obj_list$Celltype %>% unique()) {
     print(i)
     obj_sub <- obj_list %>%
@@ -22,14 +31,13 @@ tweedieverse_analysis<-function(obj_list){
 
     test <- Tweedieverse(
       input_features,
-      obj_list@meta.data[6] ,
-      output = paste0('~/tweedieverse_run/cluster_', i),
+      obj_sub@meta.data[imp] ,
+      output = paste0(path,'/cluster_', i),
       prev_threshold = 0.0,
       entropy_threshold = 0.0,
       base_model = 'CPLM',
       plot_heatmap = T,
       plot_scatter = T,
-      reference = c("type, Normal")
     )
   }
 }
