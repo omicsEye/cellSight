@@ -31,7 +31,7 @@ de_analysis<-function(obj_list,output_directory,imp_var){
       t() |>
       as.data.frame()
 
-    test <- Tweedieverse(
+    test <- Tweedieverse::Tweedieverse(
       input_features,
       obj_sub@meta.data[imp_var] ,
       output = paste0(path,'/cluster_', i),
