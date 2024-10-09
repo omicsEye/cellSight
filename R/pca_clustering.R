@@ -6,7 +6,9 @@
 #'
 #' @return
 #' @export
-#'
+#' @import Tweedieverse
+#' @import Seurat
+#' @import CellChat
 #' @examples
 #' pca_clustering(Seurat object, output_directory)
 #' pca_clustering(sctransform_data,"C:/Users/Desktop/output")

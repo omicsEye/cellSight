@@ -5,7 +5,9 @@
 #'
 #' @return QC plots
 #' @export
-#'
+#' @import Tweedieverse
+#' @import Seurat
+#' @import CellChat
 #' @examples
 #' qc_plots(seurat_object,output_directory)
 #' qc_plots(seur_obj, C:/Users/Desktop/output)

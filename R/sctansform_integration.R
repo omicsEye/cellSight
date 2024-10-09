@@ -5,7 +5,9 @@
 #'
 #' @return
 #' @export
-#'
+#' @import Tweedieverse
+#' @import Seurat
+#' @import CellChat
 #' @examples
 #' sctransform_integration(seurat_object,output_directory)
 #' sctransform_integration(seur_obj,"C:/Users/Desktop/output")

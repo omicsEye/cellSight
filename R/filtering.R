@@ -12,7 +12,9 @@
 #'
 #' @return
 #' @export
-#'
+#' @import Tweedieverse
+#' @import Seurat
+#' @import CellChat
 #' @examples
 #' filtering(seurat_object,output_directory)
 #' filtering(seur_obj,"C:/Users/Desktop/output")

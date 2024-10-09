@@ -4,7 +4,7 @@
 #'
 #' @return
 #' @export
-#'
+#' @import Tweedieverse
 #' @examples
 de_analysis<-function(obj_list,output_directory,imp_var){
   imp_var = imp_var

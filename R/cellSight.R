@@ -9,7 +9,9 @@
 #' @return A list containing the results of each analysis step.
 #'
 #' @export
-#'
+#' @import Tweedieverse
+#' @import Seurat
+#' @import CellChat
 #' @examples
 #' The path to your data, and the path to your output
 #' cellSight("C:/Users/snRNA_CellRanger_Wound_nonWound/data/","C:/Users/Desktop/output")
