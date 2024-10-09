@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-tweedieverse_analysis<-function(obj_list,output_directory,imp_var){
+de_analysis<-function(obj_list,output_directory,imp_var){
   imp_var = imp_var
   cat("Important Variable selected:", imp_var, "\n")
   path <- paste0(output_directory,"/tweedieverse/")
