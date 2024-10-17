@@ -3,7 +3,7 @@
 #' @param obj_list
 #'
 #' @return
-#' @import Tweedieverse
+#' @import CellChat
 #'
 #' @export
 #'
