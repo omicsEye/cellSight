@@ -29,6 +29,6 @@ Imports:
     ComplexHeatmap
 Remotes:
     himelmallick/Tweedieverse,
-    jinworks/CellChat
+    jinworks/CellChat,
     jokergoo/ComplexHeatmap
 Roxygen: list(markdown = TRUE)
