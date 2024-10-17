@@ -22,7 +22,7 @@ Install Bioconductor packages before installing cellSight on the R console:
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-BiocManager::install(c("DelayedMatrixStats", "glmGamPoi", "metap", "multtest"))
+BiocManager::install(c("DelayedMatrixStats", "glmGamPoi", "metap", "multtest","Biobase","BiocNeighbors","BiocGenerics"))
 
 ```
 
