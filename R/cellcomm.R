@@ -3,6 +3,8 @@
 #' @param obj_list
 #'
 #' @return
+#' @import Tweedieverse
+#'
 #' @export
 #'
 #' @examples
