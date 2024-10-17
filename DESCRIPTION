@@ -23,7 +23,9 @@ Imports:
     glmGamPoi,
     gridExtra,
     tidyverse,
-    devtools
+    devtools,
+    CellChat,
+    Tweedieverse
 Remotes:
     himelmallick/Tweedieverse,
     jinworks/CellChat
