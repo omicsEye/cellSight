@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-cellcomm_analysis<-function(obj_list,output_directory,imp_var,species){
+cellcomm_analysis<-function(obj_list,output_directory,imp_var,species = "human"){
   if(imp_var != "all"){
     obj_list <- pca_clusters
     imp <- subset(x = obj_list, subset = (sample  == imp_var))
