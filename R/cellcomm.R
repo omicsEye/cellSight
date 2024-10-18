@@ -26,12 +26,12 @@ cellcomm_analysis <- function(obj_list, output_directory, imp_var, species = "hu
 
     # Load appropriate CellChat database based on species
     if (species == "human") {
-      data("CellChatDB.human")  # Load the human CellChat database
-      CellChatDB <- CellChatDB.human
+      data("CellChat::CellChatDB.human")  # Load the human CellChat database
+      CellChatDB <- CellChat::CellChatDB.human
       showDatabaseCategory(CellChatDB)
     } else if (species == "mouse") {
-      data("CellChatDB.mouse")  # Load the mouse CellChat database
-      CellChatDB <- CellChatDB.mouse
+      data("CellChat::CellChatDB.mouse")  # Load the mouse CellChat database
+      CellChatDB <- CellChat::CellChatDB.mouse
       showDatabaseCategory(CellChatDB)
     } else {
       stop("Database not available for the specified species.")
@@ -120,12 +120,12 @@ cellcomm_analysis <- function(obj_list, output_directory, imp_var, species = "hu
 
     # Load appropriate CellChat database based on species
     if (species == "human") {
-      data("CellChatDB.human")  # Load the human CellChat database
-      CellChatDB <- CellChatDB.human
+      data("CellChat::CellChatDB.human")  # Load the human CellChat database
+      CellChatDB <- CellChat::CellChatDB.human
       showDatabaseCategory(CellChatDB)
     } else if (species == "mouse") {
-      data("CellChatDB.mouse")  # Load the mouse CellChat database
-      CellChatDB <- CellChatDB.mouse
+      data("CellChat::CellChatDB.mouse")  # Load the mouse CellChat database
+      CellChatDB <- CellChat::CellChatDB.mouse
       showDatabaseCategory(CellChatDB)
     } else {
       stop("Database not available for the specified species.")
