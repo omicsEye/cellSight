@@ -6,6 +6,7 @@
 #' @param species "human" or "mouse"
 #' @return
 #' @import CellChat
+#' @import svglite
 #'
 #' @export
 #'
