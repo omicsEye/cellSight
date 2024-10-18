@@ -4,10 +4,10 @@
 \alias{cellcomm_analysis}
 \title{Title}
 \usage{
-cellcomm_analysis(obj_list, output_directory, imp_var, species)
+cellcomm_analysis(obj_list, output_directory, imp_var, species = "human")
 }
 \arguments{
-\item{obj_list}{}
+\item{species}{"human" or "mouse"}
 }
 \description{
 Title
