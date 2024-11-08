@@ -12,7 +12,7 @@ cellSight is an R package for automated single-cell RNA sequencing (scRNA-seq) d
 - [Functions](#functions)
 - [Example](#example)
   * [Studying the dynamics of cells and gene expression during injury-induced skin regeneration](#injury)
-    * [To follow the detailed R implementation](https://github.com/omicsEye/cellSight/wiki/Characterizing-dynamics-of-cells-and-gene-expression-during-injury%E2%80%90induced-skin)
+    * [To follow the detailed R implementation](https://github.com/omicsEye/cellSight/wiki/Characterizing-dynamics-of-cells-and-gene-expression-during-injury%E2%80%90induced-skin:)
   * [Fibroblasts priming in aging](#aging)
     * [To follow the detailed R implementation](https://github.com/omicsEye/cellSight/wiki/Detailed-outline-to-use-the-individual-function-of-cellSight-on-available-data:)
 - [Contributing](#contributing)
