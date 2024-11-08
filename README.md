@@ -9,11 +9,14 @@ cellSight is an R package for automated single-cell RNA sequencing (scRNA-seq) d
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Funtions](#functions)
+- [Functions](#functions)
 - [Example](#example)
   * [Studying the dynamics of cells and gene expression during injury-induced skin regeneration](#injury)
+    * [To follow the detailed R implementation](https://github.com/omicsEye/cellSight/wiki/Characterizing-dynamics-of-cells-and-gene-expression-during-injury%E2%80%90induced-skin)
   * [Fibroblasts priming in aging](#aging)
+    * [To follow the detailed R implementation](https://github.com/omicsEye/cellSight/wiki/Detailed-outline-to-use-the-individual-function-of-cellSight-on-available-data:)
 - [Contributing](#contributing)
+
 
 ## Installation
 Install Bioconductor packages before installing cellSight on the R console:
@@ -60,7 +63,7 @@ library(cellSight)
 # Run cellSight
 cellSight("path/to/data", "path/to/output")
 
-# To use the sample datafiles available with the package, please download the "datafiles" folder available in the cellSight replo and provide the path for the downloaded datafiles and your desired output file locations repectively:
+# To use the sample datafiles available with the package, please download the "datafiles" folder available in the cellSight repo and provide the path for the downloaded datafiles and your desired output file locations repectively:
 Example - cellSight("C:/Users/Desktop/cellSight/datafiles/","C:/Users/Desktop/test")
 
 ```
