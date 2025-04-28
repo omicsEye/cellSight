@@ -27,7 +27,8 @@ Imports:
     CellChat,
     Tweedieverse,
     ComplexHeatmap,
-    svglite
+    svglite,
+    scCustomize
 Remotes:
     himelmallick/Tweedieverse,
     jinworks/CellChat,
