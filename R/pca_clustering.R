@@ -152,6 +152,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
 
   # To get the vector of highly variable gene names
   hvg_genes <- VariableFeatures(seurat_obj)
+  features <- hvg_genes[1:10]
   stacked_barplots <- Stacked_VlnPlot(int_seur,features,x_lab_rotate = TRUE)
 
   file_path_8<- paste0(directory_path,"/barplots/")
