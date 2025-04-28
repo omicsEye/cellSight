@@ -146,19 +146,21 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
           ".csv")
       )
     }
+
+  }
   seurat_obj <- FindVariableFeatures(int_seur, selection.method = "vst", nfeatures = 2000)
 
-    # To get the vector of highly variable gene names
+  # To get the vector of highly variable gene names
   hvg_genes <- VariableFeatures(seurat_obj)
-  stacked_barplots <- Stacked_VlnPlot(pca_clusters,features,x_lab_rotate = TRUE)
+  stacked_barplots <- Stacked_VlnPlot(int_seur,features,x_lab_rotate = TRUE)
 
   file_path_8<- paste0(directory_path,"/barplots/")
   ggsave(file_path_8,stacked_barplots,bg="white")
 
-  p2 <- FeaturePlot(pca_clusters,features)
+  p2 <- FeaturePlot(int_seur,features)
   file_path_9<- paste0(directory_path,"/feature_plots/")
   ggsave(file_path_8,stacked_barplots,bg="white")
-  }
+
   file <- paste0(output_directory,"pca_clusters.rds")
   saveRDS(int_seur,file)
   return(int_seur)
