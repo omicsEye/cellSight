@@ -36,7 +36,7 @@ saveRDS(seur_obj,"C:/Users/ranoj/Desktop/Single_cell_output/objects/scintegrated
 
 #seur_obj <- readRDS("C:/Users/ranoj/Box/snRNA_CellRanger_Wound_nonWound/data/scintegrated_final.rds")
 
-seur_obj <- readRDS("Users/ranojoychatterjee/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/objects/scintegrated_final.rds")
+seur_obj <- readRDS("/Users/ranojoychatterjee/Library/CloudStorage/Box-Box/snRNA_CellRanger_Wound_nonWound/objects/scintegrated_final.rds")
 
 ###For chekcing ####
 i <- "Adipocyte"
@@ -45,15 +45,15 @@ for (i in seur_obj$Celltype %>% unique()) {
   print(i)
   obj_sub <- seur_obj %>%
     subset(Celltype == i)
-  
+
   counts <- obj_sub %>%
     GetAssayData(assay = "RNA", slot = "counts")
-  
+
   input_features <- counts |>
     as.matrix() |>
     t() |>
     as.data.frame()
-  
+
   test <- Tweedieverse(
     input_features,
     obj_sub@meta.data[6] ,
