@@ -14,7 +14,7 @@
 #' pca_clustering(Seurat object, output_directory)
 #' pca_clustering(sctransform_data,"C:/Users/Desktop/output")
 #' This function will take the seurat object and perform the PCA analysis, them procduces plots
-#' based on sample and type, followed byt eh dimension plots base on the various resolution.
+#' based on sample and type, followed by the dimension plots base on the various resolution.
 #' It also saves the markers genes of each clusters.
 #'
 pca_clustering<-function(int_seur, output_directory, resolution = "integrated_snn_res.0.8",cluster_name= NULL){
@@ -155,11 +155,14 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
   features <- hvg_genes[1:10]
   stacked_barplots <- Stacked_VlnPlot(int_seur,features,x_lab_rotate = TRUE)
 
-  file_path_8<- paste0(directory_path,"/barplots/")
+  file1<- paste0(directory_path,"/barplots/")
+
+  file_path_8 <- paste0(file1,"stacked_barplot.png")
   ggsave(file_path_8,stacked_barplots,bg="white")
 
   p2 <- FeaturePlot(int_seur,features)
-  file_path_9<- paste0(directory_path,"/feature_plots/")
+  file2<- paste0(directory_path,"/feature_plots/")
+  file_path_9<- paste0(file2,"feature_plot.png")
   ggsave(file_path_8,stacked_barplots,bg="white")
 
   file <- paste0(output_directory,"pca_clusters.rds")

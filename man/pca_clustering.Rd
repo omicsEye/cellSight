@@ -21,7 +21,7 @@ Title
 pca_clustering(Seurat object, output_directory)
 pca_clustering(sctransform_data,"C:/Users/Desktop/output")
 This function will take the seurat object and perform the PCA analysis, them procduces plots
-based on sample and type, followed byt eh dimension plots base on the various resolution.
+based on sample and type, followed by the dimension plots base on the various resolution.
 It also saves the markers genes of each clusters.
 
 }
