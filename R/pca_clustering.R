@@ -163,7 +163,7 @@ pca_clustering<-function(int_seur, output_directory, resolution = "integrated_sn
   p2 <- FeaturePlot(int_seur,features)
   file2<- paste0(directory_path,"/feature_plots/")
   file_path_9<- paste0(file2,"feature_plot.png")
-  ggsave(file_path_8,stacked_barplots,bg="white")
+  ggsave(file_path_9,stacked_barplots,bg="white")
 
   file <- paste0(output_directory,"pca_clusters.rds")
   saveRDS(int_seur,file)
